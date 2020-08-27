@@ -1,106 +1,130 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Layout from "../../components/Layout"
-import Filter from "../../components/Category/Filter"
-import Item from "../../components/Category/Item"
+import { Category } from "../../components/Category/Filter"
+import ItemGrid from "../../components/Category/ItemGrid"
+import Banner from "../../components/Category/Banner"
 import styled from "styled-components"
 import mysql from "mysql"
 import db_info from "../../db_info"
 
-const Title = styled.div`
-	width: 100%;
-	height: 350px;
-	/* background: url(/images/bikes.jpg) no-repeat; */
-	background-size: cover;
-	background-position: 0 80%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	&::after {
-		content: "";
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background: rgb(0, 0, 0, 0.2);
-	}
-	h1 {
-		color: white;
-		font-size: 4.5rem;
-		z-index: 1;
-	}
-`
 const Section = styled.section`
 	display: flex;
 	width: 100%;
 	max-width: 1500px;
 	margin: 50px auto;
 	padding: 0 50px;
+	aside {
+		width: 200px;
+		.filter-msg {
+			margin: 20px 0;
+			#reset {
+				cursor: pointer;
+				width: 20px;
+				height: 20px;
+				margin: 0 5px;
+				border: none;
+				border-radius: 50%;
+				background: black;
+				color: white;
+				font-size: 0.8rem;
+			}
+		}
+	}
+	@media (max-width: 900px) {
+		flex-direction: column;
+		padding: 0 20px;
+		aside {
+			width: 100%;
+		}
+	}
 `
-const ItemGrid = styled.section`
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	column-gap: 20px;
-	row-gap: 20px;
-	width: 100%;
-	padding: 0 50px;
-`
-export default function Bikes({ product }) {
-	const bikes = JSON.parse(product)
+
+export default function Clothing({ data }) {
+	const initialList = JSON.parse(data)
+	const [productList, setProductList] = useState(initialList)
+	const [filterMsg, setFilterMsg] = useState(null)
 	const router = useRouter()
 	const heading = router.query.uid.charAt(0).toUpperCase() + router.query.uid.slice(1)
-
-	const category = [
-		{
-			name: "Brand",
-			list: ["Trek", "Giant", "Cannondale", "Bianchi"],
-		},
-		{
-			name: "Model Year",
-			list: ["2018", "2019", "2020"],
-		},
-		{
-			name: "Price",
-			list: ["Ascenidng", "Descending"],
-		},
-		{
-			name: "Price range",
-			list: ["0-50.000", "50.000-100.000", "100.000-250.000", "250.000-1.500.000"],
-		},
+	const brands = [...new Set(initialList.map(e => e.brand))]
+	const years = [...new Set(initialList.map(e => e.year))]
+	const priceRange = [
+		[0, 25],
+		[25, 50],
+		[50, 75],
+		[75, 3000],
 	]
+	useEffect(() => setProductList(initialList), [data])
+	const filterList = (category, value) => {
+		setFilterMsg(`${category}: ${value}`)
+		switch (category) {
+			case "brand":
+				setProductList(initialList.filter(e => e.brand === value))
+				break
+			case "year":
+				setProductList(initialList.filter(e => e.year === value))
+				break
+			case "price":
+				setProductList(initialList.filter(e => e.price >= value[0] && e.price <= value[1]))
+		}
+	}
+	const resetFilter = () => {
+		setProductList(initialList)
+		setFilterMsg(null)
+	}
 	return (
 		<Layout>
-			<Title>
-				<h1>{heading}</h1>
-			</Title>
+			<Banner heading={heading} />
 			<Section>
-				<Filter category={category} />
-				<ItemGrid>
-					{bikes.length ? bikes.map((e, index) => <Item key={index} data={e} />) : ""}
-				</ItemGrid>
+				<aside>
+					<h2>Filter by</h2>
+					{filterMsg ? (
+						<div className="filter-msg">
+							<span>{filterMsg}</span>
+							<button id="reset" onClick={resetFilter}>
+								&#x2716;
+							</button>
+						</div>
+					) : null}
+					<Category name="Brand">
+						{brands.map((e, index) => (
+							<li key={index} onClick={() => filterList("brand", e)}>
+								{e}
+							</li>
+						))}
+					</Category>
+					<Category name="Year">
+						{years.map((e, index) => (
+							<li key={index} onClick={() => filterList("year", e)}>
+								{e}
+							</li>
+						))}
+					</Category>
+					<Category name="Price">
+						{priceRange.map((e, index) => (
+							<li key={index} onClick={() => filterList("price", e)}>{`$${e[0]} - $${e[1]}`}</li>
+						))}
+					</Category>
+				</aside>
+				<ItemGrid productList={productList} />
 			</Section>
 		</Layout>
 	)
 }
 
 export async function getServerSideProps({ query }) {
-	const data = new Promise((res, rej) => {
+	console.log(query)
+	const response = new Promise((res, rej) => {
 		const db = mysql.createConnection(db_info)
 		db.connect()
 		db.query(`SELECT * FROM products WHERE type = '${query.uid}'`, (error, results, fields) => {
-			if (error) {
-				rej(error)
-				console.log(error)
-			} else {
-				res(results)
-			}
+			if (error) console.log(error)
+			res(results)
 		})
 		db.end()
 	})
-	const product = await data
+	const data = await response
 	return {
-		props: { product: JSON.stringify(product) },
+		props: { data: JSON.stringify(data) },
 	}
 }

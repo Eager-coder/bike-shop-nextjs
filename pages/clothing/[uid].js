@@ -49,10 +49,10 @@ export default function Clothing({ data }) {
 	const brands = [...new Set(initialList.map(e => e.brand))]
 	const years = [...new Set(initialList.map(e => e.year))]
 	const priceRange = [
-		[0, 500],
-		[500, 1500],
-		[1500, 3000],
-		[3000, 50000],
+		[0, 25],
+		[25, 50],
+		[50, 75],
+		[75, 3000],
 	]
 	useEffect(() => setProductList(initialList), [data])
 	const filterList = (category, value) => {
@@ -123,8 +123,8 @@ export async function getServerSideProps({ query }) {
 		})
 		db.end()
 	})
-	const res = await data
+	const data = await response
 	return {
-		props: { product: JSON.stringify(product) },
+		props: { data: JSON.stringify(data) },
 	}
 }

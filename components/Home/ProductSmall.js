@@ -1,11 +1,11 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
 const Div = styled.div`
-	grid-area: ${props => (props.area === 'top' ? 'top' : 'bottom')};
+	grid-area: ${props => (props.area === "top" ? "top" : "bottom")};
 	position: relative;
 
 	&::after {
-		content: '';
+		content: "";
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -45,11 +45,19 @@ const Div = styled.div`
 				border: white 2px solid;
 			}
 		}
+		@media (max-width: 480px) {
+			h2 {
+				font-size: 1.5rem;
+			}
+			a {
+				font-size: 1rem;
+			}
+		}
 	}
 `
 export default function ProductSmall({ children, area }) {
 	return (
-		<Div area={area} className='product-top'>
+		<Div area={area} className="product-top">
 			{children}
 		</Div>
 	)

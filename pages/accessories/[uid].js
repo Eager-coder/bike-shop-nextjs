@@ -40,7 +40,7 @@ const Section = styled.section`
 	}
 `
 
-export default function Clothing({ data }) {
+export default function Accessories({ data }) {
 	const initialList = JSON.parse(data)
 	const [productList, setProductList] = useState(initialList)
 	const [filterMsg, setFilterMsg] = useState(null)

@@ -39,7 +39,6 @@ const Section = styled.section`
 		}
 	}
 `
-
 export default function Clothing({ data }) {
 	const initialList = JSON.parse(data)
 	const [productList, setProductList] = useState(initialList)

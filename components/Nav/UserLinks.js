@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import styled from 'styled-components'
+import Link from "next/link"
+import styled from "styled-components"
 const Div = styled.div`
 	display: flex;
 	> div {
@@ -41,21 +41,21 @@ const Div = styled.div`
 export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 	return (
 		<Div>
-			<div datatype='search-field'>
+			<div datatype="search-field">
 				<img
 					onClick={() => setSearchOpen(!isSearchOpen)}
-					src='https://img.icons8.com/ios-glyphs/96/000000/search.png'
+					src="https://img.icons8.com/ios-glyphs/96/000000/search.png"
 				/>
-				<input type='text' placeholder='Search...' />
+				<input type="text" placeholder="Search..." />
 			</div>
-			<Link href='/cart' passHref>
-				<a className='cart'>
-					<img src='https://img.icons8.com/cotton/96/000000/shopping-cart--v2.png' />
+			<Link href="/cart" passHref>
+				<a className="cart">
+					<img src="https://img.icons8.com/cotton/96/000000/shopping-cart--v2.png" />
 				</a>
 			</Link>
-			<Link href='/cart' passHref>
-				<a className='user'>
-					<img src='https://img.icons8.com/small/96/000000/user.png' />
+			<Link href="/login" passHref>
+				<a className="user">
+					<img src="https://img.icons8.com/small/96/000000/user.png" />
 				</a>
 			</Link>
 		</Div>

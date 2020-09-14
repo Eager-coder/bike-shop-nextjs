@@ -2,10 +2,14 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import DropdownMenu from "./dropdownMenu"
 import UserLinks from "./UserLinks"
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 const Header = styled.header`
 	height: 4rem;
-	background-color: black;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background-color: #1a1a1a;
 	z-index: 2;
 	nav {
 		display: flex;
@@ -29,8 +33,9 @@ const LinksLeft = styled.div`
 	display: flex;
 	align-items: center;
 	> a > img {
-		width: 40px;
-		filter: invert(0);
+		width: 80px;
+		/* height: 4rem; */
+		filter: invert(0.9);
 	}
 	.nav-links {
 		display: flex;
@@ -65,24 +70,18 @@ export default function Nav() {
 					<Link href="/" passHref>
 						<a>
 							<img
-								src="https://pluspng.com/img-png/puma-logo-png-white-puma-2-icon-512.png"
+								src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/FOCUS_Bikes_Logo_schwarz.svg/1280px-FOCUS_Bikes_Logo_schwarz.svg.png"
 								alt=""
 							/>
 						</a>
 					</Link>
 					<ul className="nav-links">
-						<DropdownMenu
-							category="bikes"
-							links={["mountain", "bmx", "road", "city"]}
-						/>
+						<DropdownMenu category="bikes" links={["mountain", "bmx", "road", "city"]} />
 						<DropdownMenu
 							category="accessories"
 							links={["lighting", "pumps", "locks", "bottles"]}
 						/>
-						<DropdownMenu
-							category="clothing"
-							links={["helmets", "gloves", "jerseys"]}
-						/>
+						<DropdownMenu category="clothing" links={["helmets", "gloves", "jerseys"]} />
 					</ul>
 				</LinksLeft>
 				<UserLinks isSearchOpen={isSearchOpen} setSearchOpen={setSearchOpen} />

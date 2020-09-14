@@ -1,11 +1,11 @@
-import styled from 'styled-components'
-import Link from 'next/link'
+import styled from "styled-components"
+import Link from "next/link"
 const Div = styled.div`
 	grid-area: left;
 	position: relative;
 
 	&::after {
-		content: '';
+		content: "";
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -42,19 +42,38 @@ const Div = styled.div`
 				border: white 2px solid;
 			}
 		}
+		@media (max-width: 1000px) {
+			top: 10%;
+			right: 10%;
+			h2 {
+				text-align: right;
+				font-size: 2rem;
+			}
+			a {
+				float: right;
+			}
+		}
+		@media (max-width: 480px) {
+			h2 {
+				font-size: 1.5rem;
+			}
+			a {
+				font-size: 1rem;
+			}
+		}
 	}
 `
 
 export default function ProductBig() {
 	return (
-		<Div className='product-left'>
+		<Div className="product-left">
 			<img
-				src='https://i.pinimg.com/originals/6a/af/de/6aafdebf5ad5ad6f4ce6d2f7da7bd790.jpg'
-				alt=''
+				src="https://i.pinimg.com/originals/6a/af/de/6aafdebf5ad5ad6f4ce6d2f7da7bd790.jpg"
+				alt=""
 			/>
-			<div className='textbox'>
+			<div className="textbox">
 				<h2>Are you ready to shred mountains?</h2>
-				<Link href='/'>
+				<Link href="/">
 					<a>See mountain bikes</a>
 				</Link>
 			</div>

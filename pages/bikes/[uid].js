@@ -39,7 +39,6 @@ const Section = styled.section`
 		}
 	}
 `
-const Items = styled.section``
 export default function Bikes({ data }) {
 	const initialList = JSON.parse(data)
 	const [productList, setProductList] = useState(initialList)

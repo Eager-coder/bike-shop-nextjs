@@ -31,7 +31,7 @@ export default function Signup() {
 		e.preventDefault()
 		console.log(userData)
 		if (userData.password !== userData.confirmPassword) return console.log("passwords must match")
-		const res = await fetch("/api/signup", { method: "POST", body: JSON.stringify(userData) })
+		const res = await fetch("/api/user/signup", { method: "POST", body: JSON.stringify(userData) })
 		const message = await res.json()
 		setMessage(message)
 		console.log(message)

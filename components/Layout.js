@@ -6,7 +6,6 @@ import Footer from "./Footer"
 import UserContext from "./UserContext"
 
 const GlobalStyle = createGlobalStyle`
-
 	* {
 		box-sizing: border-box;
 		margin: 0;
@@ -16,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
 		font-family: 'Poppins', sans-serif;
   }
 	body {
-		background-color: #f2f2f2;
+		background-color: #fff;
 	}
 	main {
 		margin-top: 4rem;
@@ -25,7 +24,6 @@ const GlobalStyle = createGlobalStyle`
 `
 export default function Layout({ children }) {
 	const isLoggedIn = useContext(UserContext).userData.isLoggedIn
-	console.log(isLoggedIn)
 	return (
 		<>
 			<Head>

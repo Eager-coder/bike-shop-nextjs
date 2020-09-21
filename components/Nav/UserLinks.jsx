@@ -1,6 +1,8 @@
 import Link from "next/link"
 import styled from "styled-components"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import UserContext from "../UserContext"
+import { useRouter } from "next/router"
 const Div = styled.div`
 	display: flex;
 	.search-field {
@@ -75,7 +77,14 @@ const UserBox = styled.div`
 `
 export default function UserLinks({ isSearchOpen, setSearchOpen, isLoggedIn }) {
 	const [isUserBoxOpen, setIsUserBoxOpen] = useState(false)
-	const signOut = () => {}
+	const { setUserData } = useContext(UserContext)
+	const router = useRouter()
+	const signOut = async () => {
+		const res = await fetch("/api/user/logout")
+		console.log(await res.json())
+		setUserData({})
+		router.push("/login")
+	}
 	return (
 		<Div>
 			<div className="search-field">

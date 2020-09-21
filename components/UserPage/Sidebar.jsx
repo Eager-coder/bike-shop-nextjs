@@ -2,16 +2,16 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import styled from "styled-components"
 const SideNav = styled.aside`
-	width: 300px;
+	width: 500px;
 	.username {
 		span {
 			text-transform: uppercase;
-			font-size: 1.2rem;
+			font-size: 1.4rem;
 			font-weight: 600;
 		}
 	}
 	.links {
-		margin-left: 20px;
+		margin: 20px 30px;
 		li {
 			width: 100%;
 			a {
@@ -23,10 +23,16 @@ const SideNav = styled.aside`
 			}
 		}
 	}
+	.link {
+		a {
+			color: black;
+		}
+	}
 	.link-active {
 		a {
 			border-left: blue 4px solid;
-			padding-left: 40px;
+			padding-left: 20px;
+			color: blue;
 		}
 	}
 `
@@ -34,7 +40,7 @@ export default function Sidebar({ name, link }) {
 	return (
 		<SideNav>
 			<div className="username">
-				<span>Welcome, {name}!</span>
+				<span>Welcome, {name}</span>
 			</div>
 			<ul className="links">
 				<li className={link === "profile" ? "link-active" : "link"}>

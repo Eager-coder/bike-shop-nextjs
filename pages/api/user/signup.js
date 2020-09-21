@@ -1,5 +1,5 @@
 import mysql from "mysql2/promise"
-import db_info from "../../db_info"
+import db_info from "../../../db_info"
 import bcrypt from "bcrypt"
 
 export default async (req, res) => {

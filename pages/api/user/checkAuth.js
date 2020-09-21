@@ -1,5 +1,5 @@
 import { verify } from "jsonwebtoken"
-import jwt_secret from "../../jwt_secret"
+import jwt_secret from "../../../jwt_secret"
 const checkAuth = fn => async (req, res) => {
 	verify(req.cookies.auth, jwt_secret, (err, decoded) => {
 		if (err && !decoded) {

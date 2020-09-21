@@ -26,18 +26,12 @@ export default function Signup() {
 	const [message, setMessage] = useState({})
 	const context = useContext(UserContext)
 	const router = useRouter()
-	console.log(context)
-
-	useEffect(() => {
-		// if (context.isLoggedIn)
-		// router.push("/")
-	}, [])
 	const handleSubmit = async e => {
 		e.preventDefault()
-		const res = await fetch("/api/login", { method: "POST", body: JSON.stringify(userData) })
+		const res = await fetch("/api/user/login", { method: "POST", body: JSON.stringify(userData) })
 		const message = await res.json()
+		console.log("login:", message)
 		setMessage(message)
-
 		if (message.isSuccess) {
 			context.setUserData({ message, isLoggedIn: true })
 			router.push("/")
@@ -54,7 +48,7 @@ export default function Signup() {
 					<input type="text" name="email" placeholder="Email" onChange={handleChange} />
 					<input type="password" name="password" placeholder="Password" onChange={handleChange} />
 					<button type="submit">Sign up</button>
-					<Message message={message} />
+					{/* <Message message={message.message} /> */}
 				</form>
 				<div>
 					Don't have an account?

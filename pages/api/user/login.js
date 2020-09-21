@@ -1,9 +1,9 @@
 import mysql from "mysql2/promise"
-import db_info from "../../db_info"
+import db_info from "../../../db_info"
 import bcrypt from "bcrypt"
 import { sign } from "jsonwebtoken"
 import cookie from "cookie"
-import jwt_secret from "../../jwt_secret"
+import jwt_secret from "../../../jwt_secret"
 
 export default async (req, res) => {
 	const { email: reqEmail, password: reqPassword } = JSON.parse(req.body)
@@ -19,6 +19,7 @@ export default async (req, res) => {
 
 		const match = await bcrypt.compare(reqPassword, result.password)
 		if (match && result.email === reqEmail) {
+			const { email, name, surname } = result
 			const token = sign({ id: result.id }, jwt_secret, { expiresIn: "48h" })
 			res.setHeader(
 				"Set-Cookie",
@@ -29,7 +30,11 @@ export default async (req, res) => {
 					path: "/",
 				})
 			)
-			res.status(200).json({ message: "Welcome back!", isSuccess: true })
+			res.status(200).json({
+				message: { message: "Welcome back!", email, name, surname },
+				isSuccess: true,
+				isLoggedIn: true,
+			})
 		} else {
 			res.status(400).json({ message: "Email or password is incorrect!", isSuccess: false })
 		}

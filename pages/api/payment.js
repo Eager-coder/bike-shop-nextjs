@@ -1,5 +1,5 @@
 import Stripe from "stripe"
-import checkAuth from "./checkAuth"
+import checkAuth from "./user/checkAuth"
 const stripe = new Stripe(
 	"sk_test_51HGfGQIig73WQN7KRiqk3HfGb2jaVH3CKqMbAADDLzyiZWKHldg2Z0VlrOokpHDRKsCxgzRbRPpIQ6FV4w51w1P600cp8qmjwD"
 )

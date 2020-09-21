@@ -1,7 +1,9 @@
 import Head from "next/head"
+import { useContext } from "react"
 import Nav from "./Nav/Nav"
-import Footer from "./Footer"
 import { createGlobalStyle } from "styled-components"
+import Footer from "./Footer"
+import UserContext from "./UserContext"
 
 const GlobalStyle = createGlobalStyle`
 
@@ -13,12 +15,17 @@ const GlobalStyle = createGlobalStyle`
 		text-decoration: none;
 		font-family: 'Poppins', sans-serif;
   }
+	body {
+		background-color: #f2f2f2;
+	}
 	main {
 		margin-top: 4rem;
 		width: 100%;
 	}
 `
 export default function Layout({ children }) {
+	const isLoggedIn = useContext(UserContext).userData.isLoggedIn
+	console.log(isLoggedIn)
 	return (
 		<>
 			<Head>
@@ -28,7 +35,7 @@ export default function Layout({ children }) {
 					rel="stylesheet"
 				/>
 			</Head>
-			<Nav />
+			<Nav isLoggedIn={isLoggedIn} />
 			<main>{children}</main>
 			{/* <Footer /> */}
 			<GlobalStyle />

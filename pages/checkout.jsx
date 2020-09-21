@@ -3,6 +3,7 @@ import { loadStripe } from "@stripe/stripe-js"
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
 import styled from "styled-components"
 import React, { useState, useEffect } from "react"
+import { useRouter } from "next/router"
 import Layout from "../components/Layout"
 import { CountryDropdown } from "react-country-region-selector"
 
@@ -34,15 +35,21 @@ const Div = styled.div`
 		font-size: 1.1rem;
 	}
 `
-export default function Checkout() {
+export default function Checkout({ data }) {
+	const router = useRouter()
+	useEffect(() => {
+		if (!data.isSuccess) router.push("/login")
+	}, [data])
+	console.log(data)
 	const stripePromise = loadStripe(
 		"pk_test_51HGfGQIig73WQN7K9q09PsnsZ6EkJ3srfB50IoVXuUK5E0lD2U9Uxgb5mHSrsKq8PGAWfR58IVfBFonSw7dAZdWu00jkFR4r2O"
 	)
-	return (
+
+	return data.isSuccess ? (
 		<Elements stripe={stripePromise}>
 			<Forms />
 		</Elements>
-	)
+	) : null
 }
 
 export function Forms() {
@@ -97,6 +104,7 @@ export function Forms() {
 					method: "POST",
 					body: JSON.stringify({ id, amount: total * 100, products, ...step1, ...step2 }),
 				})
+				console.log(await res.json())
 			} catch (error) {
 				console.log(error)
 			}
@@ -239,11 +247,16 @@ export function FormStepper({ children, props }) {
 				</Stepper>
 				<span>{errorMessage}</span>
 				{currentChild}
-
 				{step > 0 ? <button onClick={() => setStep(prev => prev - 1)}>Go Back</button> : null}
-
 				{step >= 0 && step < 2 ? <button onClick={handleClick}>Next </button> : null}
 			</div>
 		</section>
 	)
+}
+import cookie from "cookie"
+export async function getServerSideProps(props) {
+	const url = `http://${props.req.headers.host}/api/payment`
+	const res = await fetch(url, { headers: { ...props.req.headers } })
+	const data = await res.json()
+	return { props: { data } }
 }

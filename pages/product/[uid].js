@@ -7,16 +7,17 @@ import styled from "styled-components"
 import db_info from "../../db_info"
 import mysql from "mysql"
 const Top = styled.section`
-	margin: 50px auto;
+	margin: auto;
 	display: flex;
 	width: 100%;
 	max-width: 1200px;
-	padding: 0 20px;
+	padding: 50px 20px;
 	.right {
 		width: 45%;
 	}
 	@media (max-width: 768px) {
 		flex-direction: column;
+		padding: 20px;
 		.right {
 			width: 100%;
 		}

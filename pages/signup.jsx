@@ -2,6 +2,8 @@ import { useState } from "react"
 import Layout from "../components/Layout"
 import styled from "styled-components"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import Message from "../components/Auth/Message"
 const FormContainer = styled.div`
 	width: max-content;
 	margin: 150px auto;
@@ -20,6 +22,8 @@ const FormContainer = styled.div`
 `
 export default function Signup() {
 	const [userData, setUserData] = useState({})
+	const [message, setMessage] = useState({})
+	const router = useRouter()
 	const handleChange = e => {
 		setUserData({ ...userData, [e.target.name]: e.target.value })
 	}
@@ -29,7 +33,9 @@ export default function Signup() {
 		if (userData.password !== userData.confirmPassword) return console.log("passwords must match")
 		const res = await fetch("/api/signup", { method: "POST", body: JSON.stringify(userData) })
 		const message = await res.json()
+		setMessage(message)
 		console.log(message)
+		if (message.isSuccess) return router.push("/")
 	}
 	return (
 		<Layout>
@@ -46,6 +52,7 @@ export default function Signup() {
 						placeholder="Confirm password"
 						onChange={handleChange}
 					/>
+					<Message message={message} />
 					<button type="submit">Sign up</button>
 				</form>
 				<div>

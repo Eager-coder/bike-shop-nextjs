@@ -9,7 +9,7 @@ const Header = styled.header`
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: #1a1a1a;
+	background-color: ${props => (props.isLoggedIn ? "#1a1a1a" : "orange")};
 	z-index: 2;
 	nav {
 		display: flex;
@@ -34,7 +34,6 @@ const LinksLeft = styled.div`
 	align-items: center;
 	> a > img {
 		width: 80px;
-		/* height: 4rem; */
 		filter: invert(0.9);
 	}
 	.nav-links {
@@ -57,11 +56,11 @@ const LinksLeft = styled.div`
 	}
 `
 
-export default function Nav() {
+export default function Nav({ isLoggedIn }) {
 	const [isMenuOpen, setMenuOpen] = useState(false)
 	const [isSearchOpen, setSearchOpen] = useState(false)
 	return (
-		<Header>
+		<Header isLoggedIn={isLoggedIn}>
 			<nav>
 				<LinksLeft isMenuOpen={isMenuOpen}>
 					<MenuBtn onClick={() => setMenuOpen(!isMenuOpen)}>
@@ -84,7 +83,11 @@ export default function Nav() {
 						<DropdownMenu category="clothing" links={["helmets", "gloves", "jerseys"]} />
 					</ul>
 				</LinksLeft>
-				<UserLinks isSearchOpen={isSearchOpen} setSearchOpen={setSearchOpen} />
+				<UserLinks
+					isSearchOpen={isSearchOpen}
+					setSearchOpen={setSearchOpen}
+					isLoggedIn={isLoggedIn}
+				/>
 			</nav>
 		</Header>
 	)

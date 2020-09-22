@@ -9,7 +9,6 @@ const ContextWrapper = ({ children }) => {
 			const res = await fetch("/api/user/isTokenValid")
 			const json = await res.json()
 			setUserData(json)
-			console.log(json)
 		}
 		checkLoggedIn()
 	}, [])

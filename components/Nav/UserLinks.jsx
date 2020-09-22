@@ -5,6 +5,7 @@ import UserContext from "../UserContext"
 import { useRouter } from "next/router"
 const Div = styled.div`
 	display: flex;
+	align-items: center;
 	.search-field {
 		width: max-content;
 		background-color: white;
@@ -36,6 +37,7 @@ const Div = styled.div`
 `
 const UserBox = styled.div`
 	.toggler {
+		cursor: pointer;
 		width: 40px;
 		height: 40px;
 		display: flex;
@@ -50,17 +52,25 @@ const UserBox = styled.div`
 		}
 	}
 	.box {
+		&::after {
+			content: "";
+			position: absolute;
+			right: 2px;
+			top: -15px;
+			border-right: 16px solid transparent;
+			border-left: 16px solid transparent;
+			border-bottom: 16px solid white;
+		}
 		display: ${({ isOpen }) => (isOpen ? "block" : "none")};
 		position: absolute;
-		top: 3rem;
+		top: 4.5rem;
 		right: 30px;
 		width: max-content;
 		height: max-content;
 		padding: 10px 20px;
-		border-radius: 4px 0 4px 4px;
+		border-radius: 4px;
 		background: white;
 		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
 		div {
 			margin: 15px 0;
 			font-size: 1rem;
@@ -75,14 +85,14 @@ const UserBox = styled.div`
 		}
 	}
 `
-export default function UserLinks({ isSearchOpen, setSearchOpen, isLoggedIn }) {
+export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 	const [isUserBoxOpen, setIsUserBoxOpen] = useState(false)
-	const { setUserData } = useContext(UserContext)
+	const { userData, setUserData } = useContext(UserContext)
 	const router = useRouter()
 	const signOut = async () => {
 		const res = await fetch("/api/user/logout")
-		console.log(await res.json())
-		setUserData({})
+		const json = await res.json()
+		setUserData(json)
 		router.push("/login")
 	}
 	return (
@@ -107,9 +117,9 @@ export default function UserLinks({ isSearchOpen, setSearchOpen, isLoggedIn }) {
 					/>
 				</div>
 				<div className="box">
-					{isLoggedIn ? (
+					{userData.isLoggedIn ? (
 						<>
-							<div>Welcome back, Sultan!</div>
+							<div>Welcome back, {userData.name}!</div>
 							<Link href="/myaccount/[uid]" as="/myaccount/profile" passHref>
 								<a>Your account</a>
 							</Link>
@@ -122,7 +132,7 @@ export default function UserLinks({ isSearchOpen, setSearchOpen, isLoggedIn }) {
 					) : (
 						<>
 							<Link href="/signup">
-								<a>Sigh up</a>
+								<a>Sign up</a>
 							</Link>
 							<Link href="/login">
 								<a>Log in</a>

@@ -83,11 +83,7 @@ export default function Nav({ isLoggedIn }) {
 						<DropdownMenu category="clothing" links={["helmets", "gloves", "jerseys"]} />
 					</ul>
 				</LinksLeft>
-				<UserLinks
-					isSearchOpen={isSearchOpen}
-					setSearchOpen={setSearchOpen}
-					isLoggedIn={isLoggedIn}
-				/>
+				<UserLinks isSearchOpen={isSearchOpen} setSearchOpen={setSearchOpen} />
 			</nav>
 		</Header>
 	)

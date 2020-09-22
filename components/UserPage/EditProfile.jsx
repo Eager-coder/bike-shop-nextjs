@@ -1,18 +1,16 @@
 import styled from "styled-components"
-import { useState, useContext, useCallback } from "react"
+import { useState, useContext } from "react"
 import { useRouter } from "next/router"
 import UserContext from "../UserContext"
-// import Cookies from "js-cookie"
 const EditBox = styled.div`
-	position: absolute;
+	position: fixed;
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	top: 0;
 	left: 0;
 	right: 0;
-	/* bottom: 0; */
+	bottom: 0;
 	background: rgba(0, 0, 0, 0.3);
-	overflow: hidden;
 	z-index: 3;
 	display: flex;
 	justify-content: center;
@@ -51,13 +49,11 @@ const EditBox = styled.div`
 `
 
 export default function EditProfile({ user, type, setIsEditOpen }) {
-	const [newProfile, setProfile] = useState(user)
-	const [newPassword, setPasswords] = useState({})
+	const [newProfile, setProfile] = useState({ ...user, newEmail: user.email })
+	const [newPassword, setPasswords] = useState({ email: user.email })
 	const [message, setMessage] = useState(null)
 	const router = useRouter()
-	const context = useContext(UserContext)
-
-	// console.log(Cookies.get())
+	const { setUserData } = useContext(UserContext)
 	const handleEdit = e => {
 		if (type === "password") {
 			setPasswords({ ...newPassword, [e.target.name]: e.target.value })
@@ -73,9 +69,10 @@ export default function EditProfile({ user, type, setIsEditOpen }) {
 		})
 		const json = await res.json()
 		if (json.isSuccess) {
-			const logout = await fetch("/api/user/logout")
-			console.log(await logout)
-			router.push("/signup")
+			const res = await fetch("/api/user/logout")
+			const json = await res.json()
+			setUserData(json)
+			router.push("/login")
 		} else {
 			setMessage(json.message)
 		}
@@ -110,7 +107,7 @@ export default function EditProfile({ user, type, setIsEditOpen }) {
 							<span>Email</span>
 							<input
 								type="text"
-								name="email"
+								name="newEmail"
 								defaultValue={user.email}
 								required
 								onChange={handleEdit}

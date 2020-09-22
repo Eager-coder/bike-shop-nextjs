@@ -31,7 +31,9 @@ export default async (req, res) => {
 				})
 			)
 			res.status(200).json({
-				message: { message: "Welcome back!", email, name, surname },
+				email,
+				name,
+				surname,
 				isSuccess: true,
 				isLoggedIn: true,
 			})

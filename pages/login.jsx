@@ -29,11 +29,11 @@ export default function Signup() {
 	const handleSubmit = async e => {
 		e.preventDefault()
 		const res = await fetch("/api/user/login", { method: "POST", body: JSON.stringify(userData) })
-		const message = await res.json()
-		console.log("login:", message)
-		setMessage(message)
-		if (message.isSuccess) {
-			context.setUserData({ message, isLoggedIn: true })
+		const json = await res.json()
+		console.log("login:", json)
+		setMessage({ message: json.message, isSuccess: json.isSuccess })
+		if (json.isSuccess) {
+			context.setUserData(json)
 			router.push("/")
 		}
 	}
@@ -48,7 +48,7 @@ export default function Signup() {
 					<input type="text" name="email" placeholder="Email" onChange={handleChange} />
 					<input type="password" name="password" placeholder="Password" onChange={handleChange} />
 					<button type="submit">Sign up</button>
-					{/* <Message message={message.message} /> */}
+					<Message message={message.message} isSuccess={message.isSuccess} />
 				</form>
 				<div>
 					Don't have an account?

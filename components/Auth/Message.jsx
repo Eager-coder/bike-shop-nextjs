@@ -13,8 +13,6 @@ const MessageContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 `
-export default function Message({ message }) {
-	return message.message ? (
-		<MessageContainer status={message.isSuccess}>{message.message}</MessageContainer>
-	) : null
+export default function Message({ message, isSuccess }) {
+	return message ? <MessageContainer status={isSuccess}>{message}</MessageContainer> : null
 }

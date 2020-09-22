@@ -35,6 +35,9 @@ const SideNav = styled.aside`
 			color: blue;
 		}
 	}
+	@media (max-width: 768px) {
+		width: 100%;
+	}
 `
 export default function Sidebar({ name, link }) {
 	return (

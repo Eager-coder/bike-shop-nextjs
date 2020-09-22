@@ -11,19 +11,21 @@ const AccountSection = styled.div`
 	padding: 0 50px;
 	margin: 100px 0;
 	display: flex;
+	@media (max-width: 768px) {
+		flex-direction: column;
+	}
 `
 export default function YourAccount() {
 	const router = useRouter()
 	const uid = router.query.uid
-	const { message } = useContext(UserContext).userData || null
+	const { userData } = useContext(UserContext) || null
 	return (
 		<Layout>
-			{message ? (
+			{userData ? (
 				<AccountSection>
-					<Sidebar name={message.name} link={uid} />
-
-					{uid === "profile" ? <Profile user={message} /> : null}
-					{uid === "orders" ? <Orders user={message} /> : null}
+					<Sidebar name={userData.name} link={uid} />
+					{uid === "profile" ? <Profile user={userData} /> : null}
+					{uid === "orders" ? <Orders user={userData} /> : null}
 				</AccountSection>
 			) : null}
 		</Layout>

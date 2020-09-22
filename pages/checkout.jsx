@@ -92,7 +92,6 @@ export function Forms() {
 	const elements = useElements()
 	const handleSubmit = async event => {
 		event.preventDefault()
-		// console.log(products)
 		const { error, paymentMethod } = await stripe.createPaymentMethod({
 			type: "card",
 			card: elements.getElement(CardElement),

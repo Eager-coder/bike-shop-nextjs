@@ -1,5 +1,4 @@
-import mysql from "mysql2/promise"
-import db_info from "../../../db_info"
+import dbExecute from "../db"
 import bcrypt from "bcrypt"
 import { sign } from "jsonwebtoken"
 import cookie from "cookie"
@@ -7,13 +6,11 @@ import jwt_secret from "../../../jwt_secret"
 
 export default async (req, res) => {
 	const { email: reqEmail, password: reqPassword } = JSON.parse(req.body)
-	console.log(reqEmail, reqPassword)
 	if (req.method === "POST") {
 		if (!reqEmail || !reqPassword)
 			return res.status(400).json({ message: "Please fill all the fields!", isSuccess: false })
-		const connection = await mysql.createConnection(db_info)
-		const [[result]] = await connection.execute(`SELECT * FROM users WHERE email = '${reqEmail}'`)
-		await connection.end()
+
+		const [result] = await dbExecute(`SELECT * FROM users WHERE email = '${reqEmail}'`)
 		if (typeof result !== "object")
 			return res.status(404).json({ message: "Email or password is incorrect!", isSuccess: false })
 

@@ -5,8 +5,6 @@ import { Category } from "../../components/Category/Filter"
 import ItemGrid from "../../components/Category/ItemGrid"
 import Banner from "../../components/Category/Banner"
 import styled from "styled-components"
-import mysql from "mysql2/promise"
-import db_info from "../../db_info"
 
 const Section = styled.section`
 	display: flex;
@@ -41,6 +39,7 @@ const Section = styled.section`
 `
 export default function Bikes({ data }) {
 	const initialList = JSON.parse(data)
+	console.log("db data", initialList)
 	const [productList, setProductList] = useState(initialList)
 	const [filterMsg, setFilterMsg] = useState(null)
 	const router = useRouter()
@@ -110,14 +109,11 @@ export default function Bikes({ data }) {
 		</Layout>
 	)
 }
+import dbExecute from "../api/db"
 
 export async function getServerSideProps({ query }) {
-	console.log(query)
-	const connection = await mysql.createConnection(db_info)
-	const result = await connection.execute(`SELECT * FROM products WHERE type = '${query.uid}'`)
-	await connection.end()
-	console.log("result is :", result)
+	const data = await dbExecute(`SELECT * FROM products WHERE type = '${query.uid}'`)
 	return {
-		props: { data: JSON.stringify({ uid: "road" }) },
+		props: { data: JSON.stringify(data) },
 	}
 }

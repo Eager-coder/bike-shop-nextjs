@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Layout from "../../components/Layout"
 import ImgView from "../../components/Category/ImgView"
 import SelectForm from "../../components/Category/SelectForm"
 import SpecsTable from "../../components/Category/SpecsTable"
 import styled from "styled-components"
-import db_info from "../../db_info"
-import mysql from "mysql"
 const Top = styled.section`
 	margin: auto;
 	display: flex;
@@ -75,20 +73,11 @@ export default function Bikes({ product }) {
 	)
 }
 
+import dbExecute from "../api/db"
 export async function getServerSideProps(context) {
 	const bike_name = context.query.uid
-	// console.log(bike_name)
-	const data = new Promise((res, rej) => {
-		const db = mysql.createConnection(db_info)
-		db.connect()
-		db.query(`SELECT * FROM products WHERE name = '${bike_name}'`, (error, results, fields) => {
-			if (error) console.log(error)
-			res(results)
-		})
-		db.end()
-	})
-	const product = await data
+	const [data] = await dbExecute(`SELECT * FROM products WHERE name = '${bike_name}'`)
 	return {
-		props: { product: JSON.stringify(product[0]) },
+		props: { product: JSON.stringify(data) },
 	}
 }

@@ -1,12 +1,4 @@
-import mysql from "mysql"
-
-const db_info = {
-	host: "remotemysql.com",
-	user: "I5eStEOOdg",
-	password: "eXIdV6uivM",
-	database: "I5eStEOOdg",
-}
-
+import dbExecute from "../db"
 export default async (req, res) => {
 	try {
 		const data = JSON.parse(req.body)
@@ -34,24 +26,12 @@ export default async (req, res) => {
 			typeof tech_specs !== "string"
 		)
 			return res.status(400).json({ message: "Invalid credentials", status: 400 })
-		const connection = mysql.createConnection(db_info)
-		connection.connect()
-		connection.query(
+		await dbExecute(
 			`INSERT INTO products (name, brand, category, type, price, year, image, description, tech_specs) VALUES
 			('${name}', '${brand}', '${category}', '${type}', '${price}', '${year}', '${image}', '${description
 				.split("'")
-				.join("''")}', '${tech_specs}')`,
-			(error, results, fields) => {
-				if (error) {
-					console.log(error)
-					res.status(500).json({ message: "Something went wrong!", status: 400 })
-				} else {
-					res.status(201).json({ message: "Item added!", status: 201 })
-					console.log("~~Item added~~")
-				}
-			}
+				.join("''")}', '${tech_specs}')`
 		)
-		connection.end()
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({ message: err, status: 400 })

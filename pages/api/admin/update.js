@@ -1,21 +1,9 @@
-import mysql from "mysql"
-import db_info from "../../../db_info"
+import dbExecute from "../db"
 
 export default async (req, res) => {
 	try {
 		const data = JSON.parse(req.body)
-		const {
-			id,
-			name,
-			brand,
-			price,
-			category,
-			type,
-			year,
-			image,
-			description,
-			tech_specs,
-		} = data
+		const { id, name, brand, price, category, type, year, image, description, tech_specs } = data
 
 		if (Object.keys(data).length !== 10)
 			return res.status(400).json({ message: "Please fill all the fields" })
@@ -31,24 +19,15 @@ export default async (req, res) => {
 			typeof tech_specs !== "string"
 		)
 			return res.status(400).json({ message: "Invalid credentials" })
-		const connection = mysql.createConnection(db_info)
-		connection.connect()
-		connection.query(
-			`UPDATE products SET name = '${name}', brand = '${brand}', category = '${category}', type = '${type}', price = '${price}', year = '${year}', image = '${image}', description = '${description
+		const update = await dbExecute(
+			`UPDATE products SET name = '${name}', brand = '${brand}', 
+			category = '${category}', type = '${type}', price = '${price}', 
+			year = '${year}', image = '${image}', description = '${description
 				.split("'")
-				.join("''")}', tech_specs = '${tech_specs
-				.split("'")
-				.join("''")}' WHERE id = ${id}`,
-			(error, results, fields) => {
-				if (error) {
-					console.log("Error: ", error)
-					return res.status(500).json({ message: "Something went wrong!" })
-				} else {
-					return res.status(201).json({ message: "Item added!" })
-				}
-			}
+				.join("''")}', tech_specs = '${tech_specs.split("'").join("''")}' WHERE id = ${id}`
 		)
-		connection.end()
+		console.log("update product", update)
+		if (update) return res.status(200).json({ message: "Item has been updated" })
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({ message: err })

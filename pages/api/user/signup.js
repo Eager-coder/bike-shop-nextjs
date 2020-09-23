@@ -1,5 +1,4 @@
-import mysql from "mysql2/promise"
-import db_info from "../../../db_info"
+import dbExecute from "../db"
 import bcrypt from "bcrypt"
 
 export default async (req, res) => {
@@ -8,17 +7,15 @@ export default async (req, res) => {
 		console.log(req.body)
 		if (!name || !surname || !email || !password)
 			return res.status(400).json({ message: "Please fill all the fields!", isSuccess: false })
-		const connection = await mysql.createConnection(db_info)
-		const [result] = await connection.execute(`SELECT email FROM users WHERE email = '${email}'`)
+		const result = await dbExecute(`SELECT email FROM users WHERE email = '${email}'`)
 		if (result.length && result[0].email === email) {
 			res.status(400).json({ message: "User already exists!", isSuccess: false })
 		} else {
 			const hashedPassword = bcrypt.hashSync(password, 10)
-			const newUser = await connection.execute(`INSERT INTO users (name, surname, email, password)
+			await dbExecute(`INSERT INTO users (name, surname, email, password)
         VALUES ('${name}','${surname}','${email}','${hashedPassword}')`)
 			res.status(201).json({ message: "User successfully added!", isSuccess: true })
 		}
-		await connection.end()
 	} else {
 		res.status(405).json({ message: "We only support POST", isSuccess: false })
 	}

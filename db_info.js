@@ -1,4 +1,4 @@
-import mysql from "mysql"
+// import mysql from "mysql"
 
 const db_info = {
 	host: "remotemysql.com",

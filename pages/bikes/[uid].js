@@ -5,7 +5,7 @@ import { Category } from "../../components/Category/Filter"
 import ItemGrid from "../../components/Category/ItemGrid"
 import Banner from "../../components/Category/Banner"
 import styled from "styled-components"
-import mysql from "mysql"
+import mysql from "mysql2/promise"
 import db_info from "../../db_info"
 
 const Section = styled.section`
@@ -113,18 +113,11 @@ export default function Bikes({ data }) {
 
 export async function getServerSideProps({ query }) {
 	console.log(query)
-	const response = new Promise((res, rej) => {
-		const db = mysql.createConnection(db_info)
-		db.connect()
-		db.query(`SELECT * FROM products WHERE type = '${query.uid}'`, (error, results, fields) => {
-			if (error) console.log(error)
-			res(results)
-		})
-		db.end()
-	})
-	const data = await response
-	console.log(data)
+	const connection = await mysql.createConnection(db_info)
+	const result = await connection.execute(`SELECT * FROM products WHERE type = '${query.uid}'`)
+	await connection.end()
+	console.log("result is :", result)
 	return {
-		props: { data: JSON.stringify(data) },
+		props: { data: JSON.stringify({ uid: "road" }) },
 	}
 }

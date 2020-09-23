@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import styled from "styled-components"
 import { useRouter } from "next/router"
 import Layout from "../../components/Layout"
@@ -15,10 +15,15 @@ const AccountSection = styled.div`
 		flex-direction: column;
 	}
 `
+
 export default function YourAccount() {
 	const router = useRouter()
 	const uid = router.query.uid
-	const { userData } = useContext(UserContext) || null
+	const { userData } = useContext(UserContext)
+
+	useEffect(() => {
+		if (!userData.isLoggedIn) router.push("/login")
+	}, [])
 	return (
 		<Layout>
 			{userData ? (

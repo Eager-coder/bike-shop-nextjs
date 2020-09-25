@@ -2,13 +2,14 @@ import { useState, useEffect } from "react"
 import App from "next/app"
 
 import UserContext from "../components/UserContext"
+import { set } from "js-cookie"
 const ContextWrapper = ({ children }) => {
-	const [userData, setUserData] = useState({})
+	const [userData, setUserData] = useState({ isLoading: true })
 	useEffect(() => {
 		const checkLoggedIn = async () => {
 			const res = await fetch("/api/user/isTokenValid")
 			const json = await res.json()
-			setUserData(json)
+			setUserData({ ...json, isLoading: false })
 		}
 		checkLoggedIn()
 	}, [])

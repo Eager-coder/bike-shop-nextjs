@@ -62,7 +62,7 @@ const Popup = styled.div`
 `
 export default function AddProduct() {
 	const [list, setList] = useState({})
-	const [msg, setMsg] = useState({})
+	const [msg, setMsg] = useState(null)
 	const fetchData = async e => {
 		e.preventDefault()
 		const res = await fetch("/api/admin/insert", {
@@ -77,71 +77,69 @@ export default function AddProduct() {
 	}
 
 	return (
-		<>
-			<Form onSubmit={fetchData}>
-				<h2>Add a new Product</h2>
-				<div className="flexbox">
-					<div className="left">
-						<label>
-							<div>Product name</div>
-							<input onInput={handleChange} type="text" name="name" />
-						</label>
-						<label>
-							<div>Brand</div>
-							<input onInput={handleChange} type="text" name="brand" />
-						</label>
-						<label>
-							<div>Category</div>
-							<select onInput={handleChange} name="category">
-								<option></option>
-								<option value="bikes">Bikes</option>
-								<option value="accessories">Accessories</option>
-								<option value="clothing">Clothing</option>
-							</select>
-						</label>
-						<label>
-							<div>Type</div>
-							<input onInput={handleChange} type="text" name="type" />
-						</label>
-						<label>
-							<div>Price</div>
-							<input onInput={handleChange} type="number" name="price" />
-						</label>
-						<label>
-							<div>Year</div>
-							<input onInput={handleChange} type="number" name="year" />
-						</label>
-						<label>
-							<div>Image URL</div>
-							<input onInput={handleChange} type="text" name="image" />
-						</label>
-					</div>
-					<div className="right">
-						<label>
-							<div>Description</div>
-							<textarea onInput={handleChange} name="description"></textarea>
-						</label>
-						<label>
-							<div>Technical specs</div>
-							<textarea
-								name="tech_specs"
-								onInput={handleChange}
-								placeholder="#parameter = specification"></textarea>
-						</label>
-						{msg.message ? (
-							<Popup status={msg.status}>
-								<span>
-									{msg.status === 201 ? "Success! " + msg.message : "Error! " + msg.message}
-								</span>
-							</Popup>
-						) : (
-							""
-						)}
-					</div>
+		<Form onSubmit={fetchData}>
+			<h2>Add a new Product</h2>
+			<div className="flexbox">
+				<div className="left">
+					<label>
+						<div>Product name</div>
+						<input onInput={handleChange} type="text" name="name" />
+					</label>
+					<label>
+						<div>Brand</div>
+						<input onInput={handleChange} type="text" name="brand" />
+					</label>
+					<label>
+						<div>Category</div>
+						<select onInput={handleChange} name="category">
+							<option></option>
+							<option value="bikes">Bikes</option>
+							<option value="accessories">Accessories</option>
+							<option value="clothing">Clothing</option>
+						</select>
+					</label>
+					<label>
+						<div>Type</div>
+						<input onInput={handleChange} type="text" name="type" />
+					</label>
+					<label>
+						<div>Price</div>
+						<input onInput={handleChange} type="number" name="price" />
+					</label>
+					<label>
+						<div>Year</div>
+						<input onInput={handleChange} type="number" name="year" />
+					</label>
+					<label>
+						<div>Image URL</div>
+						<input onInput={handleChange} type="text" name="image" />
+					</label>
 				</div>
+				<div className="right">
+					<label>
+						<div>Description</div>
+						<textarea onInput={handleChange} name="description"></textarea>
+					</label>
+					<label>
+						<div>Technical specs</div>
+						<textarea
+							name="tech_specs"
+							onInput={handleChange}
+							placeholder="#parameter = specification"></textarea>
+					</label>
+					{msg ? (
+						<Popup status={msg.status}>
+							<span>
+								{msg.status === 201 ? "Success! " + msg.message : "Error! " + msg.message}
+							</span>
+						</Popup>
+					) : (
+						""
+					)}
+				</div>
+			</div>
 
-				<input type="submit" value="Post item" />
-			</Form>
-		</>
+			<input type="submit" value="Post item" />
+		</Form>
 	)
 }

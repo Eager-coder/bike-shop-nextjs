@@ -1,22 +1,24 @@
-import { useState, useEffect } from "react"
+import styled from "styled-components"
 import Item from "./Item"
-export default function AllProducts({ isProductsLoaded, setProductsLoaded }) {
-	const [products, setProducts] = useState([])
-	const getProducts = async () => {
-		const res = await fetch("/api/admin/products")
-		const data = await res.json()
-		setProducts(data)
-	}
-	useEffect(() => {
-		if (isProductsLoaded) {
-			getProducts()
-		}
-	}, [isProductsLoaded])
+import Loading from "../Loading"
 
+const ProductsSection = styled.section`
+	width: 100%;
+`
+export default function AllProducts({ products }) {
+	// const [products, setProducts] = useState(null)
+	// useEffect(() => {
+	// 	const getProducts = async () => {
+	// 		const res = await fetch("/api/admin/products")
+	// 		const data = await res.json()
+	// 		setProducts(data)
+	// 	}
+	// 	getProducts()
+	// }, [])
 	return (
-		<div>
+		<ProductsSection>
 			<h2>All Products</h2>
-			{products.length ? products.map((e, index) => <Item key={index} product={e} />) : ""}
-		</div>
+			{products ? products.map((e, index) => <Item key={index} product={e} />) : <Loading />}
+		</ProductsSection>
 	)
 }

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 const Aside = styled.aside`
 	position: fixed;
 	left: 0;
@@ -7,7 +7,6 @@ const Aside = styled.aside`
 	width: 250px;
 	height: 100vh;
 	background: black;
-	/* padding-top: 4rem; */
 	ul {
 		list-style: none;
 		li {
@@ -25,24 +24,20 @@ const Aside = styled.aside`
 		}
 	}
 `
-export default function Sidebar({ setScreen, setProductsLoaded }) {
+export default function Sidebar({ setScreen }) {
 	return (
 		<Aside>
 			<ul>
-				<li onClick={() => setScreen('userStats')}>
-					<img src='https://img.icons8.com/material-rounded/100/000000/user.png' />
+				<li onClick={() => setScreen("userStats")}>
+					<img src="https://img.icons8.com/material-rounded/100/000000/user.png" />
 					User Statistics
 				</li>
-				<li
-					onClick={() => {
-						setScreen('products')
-						setProductsLoaded(true)
-					}}>
-					<img src='https://img.icons8.com/material/64/000000/product--v1.png' />
+				<li onClick={() => setScreen("products")}>
+					<img src="https://img.icons8.com/material/64/000000/product--v1.png" />
 					View Products
 				</li>
-				<li onClick={() => setScreen('createProduct')}>
-					<img src='https://img.icons8.com/ios-glyphs/50/000000/add-property.png' />
+				<li onClick={() => setScreen("createProduct")}>
+					<img src="https://img.icons8.com/ios-glyphs/50/000000/add-property.png" />
 					Add Products
 				</li>
 			</ul>

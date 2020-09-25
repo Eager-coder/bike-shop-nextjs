@@ -36,20 +36,17 @@ const Div = styled.div`
 	}
 `
 export default function Checkout({ data }) {
-	const router = useRouter()
-	useEffect(() => {
-		if (!data.isSuccess) router.push("/login")
-	}, [data])
+	// const router = useRouter()
 	console.log(data)
 	const stripePromise = loadStripe(
 		"pk_test_51HGfGQIig73WQN7K9q09PsnsZ6EkJ3srfB50IoVXuUK5E0lD2U9Uxgb5mHSrsKq8PGAWfR58IVfBFonSw7dAZdWu00jkFR4r2O"
 	)
 
-	return data.isSuccess ? (
+	return (
 		<Elements stripe={stripePromise}>
 			<Forms />
 		</Elements>
-	) : null
+	)
 }
 
 export function Forms() {
@@ -252,10 +249,21 @@ export function FormStepper({ children, props }) {
 		</section>
 	)
 }
-import cookie from "cookie"
-export async function getServerSideProps(props) {
-	const url = `http://${props.req.headers.host}/api/payment`
-	const res = await fetch(url, { headers: { ...props.req.headers } })
-	const data = await res.json()
-	return { props: { data } }
+export async function getServerSideProps(ctx) {
+	const res = await fetch(`http://${ctx.req.headers.host}/api/user/isTokenValid`)
+	const json = await res.json()
+
+	if (!json.isLoggedIn) {
+		const { res } = ctx
+		res.setHeader("location", "/login")
+		res.statusCode = 302
+		res.end()
+		return
+	}
+
+	return {
+		props: {
+			data: json,
+		},
+	}
 }

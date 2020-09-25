@@ -61,7 +61,11 @@ export async function getServerSideProps({ req, res }) {
 		res.setHeader("location", "/")
 		res.statusCode = 302
 		res.end()
-		return
+		return {
+			props: {
+				data: json,
+			},
+		}
 	}
 
 	return {

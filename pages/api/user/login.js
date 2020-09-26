@@ -18,7 +18,7 @@ export default async (req, res) => {
 
 		const match = await bcrypt.compare(reqPassword, result.password)
 		if (match && result.email === reqEmail) {
-			const { email, name, surname } = result
+			const { id, email, name, surname, isAdmin } = result
 			const token = sign({ id: result.id }, jwt_secret, { expiresIn: "48h" })
 			res.setHeader(
 				"Set-Cookie",
@@ -30,10 +30,11 @@ export default async (req, res) => {
 				})
 			)
 			res.status(200).json({
+				id,
 				email,
 				name,
 				surname,
-				isSuccess: true,
+				isAdmin,
 				isLoggedIn: true,
 			})
 		} else {

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import Layout from "../components/Layout"
-
 import styled from "styled-components"
 import Link from "next/link"
+import UserContext from "../components/UserContext"
 const CartContainer = styled.div`
 	margin: 50px auto;
 	width: 100%;
@@ -36,29 +36,34 @@ const CartContainer = styled.div`
 export default function Cart() {
 	const [products, setProducts] = useState([])
 	const [total, setTotal] = useState(0)
-	useEffect(() => {
-		const getItems = async () => {
-			const cartItems = JSON.parse(localStorage.getItem("cartItems"))
-			if (cartItems === null || cartItems.length === 0) return console.log("empty")
-			const productIds = cartItems.map(item => item.productId)
-			const res = await fetch("/api/cart", {
-				method: "POST",
-				body: JSON.stringify(productIds),
+	const { userData } = useContext(UserContext)
+	const getItems = async () => {
+		const cartItems = JSON.parse(localStorage.getItem("cartItems"))
+		if (cartItems === null || cartItems.length === 0) return console.log("empty")
+		const productIds = cartItems.map(item => item.productId)
+		const res = await fetch("/api/cart", {
+			method: "POST",
+			body: JSON.stringify(productIds),
+		})
+		const data = await res.json()
+		cartItems.forEach(item => {
+			data.forEach(elem => {
+				if (item.productId === elem.id) {
+					item.image = elem.image
+					item.price = elem.price
+					item.name = elem.name
+				}
 			})
-			const data = await res.json()
-			cartItems.forEach(item => {
-				data.forEach(elem => {
-					if (item.productId === elem.id) {
-						item.image = elem.image
-						item.price = elem.price
-						item.name = elem.name
-					}
-				})
-			})
+		})
 
-			setProducts(cartItems)
+		setProducts(cartItems)
+	}
+	useEffect(() => {
+		if (userData.isLoggedIn) {
+			console.log(userData.isLoggedIn)
+		} else {
+			getItems()
 		}
-		getItems()
 	}, [])
 	useEffect(() => {
 		let totalCount = 0

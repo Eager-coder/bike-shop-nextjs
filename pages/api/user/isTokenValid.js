@@ -7,9 +7,10 @@ export default checkAuth(async (req, res) => {
 	const [result] = await dbExecute(
 		`SELECT id, email, name, surname, isAdmin FROM users WHERE id = '${userData.id}'`
 	)
-	const { email, name, surname, isAdmin } = result
+	const { id, email, name, surname, isAdmin } = result
+	const cartItems = await dbExecute(`SELECT * FROM cartItem WHERE user_id = '${userData.id}'`)
 	if (result) {
-		res.status(200).json({ email, name, surname, isLoggedIn: true, isAdmin })
+		res.status(200).json({ id, email, name, surname, isLoggedIn: true, isAdmin, cartItems })
 	} else {
 		res.status(401).json({ message: "User not found", isLoggedIn: false })
 	}

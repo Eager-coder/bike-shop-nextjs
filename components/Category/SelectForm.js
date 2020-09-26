@@ -1,5 +1,7 @@
+import { useContext } from "react"
 import shortid from "shortid"
 import styled from "styled-components"
+import UserContext from "../UserContext"
 const Form = styled.div`
 	margin-top: 50px;
 	label {
@@ -41,32 +43,43 @@ const Form = styled.div`
 		margin-top: 20px;
 	}
 `
+
 export default function SelectForm({ productData, size, setSize, qty, setQty }) {
-	const addToCart = () => {
-		const newItem = {
-			id: shortid(),
-			productId: Number(productData.id),
-			name: productData.name,
-			image: productData.image,
-			price: Number(productData.price),
-			size: productData.category === "bikes" ? Number(size) : null,
-			qty: Number(qty),
-		}
-		const cartItems = JSON.parse(localStorage.getItem("cartItems")) || []
-		const isSameIdAndSize = cartItems.some(
-			item => item.productId === newItem.productId && item.size === newItem.size
-		)
-		if (isSameIdAndSize) {
-			cartItems.forEach(item => {
-				if (item.productId === newItem.productId && item.size === newItem.size) {
-					item.qty += newItem.qty
-					localStorage.setItem("cartItems", JSON.stringify(cartItems))
-					return
-				}
+	const { userData } = useContext(UserContext)
+	const newItem = {
+		id: shortid(),
+		productId: Number(productData.id),
+		name: productData.name,
+		image: productData.image,
+		price: Number(productData.price),
+		size: productData.category === "bikes" ? Number(size) : null,
+		qty: Number(qty),
+	}
+	const addToCart = async () => {
+		if (userData.isLoggedIn) {
+			const res = await fetch("/api/user/cart", {
+				method: "POST",
+				body: JSON.stringify({ itemData: { userId: userData.id, ...newItem } }),
 			})
+			const json = await res.json()
+			console.log(json)
 		} else {
-			cartItems.push(newItem)
-			localStorage.setItem("cartItems", JSON.stringify(cartItems))
+			const cartItems = JSON.parse(localStorage.getItem("cartItems")) || []
+			const isSameIdAndSize = cartItems.some(
+				item => item.productId === newItem.productId && item.size === newItem.size
+			)
+			if (isSameIdAndSize) {
+				cartItems.forEach(item => {
+					if (item.productId === newItem.productId && item.size === newItem.size) {
+						item.qty += newItem.qty
+						localStorage.setItem("cartItems", JSON.stringify(cartItems))
+						return
+					}
+				})
+			} else {
+				cartItems.push(newItem)
+				localStorage.setItem("cartItems", JSON.stringify(cartItems))
+			}
 		}
 	}
 	return (

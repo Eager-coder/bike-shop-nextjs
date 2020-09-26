@@ -75,8 +75,8 @@ export default function Bikes({ product }) {
 
 import dbExecute from "../api/db"
 export async function getServerSideProps(context) {
-	const bike_name = context.query.uid
-	const [data] = await dbExecute(`SELECT * FROM products WHERE name = '${bike_name}'`)
+	const product_name = context.query.uid
+	const [data] = await dbExecute(`SELECT * FROM products WHERE name = '${product_name}'`)
 	return {
 		props: { product: JSON.stringify(data) },
 	}

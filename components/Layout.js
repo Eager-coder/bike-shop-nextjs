@@ -3,7 +3,7 @@ import { useContext } from "react"
 import Nav from "./Nav/Nav"
 import { createGlobalStyle } from "styled-components"
 import Footer from "./Footer"
-import UserContext from "./UserContext"
+import { UserContext } from "./Context"
 
 const GlobalStyle = createGlobalStyle`
 	* {

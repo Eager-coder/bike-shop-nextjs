@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import shortid from "shortid"
 import styled from "styled-components"
-import UserContext from "../UserContext"
+import { UserContext } from "../Context"
 const Form = styled.div`
 	margin-top: 50px;
 	label {
@@ -52,7 +52,7 @@ export default function SelectForm({ productData, size, setSize, qty, setQty }) 
 		name: productData.name,
 		image: productData.image,
 		price: Number(productData.price),
-		size: productData.category === "bikes" ? Number(size) : null,
+		size: Number(size),
 		qty: Number(qty),
 	}
 	const addToCart = async () => {

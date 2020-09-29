@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState, useContext, useEffect } from "react"
 import Message from "../components/Auth/Message"
-import UserContext from "../components/UserContext"
+import { UserContext } from "../components/Context"
 const FormContainer = styled.div`
 	width: max-content;
 	margin: 150px auto;
@@ -32,7 +32,7 @@ export default function Signup() {
 		const json = await res.json()
 		console.log("login:", json)
 		setMessage({ message: json.message, isSuccess: json.isSuccess })
-		if (json.isSuccess) {
+		if (json.isLoggedIn) {
 			context.setUserData(json)
 			router.push("/")
 		}

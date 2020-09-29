@@ -1,7 +1,7 @@
 import Link from "next/link"
 import styled from "styled-components"
 import { useState, useContext } from "react"
-import UserContext from "../UserContext"
+import { UserContext } from "../Context"
 import { useRouter } from "next/router"
 const Div = styled.div`
 	display: flex;

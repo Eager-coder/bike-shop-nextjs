@@ -11,7 +11,6 @@ export default async (req, res) => {
 			return res.status(400).json({ message: "Please fill all the fields!", isSuccess: false })
 
 		const [result] = await dbExecute(`SELECT * FROM users WHERE email = '${reqEmail}'`)
-		// console.log("isAdmin:", result.isAdmin)
 		console.log(result.isAdmin ? "admin" : "not admin")
 		if (typeof result !== "object")
 			return res.status(404).json({ message: "Email or password is incorrect!", isSuccess: false })

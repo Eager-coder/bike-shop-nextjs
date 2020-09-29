@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useState, useContext } from "react"
 import { useRouter } from "next/router"
-import UserContext from "../UserContext"
+import { UserContext } from "../Context"
 const EditBox = styled.div`
 	position: fixed;
 	width: 100%;

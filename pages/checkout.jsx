@@ -250,15 +250,20 @@ export function FormStepper({ children, props }) {
 	)
 }
 export async function getServerSideProps(ctx) {
+	console.log(ctx)
 	const res = await fetch(`http://${ctx.req.headers.host}/api/user/isTokenValid`)
 	const json = await res.json()
 
 	if (!json.isLoggedIn) {
-		const { res } = ctx
+		const { cookie } = ctx.headers
 		res.setHeader("location", "/login")
 		res.statusCode = 302
-		res.end()
-		return
+		// res.end()
+		return {
+			props: {
+				data: json,
+			},
+		}
 	}
 
 	return {

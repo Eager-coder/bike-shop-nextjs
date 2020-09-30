@@ -32,7 +32,7 @@ export default checkAuth(async (req, res) => {
 			`UPDATE cartItem SET quantity = '${qty}' WHERE id = '${itemId}'`
 		)
 
-		return res.status(200).json({ isSuccess: true })
+		return res.status(200).json({ isSuccess: true, qty })
 		console.log(dbResult)
 	} else if (req.method === "DELETE") {
 		const id = req.query.itemId

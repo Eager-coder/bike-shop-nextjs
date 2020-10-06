@@ -97,7 +97,7 @@ export default function Cart() {
 								))}
 								<div className="checkout">
 									<span>Total: {total}</span>
-									<Link href="/checkout">
+									<Link href="/checkout2">
 										<a>Checkout</a>
 									</Link>
 								</div>

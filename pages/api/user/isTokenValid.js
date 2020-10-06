@@ -4,6 +4,7 @@ import { verify } from "jsonwebtoken"
 import jwt_secret from "../../../jwt_secret"
 export default checkAuth(async (req, res) => {
 	const userData = verify(req.cookies.auth, jwt_secret)
+	console.log("cookie: ", userData)
 	const [result] = await dbExecute(
 		`SELECT id, email, name, surname, isAdmin FROM users WHERE id = '${userData.id}'`
 	)

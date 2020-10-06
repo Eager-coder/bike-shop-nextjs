@@ -7,9 +7,9 @@ const db_info = {
 	database: "I5eStEOOdg",
 }
 
-const dbExecute = async query => {
+const dbExecute = async (query, records) => {
 	const connection = await mysql.createConnection(db_info)
-	const [result] = await connection.execute(query)
+	const [result] = await connection.query(query, records)
 	await connection.end()
 	return result
 }

@@ -24,8 +24,6 @@ export default checkAuth(async (req, res) => {
 			return res.status(301).json({ message: "Please fill all the fields!" })
 		const dbResult = await dbExecute(`INSERT INTO cartItem (quantity, size, product_id, user_id) 
       VALUES ('${qty}', '${size}', '${productId}', '${userId}')`)
-		console.log(dbResult)
-		// console.log(itemData)
 	} else if (req.method === "PUT") {
 		const { itemId, qty } = JSON.parse(req.body)
 		const dbResult = await dbExecute(
@@ -33,7 +31,6 @@ export default checkAuth(async (req, res) => {
 		)
 
 		return res.status(200).json({ isSuccess: true, qty })
-		console.log(dbResult)
 	} else if (req.method === "DELETE") {
 		const id = req.query.itemId
 		const dbResult = await dbExecute(`DELETE FROM cartItem WHERE id = ${id}`)

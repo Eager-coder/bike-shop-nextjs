@@ -93,6 +93,7 @@ export function Forms() {
 			type: "card",
 			card: elements.getElement(CardElement),
 		})
+		console.log(error, paymentMethod)
 		if (!error) {
 			const { id } = paymentMethod
 			try {
@@ -249,26 +250,27 @@ export function FormStepper({ children, props }) {
 		</section>
 	)
 }
-export async function getServerSideProps(ctx) {
-	console.log(ctx)
-	const res = await fetch(`http://${ctx.req.headers.host}/api/user/isTokenValid`)
-	const json = await res.json()
+// export async function getServerSideProps(ctx) {
+// 	const { headers } = ctx.req.headers
+// 	const res = await fetch(`http://${ctx.req.headers.host}/api/user/isTokenValid`, {
+// 		headers,
+// 	})
+// 	const json = await res.json()
 
-	if (!json.isLoggedIn) {
-		const { cookie } = ctx.headers
-		res.setHeader("location", "/login")
-		res.statusCode = 302
-		// res.end()
-		return {
-			props: {
-				data: json,
-			},
-		}
-	}
-
-	return {
-		props: {
-			data: json,
-		},
-	}
-}
+// 	if (!json.isLoggedIn) {
+// 		ctx.res.setHeader("location", "/login")
+// 		ctx.res.statusCode = 302
+// 		// ctx.res.end()
+// 		return {
+// 			props: {
+// 				data: json,
+// 			},
+// 		}
+// 	} else {
+// 		return {
+// 			props: {
+// 				data: json,
+// 			},
+// 		}
+// 	}
+// }

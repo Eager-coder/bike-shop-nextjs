@@ -20,40 +20,39 @@ export default checkAuth(async (req, res) => {
 			})
 
 			const { addressLine, city, state, country, zipCode } = address
-			const payment = await stripe.paymentIntents.create({
-				amount: total * 100,
-				currency: "USD",
-				metadata: { ...productList },
-				description: userData.name + " " + userData.surname,
-				payment_method: id,
-				confirm: true,
-				shipping: {
-					name: userData.name + " " + userData.surname,
-					address: {
-						line1: addressLine,
-						city,
-						state,
-						country,
-						postal_code: zipCode,
-					},
-				},
-			})
+			// const payment = await stripe.paymentIntents.create({
+			// 	amount: total * 100,
+			// 	currency: "USD",
+			// 	metadata: { ...productList },
+			// 	description: userData.name + " " + userData.surname,
+			// 	payment_method: id,
+			// 	confirm: true,
+			// 	shipping: {
+			// 		name: userData.name + " " + userData.surname,
+			// 		address: {
+			// 			line1: addressLine,
+			// 			city,
+			// 			state,
+			// 			country,
+			// 			postal_code: zipCode,
+			// 		},
+			// 	},
+			// })
 
 			const orderId = shortid()
 			const insertOrder = await dbExecute(`
-				INSERT INTO orders (id, user_id, total, country, address_line, city, zip_code, state)
+				INSERT INTO orders (order_id, user_id, total, country, address_line, city, zip_code, state)
 				VALUES ('${orderId}', '${userData.id}', '${total}', '${country}','${addressLine}','${city}','${zipCode}', '${state}')`)
+
 			const orderedItems = products.map(item => {
-				return [item.size, item.quantity, item.price, item.id, orderId]
+				return [item.size, item.quantity, item.price, item.product_id, orderId]
 			})
-			console.log("~~ordered items", orderedItems)
 			const insertOrderDetails = await dbExecute(
 				`
-					INSERT INTO orderDetails (size, quantity, price, product_id, order_id) VALUES ?
-				`,
+					INSERT INTO orderDetails (size, quantity, price, product_id, order_id) VALUES ?`,
 				[orderedItems]
 			)
-			console.log(insertOrderDetails)
+
 			return res.status(200).json({
 				confirm: "Your order has been successfully confirmed.",
 			})

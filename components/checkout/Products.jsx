@@ -53,12 +53,12 @@ export default function Products({ products, total }) {
 				<h1>Checkout</h1>
 				<div className="total">Total: ${total}.00</div>
 				{products.map(item => (
-					<div className="item">
+					<div className="item" key={item.id}>
 						<div className="image">
 							<img width="50" src={item.image} alt="" />
 						</div>
 						<div className="item-text">
-							<div key={item.id}>{item.name}</div>
+							<div>{item.name}</div>
 							<div className="size">{item.size ? "Size: " + item.size : null}</div>
 							<div className="qty-price">
 								<span className="qty">Quantity: {item.quantity}</span>{" "}

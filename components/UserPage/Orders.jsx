@@ -1,5 +1,21 @@
-import React from "react"
+import { useState, useEffect } from "react"
+import styled from "styled-components"
 
-export default function Orders() {
-	return <div>orders</div>
+const OrderContainer = styled.section`
+	width: 100%;
+	h1 {
+		font-size: 2.2rem;
+		text-transform: uppercase;
+		font-weight: 500;
+		margin-bottom: 40px;
+	}
+`
+import Order from "./Order"
+export default function Orders({ orders }) {
+	return (
+		<OrderContainer>
+			<h1>Orders</h1>
+			{orders.length ? orders.map(order => <Order key={order.id} order={order} />) : null}
+		</OrderContainer>
+	)
 }

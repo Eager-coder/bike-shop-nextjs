@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise"
 
-const db_info = {
+export const db_info = {
 	host: "remotemysql.com",
 	user: "I5eStEOOdg",
 	password: "eXIdV6uivM",
@@ -9,6 +9,12 @@ const db_info = {
 
 const dbExecute = async (query, records) => {
 	const connection = await mysql.createConnection(db_info)
+	// connection.on("error", err => {
+	// 	if (err.code === "PROTOCOL_CONNECTION_LOST") {
+	// 		connection.end()
+	// 		setTimeout(dbExecute(query, records), 2000)
+	// 	}
+	// })
 	const [result] = await connection.query(query, records)
 	await connection.end()
 	return result

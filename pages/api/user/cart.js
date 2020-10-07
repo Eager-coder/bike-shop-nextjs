@@ -5,7 +5,7 @@ export default checkAuth(async (req, res) => {
 	if (req.method === "GET") {
 		const id = req.query.userId
 		const allProducts = await dbExecute(`SELECT 
-					cartItem.id, createdAt, size, quantity, name, price, image
+					products.id, createdAt, size, quantity, name, price, image
 			FROM 
 					cartItem
 			INNER JOIN 
@@ -16,6 +16,7 @@ export default checkAuth(async (req, res) => {
 					cartItem.user_id = '${id}'
 		`)
 		if (!allProducts) return res.status(400).json({ message: "Cart is empty" })
+		console.log("all-products", allProducts)
 		res.json({ data: allProducts })
 	}
 	if (req.method === "POST") {

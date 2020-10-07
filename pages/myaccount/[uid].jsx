@@ -8,6 +8,7 @@ import Profile from "../../components/UserPage/Profile"
 import Orders from "../../components/UserPage/Orders"
 import ErrorPage from "../_error"
 import Loading from "../../components/Loading"
+
 const AccountSection = styled.div`
 	width: 100%;
 	padding: 0 50px;
@@ -22,11 +23,19 @@ export default function YourAccount() {
 	const router = useRouter()
 	const uid = router.query.uid
 	const { userData } = useContext(UserContext)
+	const [orders, setOrders] = useState([])
 	const [isReady, setIsReady] = useState(false)
+	const getOrders = async () => {
+		const res = await fetch(`/api/user/order?userId=${userData.id}`, { method: "GET" })
+		const json = await res.json()
+		setOrders(json.orders)
+		console.log(json.orders)
+	}
 	useEffect(() => {
 		if (!userData.isLoading && !userData.isLoggedIn) {
 			router.push("/login")
 		} else if (!userData.isLoading && userData.isLoggedIn) {
+			getOrders()
 			setIsReady(true)
 		}
 	}, [userData])
@@ -36,7 +45,7 @@ export default function YourAccount() {
 				<AccountSection>
 					<Sidebar name={userData.name} link={uid} />
 					{uid === "profile" ? <Profile user={userData} /> : null}
-					{uid === "orders" ? <Orders user={userData} /> : null}
+					{uid === "orders" ? <Orders user={userData} orders={orders} /> : null}
 				</AccountSection>
 			) : (
 				<Loading />

@@ -1,4 +1,3 @@
-import { Step, StepLabel, Stepper } from "@material-ui/core"
 import { loadStripe } from "@stripe/stripe-js"
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
 import styled from "styled-components"

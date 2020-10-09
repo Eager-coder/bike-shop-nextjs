@@ -28,9 +28,9 @@ export default function Sidebar({ setScreen }) {
 	return (
 		<Aside>
 			<ul>
-				<li onClick={() => setScreen("userStats")}>
+				<li onClick={() => setScreen("orders")}>
 					<img src="https://img.icons8.com/material-rounded/100/000000/user.png" />
-					User Statistics
+					Orders
 				</li>
 				<li onClick={() => setScreen("products")}>
 					<img src="https://img.icons8.com/material/64/000000/product--v1.png" />

@@ -6,14 +6,14 @@ import Layout from "../components/Layout"
 import styled from "styled-components"
 import Products from "../components/checkout/Products"
 import AddressForm from "../components/checkout/AddressForm"
-import { UserContext } from "../components/Context"
+import Context from "../components/Context"
 const Container = styled.section`
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
 `
 export default function Checkout() {
-	const { userData } = useContext(UserContext)
+	const { userData } = useContext(Context)
 	const [products, setProducts] = useState(null)
 	const router = useRouter()
 	const [address, setAddress] = useState({

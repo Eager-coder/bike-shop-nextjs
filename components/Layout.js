@@ -3,7 +3,7 @@ import { useContext } from "react"
 import Nav from "./Nav/Nav"
 import { createGlobalStyle } from "styled-components"
 import Footer from "./Footer"
-import { UserContext } from "./Context"
+import Context from "./Context"
 
 const GlobalStyle = createGlobalStyle`
 	* {
@@ -23,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
 	}
 `
 export default function Layout({ children }) {
-	const isLoggedIn = useContext(UserContext).userData.isLoggedIn
+	const isLoggedIn = useContext(Context).userData.isLoggedIn
 	return (
 		<>
 			<Head>

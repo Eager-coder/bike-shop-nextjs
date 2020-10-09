@@ -74,10 +74,10 @@ export default function Hero() {
 				<div className="text">
 					<h1>Crazy light, crazy fast</h1>
 					<p>
-						The all-new Émonda. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos eos
-						alias rerum quas error quibusdam.
+						The all-new Giant Defy Advanced 3. Lorem ipsum, dolor sit amet consectetur adipisicing
+						elit. Quos eos alias rerum quas error quibusdam.
 					</p>
-					<Link href="/" passHref>
+					<Link href="/product/Giant Defy Advanced 3 Hydraulic" passHref>
 						<a>Shop now</a>
 					</Link>
 				</div>

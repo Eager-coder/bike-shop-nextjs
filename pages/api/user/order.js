@@ -1,14 +1,14 @@
-import dbExecute from "../db"
+const db = require("../db")
 import checkAuth from "./checkAuth"
 
 export default checkAuth(async (req, res) => {
 	if (req.method === "GET") {
 		const userId = req.query.userId
-		const orders = await dbExecute(`
+		const orders = await db.query(`
     SELECT * FROM orders WHERE user_id = '${userId}'
 		`)
 		const orderIds = orders.map(item => item.order_id)
-		const items = await dbExecute(
+		const items = await db.query(
 			`SELECT * FROM orderDetails WHERE order_id  IN ('${orderIds.join("','")}')`
 		)
 		orders.forEach(order => {

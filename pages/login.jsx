@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState, useContext, useEffect } from "react"
 import Message from "../components/Auth/Message"
-import { UserContext } from "../components/Context"
+import Context from "../components/Context"
 const FormContainer = styled.div`
 	width: max-content;
 	margin: 150px auto;
@@ -24,7 +24,7 @@ const FormContainer = styled.div`
 export default function Signup() {
 	const [userData, setUserData] = useState({})
 	const [message, setMessage] = useState({})
-	const context = useContext(UserContext)
+	const context = useContext(Context)
 	const router = useRouter()
 	const handleSubmit = async e => {
 		e.preventDefault()

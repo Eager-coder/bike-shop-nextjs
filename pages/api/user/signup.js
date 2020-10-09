@@ -1,4 +1,4 @@
-import dbExecute from "../db"
+const db = require("../db")
 import bcrypt from "bcrypt"
 
 export default async (req, res) => {
@@ -7,14 +7,14 @@ export default async (req, res) => {
 		console.log(req.body)
 		if (!name || !surname || !email || !password)
 			return res.status(400).json({ message: "Please fill all the fields!", isSuccess: false })
-		const result = await dbExecute(`SELECT email FROM users WHERE email = '${email}'`)
+		const result = await db.query(`SELECT email FROM users WHERE email = '${email}'`)
 		if (result.length && result[0].email === email) {
 			res.status(400).json({ message: "User already exists!", isSuccess: false })
 		} else {
 			const hashedPassword = bcrypt.hashSync(password, 10)
-			await dbExecute(`INSERT INTO users (name, surname, email, password)
+			await db.query(`INSERT INTO users (name, surname, email, password)
         VALUES ('${name}','${surname}','${email}','${hashedPassword}')`)
-			res.status(201).json({ message: "User successfully added!", isSuccess: true })
+			res.status(201).json({ message: "You are signed in!", isSuccess: true })
 		}
 	} else {
 		res.status(405).json({ message: "We only support POST", isSuccess: false })

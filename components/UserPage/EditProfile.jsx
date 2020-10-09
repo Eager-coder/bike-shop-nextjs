@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useState, useContext } from "react"
 import { useRouter } from "next/router"
-import { UserContext } from "../Context"
+import Context from "../Context"
 const EditBox = styled.div`
 	position: fixed;
 	width: 100%;
@@ -53,7 +53,7 @@ export default function EditProfile({ user, type, setIsEditOpen }) {
 	const [newPassword, setPasswords] = useState({ email: user.email })
 	const [message, setMessage] = useState(null)
 	const router = useRouter()
-	const { setUserData } = useContext(UserContext)
+	const { setUserData } = useContext(Context)
 	const handleEdit = e => {
 		if (type === "password") {
 			setPasswords({ ...newPassword, [e.target.name]: e.target.value })

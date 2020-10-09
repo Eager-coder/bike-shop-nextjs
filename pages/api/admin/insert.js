@@ -1,4 +1,4 @@
-import dbExecute from "../db"
+const db = require("../db")
 export default async (req, res) => {
 	try {
 		const data = JSON.parse(req.body)
@@ -26,7 +26,7 @@ export default async (req, res) => {
 			typeof tech_specs !== "string"
 		)
 			return res.status(400).json({ message: "Invalid credentials", status: 400 })
-		await dbExecute(
+		await db.query(
 			`INSERT INTO products (name, brand, category, type, price, year, image, description, tech_specs) VALUES
 			('${name}', '${brand}', '${category}', '${type}', '${price}', '${year}', '${image}', '${description
 				.split("'")

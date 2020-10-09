@@ -1,6 +1,6 @@
-import dbExecute from "./db"
+const db = require("./db")
 
 export default async (req, res) => {
-	const products = await dbExecute("SELECT * FROM products")
+	const products = await db.query("SELECT * FROM products")
 	res.json({ products })
 }

@@ -1,4 +1,4 @@
-import dbExecute from "../db"
+const db = require("../db")
 
 export default async (req, res) => {
 	try {
@@ -19,7 +19,7 @@ export default async (req, res) => {
 			typeof tech_specs !== "string"
 		)
 			return res.status(400).json({ message: "Invalid credentials" })
-		const update = await dbExecute(
+		const update = await db.query(
 			`UPDATE products SET name = '${name}', brand = '${brand}', 
 			category = '${category}', type = '${type}', price = '${price}', 
 			year = '${year}', image = '${image}', description = '${description

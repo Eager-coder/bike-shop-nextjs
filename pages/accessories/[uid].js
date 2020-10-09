@@ -111,9 +111,9 @@ export default function Accessories({ data }) {
 		</Layout>
 	)
 }
-import dbExecute from "../api/db"
+const db = require("../api/db")
 export async function getServerSideProps({ query }) {
-	const data = await dbExecute(`SELECT * FROM products WHERE type = '${query.uid}'`)
+	const data = await db.query(`SELECT * FROM products WHERE type = '${query.uid}'`)
 	return {
 		props: { data: JSON.stringify(data) },
 	}

@@ -1,5 +1,23 @@
 import styled from "styled-components"
 import Link from "next/link"
+
+export default function ProductBig() {
+	return (
+		<Div className="product-left">
+			<img
+				src="https://i.pinimg.com/originals/6a/af/de/6aafdebf5ad5ad6f4ce6d2f7da7bd790.jpg"
+				alt=""
+			/>
+			<div className="textbox">
+				<h2>Are you ready to shred mountains?</h2>
+				<Link href="/bikes/mountain">
+					<a>See mountain bikes</a>
+				</Link>
+			</div>
+		</Div>
+	)
+}
+
 const Div = styled.div`
 	grid-area: left;
 	position: relative;
@@ -63,20 +81,3 @@ const Div = styled.div`
 		}
 	}
 `
-
-export default function ProductBig() {
-	return (
-		<Div className="product-left">
-			<img
-				src="https://i.pinimg.com/originals/6a/af/de/6aafdebf5ad5ad6f4ce6d2f7da7bd790.jpg"
-				alt=""
-			/>
-			<div className="textbox">
-				<h2>Are you ready to shred mountains?</h2>
-				<Link href="/">
-					<a>See mountain bikes</a>
-				</Link>
-			</div>
-		</Div>
-	)
-}

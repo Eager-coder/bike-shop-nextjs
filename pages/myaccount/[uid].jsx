@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { useRouter } from "next/router"
 import Layout from "../../components/Layout"
-import { UserContext } from "../../components/Context"
+import Context from "../../components/Context"
 import Sidebar from "../../components/UserPage/Sidebar"
 import Profile from "../../components/UserPage/Profile"
 import Orders from "../../components/UserPage/Orders"
@@ -22,7 +22,7 @@ const AccountSection = styled.div`
 export default function YourAccount() {
 	const router = useRouter()
 	const uid = router.query.uid
-	const { userData } = useContext(UserContext)
+	const { userData } = useContext(Context)
 	const [orders, setOrders] = useState([])
 	const [isReady, setIsReady] = useState(false)
 	const getOrders = async () => {

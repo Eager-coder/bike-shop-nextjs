@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import Layout from "../components/Layout"
 import styled from "styled-components"
 import Link from "next/link"
-import { UserContext } from "../components/Context"
+import Context from "../components/Context"
 import ItemContainer from "../components/cart/ItemContainer"
 import Loading from "../components/Loading"
 const CartContainer = styled.div`
@@ -59,16 +59,20 @@ export default function Cart() {
 	const [products, setProducts] = useState([])
 	const [total, setTotal] = useState(0)
 	const [isLoaded, setIsLoaded] = useState(false)
-	const { userData } = useContext(UserContext)
+	const { userData } = useContext(Context)
 	const getCartItems = async () => {
 		const res = await fetch(`/api/user/cart?userId=${userData.id}`, { method: "GET" })
 		const json = await res.json()
-		console.log(json)
-		setProducts(json.data)
+		console.log("get cart items", json)
+		if (json.data) {
+			setProducts(json.data)
+		}
 		setIsLoaded(true)
 	}
 	useEffect(() => {
-		if (userData.isLoggedIn && !userData.isLoading) getCartItems()
+		if (userData.isLoggedIn && !userData.isLoading) {
+			getCartItems()
+		}
 	}, [userData])
 
 	useEffect(() => {
@@ -103,7 +107,7 @@ export default function Cart() {
 								</div>
 							</>
 						) : (
-							<div class="empty">
+							<div className="empty">
 								<p>Your cart is empty</p>
 								<Link href="/">
 									<a>

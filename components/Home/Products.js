@@ -40,7 +40,7 @@ export default function Products() {
 				<img src="/images/gloves.jpg" alt="" />
 				<div className="textbox">
 					<h2>The new collection of protective gloves</h2>
-					<Link href="/">
+					<Link href="/clothing/gloves">
 						<a>See gloves</a>
 					</Link>
 				</div>
@@ -49,7 +49,7 @@ export default function Products() {
 				<img src="/images/helmet.jpg" alt="" />
 				<div className="textbox">
 					<h2>Bike helmets on sale</h2>
-					<Link href="/">
+					<Link href="/clothing/helmets">
 						<a>Shop </a>
 					</Link>
 				</div>

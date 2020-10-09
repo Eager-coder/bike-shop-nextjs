@@ -43,6 +43,7 @@ const Text = styled.div`
 	}
 `
 export default function Bikes({ product }) {
+	console.log("product size", JSON.parse(product).size)
 	const data = JSON.parse(product)
 	const table = data.tech_specs
 		.replace(/[\r\n\t]/g, "")
@@ -51,8 +52,7 @@ export default function Bikes({ product }) {
 		.map(e => {
 			return e.split("=")
 		})
-	const [size, setSize] = useState(48)
-	const [qty, setQty] = useState(1)
+
 	return (
 		<Layout>
 			<Top>
@@ -65,7 +65,7 @@ export default function Bikes({ product }) {
 						</p>
 						<p className="desc">{data.description}</p>
 					</Text>
-					<SelectForm productData={data} size={size} setSize={setSize} qty={qty} setQty={setQty} />
+					<SelectForm productData={data} />
 				</div>
 			</Top>
 			<SpecsTable tech_specs={table} />
@@ -73,10 +73,10 @@ export default function Bikes({ product }) {
 	)
 }
 
-import dbExecute from "../api/db"
+const db = require("../api/db")
 export async function getServerSideProps(context) {
 	const product_name = context.query.uid
-	const [data] = await dbExecute(`SELECT * FROM products WHERE name = '${product_name}'`)
+	const [data] = await db.query(`SELECT * FROM products WHERE name = '${product_name}'`)
 	return {
 		props: { product: JSON.stringify(data) },
 	}

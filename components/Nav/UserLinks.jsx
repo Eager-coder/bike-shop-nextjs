@@ -1,7 +1,7 @@
 import Link from "next/link"
 import styled from "styled-components"
 import { useState, useContext } from "react"
-import { UserContext } from "../Context"
+import Context from "../Context"
 import { useRouter } from "next/router"
 const Div = styled.div`
 	display: flex;
@@ -44,10 +44,10 @@ const UserBox = styled.div`
 		justify-content: center;
 		align-items: center;
 		margin: 0 10px;
-		background: ${({ isOpen }) => (isOpen ? "white" : "#1a1a1a")};
+		background: ${({ isOpen }) => (isOpen ? "#ff4834" : "#1a1a1a")};
 		border-radius: 4px;
 		img {
-			filter: ${({ isOpen }) => (isOpen ? "invert(0)" : "invert(1)")};
+			filter: ${({ isOpen }) => (isOpen ? "invert(1)" : "invert(1)")};
 			width: 35px;
 		}
 	}
@@ -71,23 +71,47 @@ const UserBox = styled.div`
 		border-radius: 4px;
 		background: white;
 		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-		div {
+		div.greeting {
 			margin: 15px 0;
-			font-size: 1rem;
-			font-weight: 600;
+			font-size: 1.1rem;
+			font-weight: 500;
 		}
 		a {
 			display: block;
 			margin: 10px 0;
+			font-weight: 400;
+			color: black;
+			:hover {
+				color: #ffa800;
+				text-decoration: underline;
+			}
 		}
 		button {
+			cursor: pointer;
 			margin: 10px 0;
+			display: flex;
+			align-items: center;
+			background: white;
+			border: 2px solid #ff4834;
+			border-radius: 4px;
+			padding: 5px;
+			span {
+				color: black;
+			}
+			:hover span {
+				color: #ff4834;
+			}
+			img {
+				margin-left: 5px;
+				width: 15px;
+				height: auto;
+			}
 		}
 	}
 `
 export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 	const [isUserBoxOpen, setIsUserBoxOpen] = useState(false)
-	const { userData, setUserData } = useContext(UserContext)
+	const { userData, setUserData } = useContext(Context)
 	const router = useRouter()
 	const signOut = async () => {
 		const res = await fetch("/api/user/logout")
@@ -119,7 +143,7 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 				<div className="box">
 					{userData.isLoggedIn ? (
 						<>
-							<div>Welcome back, {userData.name}!</div>
+							<div className="greeting">Welcome back, {userData.name}!</div>
 							<Link href="/myaccount/[uid]" as="/myaccount/profile" passHref>
 								<a>Your account</a>
 							</Link>
@@ -127,7 +151,10 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 								<a>Order history</a>
 							</Link>
 							<hr />
-							<button onClick={signOut}>Sign out</button>
+							<button onClick={signOut}>
+								<span>Log out</span>
+								<img src="/icons/logout.svg" alt="" />
+							</button>
 						</>
 					) : (
 						<>

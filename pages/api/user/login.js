@@ -1,4 +1,4 @@
-import dbExecute from "../db"
+const db = require("../db")
 import bcrypt from "bcrypt"
 import { sign } from "jsonwebtoken"
 import cookie from "cookie"
@@ -10,7 +10,7 @@ export default async (req, res) => {
 		if (!reqEmail || !reqPassword)
 			return res.status(400).json({ message: "Please fill all the fields!", isSuccess: false })
 
-		const [result] = await dbExecute(`SELECT * FROM users WHERE email = '${reqEmail}'`)
+		const [result] = await db.query(`SELECT * FROM users WHERE email = '${reqEmail}'`)
 		console.log("result : ", result)
 		// console.log(result.isAdmin ? "admin" : "not admin")
 		if (!result)

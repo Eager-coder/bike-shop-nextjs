@@ -1,7 +1,6 @@
-import { useContext } from "react"
-import shortid from "shortid"
+import { useState, useContext, useEffect } from "react"
 import styled from "styled-components"
-import { UserContext } from "../Context"
+import Context from "../Context"
 const Form = styled.div`
 	margin-top: 50px;
 	label {
@@ -44,10 +43,13 @@ const Form = styled.div`
 	}
 `
 
-export default function SelectForm({ productData, size, setSize, qty, setQty }) {
-	const { userData } = useContext(UserContext)
+export default function SelectForm({ productData }) {
+	const { userData } = useContext(Context)
+	const [size, setSize] = useState(
+		productData.category === "bikes" || productData.type === "jerseys" ? 48 : 0
+	)
+	const [qty, setQty] = useState(1)
 	const newItem = {
-		id: shortid(),
 		productId: Number(productData.id),
 		name: productData.name,
 		image: productData.image,
@@ -55,6 +57,9 @@ export default function SelectForm({ productData, size, setSize, qty, setQty }) 
 		size: Number(size),
 		qty: Number(qty),
 	}
+	useEffect(() => {
+		console.log(userData)
+	}, [userData])
 	const addToCart = async () => {
 		if (userData.isLoggedIn) {
 			const res = await fetch("/api/user/cart", {
@@ -63,28 +68,11 @@ export default function SelectForm({ productData, size, setSize, qty, setQty }) 
 			})
 			const json = await res.json()
 			console.log(json)
-		} else {
-			const cartItems = JSON.parse(localStorage.getItem("cartItems")) || []
-			const isSameIdAndSize = cartItems.some(
-				item => item.productId === newItem.productId && item.size === newItem.size
-			)
-			if (isSameIdAndSize) {
-				cartItems.forEach(item => {
-					if (item.productId === newItem.productId && item.size === newItem.size) {
-						item.qty += newItem.qty
-						localStorage.setItem("cartItems", JSON.stringify(cartItems))
-						return
-					}
-				})
-			} else {
-				cartItems.push(newItem)
-				localStorage.setItem("cartItems", JSON.stringify(cartItems))
-			}
 		}
 	}
 	return (
 		<Form>
-			{productData.category === "bikes" ? (
+			{size ? (
 				<label className="select-size">
 					<span>Select a size:</span>
 					<select name="size" value={size} onChange={e => setSize(e.target.value)}>

@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { createGlobalStyle } from "styled-components"
 import AllProducts from "../components/Admin/AllProducts"
 import AddProduct from "../components/Admin/AddProduct"
-import UserStats from "../components/Admin/UserStats"
+import Orders from "../components/Admin/Orders"
 import Sidebar from "../components/Admin/Sidebar"
 import TopNav from "../components/Admin/TopNav"
 const GlobalStyle = createGlobalStyle`
@@ -27,13 +27,21 @@ const AdminSection = styled.div`
 export default function Admin() {
 	const [screen, setScreen] = useState("userStats")
 	const [products, setProducts] = useState(null)
+	const [orders, setOrders] = useState(null)
+	const getProducts = async () => {
+		const res = await fetch("/api/admin/products")
+		const data = await res.json()
+		setProducts(data)
+	}
+	const getOrders = async () => {
+		const res = await fetch("/api/admin/orders")
+		const data = await res.json()
+		console.log(data)
+		setOrders(data)
+	}
 	useEffect(() => {
-		const getProducts = async () => {
-			const res = await fetch("/api/admin/products")
-			const data = await res.json()
-			setProducts(data)
-		}
 		getProducts()
+		getOrders()
 	}, [])
 	return (
 		<>
@@ -41,7 +49,7 @@ export default function Admin() {
 			<h1>Admin panel</h1>
 			<Sidebar setScreen={setScreen} />
 			<AdminSection>
-				{screen === "userStats" ? <UserStats /> : null}
+				{screen === "orders" ? <Orders orders={orders} /> : null}
 				{screen === "products" ? <AllProducts products={products} /> : null}
 				{screen === "createProduct" ? <AddProduct /> : null}
 			</AdminSection>

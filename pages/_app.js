@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import App from "next/app"
-import { UserContext } from "../components/Context"
-import Products from "../components/checkout/Products"
+import Context from "../components/Context"
 const ContextWrapper = ({ children }) => {
 	const [userData, setUserData] = useState({ isLoading: true })
 	const [products, setProducts] = useState({ isLoading: true })
@@ -9,6 +8,7 @@ const ContextWrapper = ({ children }) => {
 		const checkLoggedIn = async () => {
 			const res = await fetch("/api/user/isTokenValid")
 			const json = await res.json()
+			console.log("user data", json)
 			setUserData({ ...json, isLoading: false })
 		}
 		const getProducts = async () => {
@@ -20,9 +20,9 @@ const ContextWrapper = ({ children }) => {
 		getProducts()
 	}, [])
 	return (
-		<UserContext.Provider value={{ userData, setUserData, products, setProducts }}>
+		<Context.Provider value={{ userData, setUserData, products, setProducts }}>
 			{children}
-		</UserContext.Provider>
+		</Context.Provider>
 	)
 }
 

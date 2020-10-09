@@ -32,9 +32,12 @@ const MenuBtn = styled.div`
 const LinksLeft = styled.div`
 	display: flex;
 	align-items: center;
-	> a > img {
-		width: 80px;
-		filter: invert(0.9);
+	.logo {
+		margin-right: 50px;
+		img {
+			width: 80px;
+			filter: invert(0.9);
+		}
 	}
 	.nav-links {
 		display: flex;
@@ -67,7 +70,7 @@ export default function Nav({ isLoggedIn }) {
 						<img src="/icons/burger.svg" alt="" />
 					</MenuBtn>
 					<Link href="/" passHref>
-						<a>
+						<a className="logo">
 							<img
 								src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/FOCUS_Bikes_Logo_schwarz.svg/1280px-FOCUS_Bikes_Logo_schwarz.svg.png"
 								alt=""

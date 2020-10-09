@@ -1,22 +1,42 @@
-import mysql from "mysql2/promise"
+const mysql = require("serverless-mysql")
+const db = mysql({
+	config: {
+		host: "sql7.freemysqlhosting.net",
+		user: "sql7369675",
+		password: "KcCL2pbdme",
+		database: "sql7369675",
+	},
+})
 
-export const db_info = {
-	host: "remotemysql.com",
-	user: "I5eStEOOdg",
-	password: "eXIdV6uivM",
-	database: "I5eStEOOdg",
+exports.query = async (query, value) => {
+	try {
+		console.log("db connection")
+		const results = await db.query(query, value)
+		await db.end()
+		console.log("finish connection")
+		return results
+	} catch (error) {
+		return { error }
+	}
 }
 
-const dbExecute = async (query, records) => {
-	const connection = await mysql.createConnection(db_info)
-	// connection.on("error", err => {
-	// 	if (err.code === "PROTOCOL_CONNECTION_LOST") {
-	// 		connection.end()
-	// 		setTimeout(dbExecute(query, records), 2000)
-	// 	}
-	// })
-	const [result] = await connection.query(query, records)
-	await connection.end()
-	return result
-}
-export default dbExecute
+// const mysql = require("mysql2/promise")
+// const db_info = {
+// 	host: "sql7.freemysqlhosting.net",
+// 	user: "sql7369675",
+// 	password: "KcCL2pbdme",
+// 	database: "sql7369675",
+// }
+
+// exports.query = async query => {
+// 	try {
+// 		console.log("db connection")
+// 		const connection = await mysql.createConnection(db_info)
+// 		const [result] = await connection.execute(query)
+// 		await connection.end()
+// 		console.log("finish connection")
+// 		return result
+// 	} catch (error) {
+// 		return error
+// 	}
+// }

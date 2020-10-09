@@ -1,5 +1,5 @@
 import Stripe from "stripe"
-import dbExecute from "../db"
+const db = require("../db")
 import checkAuth from "./checkAuth"
 import shortid from "shortid"
 const stripe = new Stripe(
@@ -40,17 +40,18 @@ export default checkAuth(async (req, res) => {
 			// })
 
 			const orderId = shortid()
-			const insertOrder = await dbExecute(`
+			const insertOrder = await db.query(`
 				INSERT INTO orders (order_id, user_id, total, country, address_line, city, zip_code, state)
 				VALUES ('${orderId}', '${userData.id}', '${total}', '${country}','${addressLine}','${city}','${zipCode}', '${state}')`)
 
-			const orderedItems = products.map(item => {
-				return [item.size, item.quantity, item.price, item.product_id, orderId]
-			})
-			const insertOrderDetails = await dbExecute(
-				`
-					INSERT INTO orderDetails (size, quantity, price, product_id, order_id) VALUES ?`,
-				[orderedItems]
+			const orderedItems = products
+				.map(item => {
+					return `('${item.size}', '${item.quantity}', '${item.price}', '${item.product_id}', '${orderId}')`
+				})
+				.join(", ")
+			console.log("ordered items", orderedItems)
+			const insertOrderDetails = await db.query(
+				`INSERT INTO orderDetails (size, quantity, price, product_id, order_id) VALUES ${orderedItems}`
 			)
 
 			return res.status(200).json({

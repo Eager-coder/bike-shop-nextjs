@@ -20,5 +20,14 @@ export default checkAuth(async (req, res) => {
 			})
 		})
 		res.json({ orders })
+	} else if (req.method === "PUT") {
+		const { newStatus, order_id } = req.query
+		if (!newStatus || !order_id)
+			return res.status(400).json({ message: "Something went wrong!", isSuccess: true })
+		const result = await db.query(`
+			UPDATE orders SET status = '${newStatus}' WHERE order_id = '${order_id}'
+		`)
+		console.log(result)
+		return res.json({ message: "Status has been changed!", isSuccess: true })
 	}
 })

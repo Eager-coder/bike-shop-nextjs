@@ -6,10 +6,10 @@ const Loader = styled.div`
 	justify-content: center;
 	align-items: center;
 `
-export default function Loading() {
+export default function Loading({ size }) {
 	return (
 		<Loader>
-			<ClipLoader color={"#1a1a1a"} size="150" />
+			<ClipLoader color={"#1a1a1a"} size={size} />
 		</Loader>
 	)
 }

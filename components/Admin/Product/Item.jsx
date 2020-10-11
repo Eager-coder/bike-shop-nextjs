@@ -3,8 +3,10 @@ import styled from "styled-components"
 import UpdateProduct from "./UpdateProduct"
 const ItemContainer = styled.div`
 	width: 100%;
-	display: flex;
-	margin: 20px 0;
+	.item-flex {
+		display: flex;
+		margin: 20px 0;
+	}
 	* {
 		font-size: 0.9rem;
 	}
@@ -67,8 +69,8 @@ export default function Item({ product }) {
 			return e.split("=")
 		})
 	return (
-		<>
-			<ItemContainer>
+		<ItemContainer>
+			<div className="item-flex">
 				<div className="image">
 					<img src={product.image} alt="" />
 				</div>
@@ -138,8 +140,8 @@ export default function Item({ product }) {
 				) : (
 					""
 				)}
-			</ItemContainer>
+			</div>
 			<hr />
-		</>
+		</ItemContainer>
 	)
 }

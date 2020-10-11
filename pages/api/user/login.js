@@ -11,10 +11,8 @@ export default async (req, res) => {
 			return res.status(400).json({ message: "Please fill all the fields!", isSuccess: false })
 
 		const [result] = await db.query(`SELECT * FROM users WHERE email = '${reqEmail}'`)
-		console.log("result : ", result)
-		// console.log(result.isAdmin ? "admin" : "not admin")
 		if (!result)
-			return res.status(404).json({ message: "Email or password is incorrect!", isSuccess: false })
+			return res.status(404).json({ message: "Email is not registered!", isSuccess: false })
 
 		const match = await bcrypt.compare(reqPassword, result.password)
 		if (match && result.email === reqEmail) {
@@ -38,7 +36,7 @@ export default async (req, res) => {
 				isLoggedIn: true,
 			})
 		} else {
-			res.status(400).json({ message: "Email or password is incorrect!", isSuccess: false })
+			res.status(400).json({ message: "Password is incorrect!", isSuccess: false })
 		}
 	} else {
 		res.status(405).json({ message: "We only support POST", isSuccess: false })

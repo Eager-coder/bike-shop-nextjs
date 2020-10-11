@@ -11,7 +11,8 @@ const Div = styled.div`
 	left: 250px;
 	right: 0;
 	z-index: 3;
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.95);
+
 	overflow-y: auto;
 	h2 {
 		font-size: 2rem;
@@ -120,12 +121,7 @@ export default function Update({ isUpdateOpen, setIsUpdateOpen, product }) {
 						</label>
 						<label>
 							<div>Brand</div>
-							<input
-								onInput={handleChange}
-								type="text"
-								name="brand"
-								defaultValue={product.brand}
-							/>
+							<input onInput={handleChange} type="text" name="brand" defaultValue={product.brand} />
 						</label>
 						<label>
 							<div>Category</div>

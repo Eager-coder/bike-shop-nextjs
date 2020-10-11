@@ -76,13 +76,18 @@ const UserBox = styled.div`
 			font-size: 1.1rem;
 			font-weight: 500;
 		}
+		hr {
+			background: #ff4834;
+			border: none;
+			height: 2px;
+		}
 		a {
 			display: block;
 			margin: 10px 0;
 			font-weight: 400;
 			color: black;
 			:hover {
-				color: #ffa800;
+				color: #ff4834;
 				text-decoration: underline;
 			}
 		}
@@ -92,14 +97,13 @@ const UserBox = styled.div`
 			display: flex;
 			align-items: center;
 			background: white;
-			border: 2px solid #ff4834;
+			border: 2px solid black;
 			border-radius: 4px;
 			padding: 5px;
 			span {
 				color: black;
 			}
 			:hover span {
-				color: #ff4834;
 			}
 			img {
 				margin-left: 5px;

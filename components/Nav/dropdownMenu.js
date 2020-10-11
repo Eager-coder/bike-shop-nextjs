@@ -13,8 +13,8 @@ const Li = styled.li`
 		align-items: center;
 	}
 	:hover .category {
-		border-top: solid 4px #ffa800;
-		color: #ffa800;
+		border-top: solid 4px #ff4834;
+		color: #ff4834;
 	}
 	&:hover ul {
 		display: block;
@@ -48,7 +48,7 @@ const Li = styled.li`
 			a {
 				color: black;
 				:hover {
-					color: #ffaf00;
+					color: #ff4834;
 				}
 			}
 			@media (max-width: 768px) {

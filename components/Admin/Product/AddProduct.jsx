@@ -2,8 +2,9 @@ import { useState, useEffect } from "react"
 import styled from "styled-components"
 const Form = styled.form`
 	width: 100%;
-	h2 {
-		font-size: 2rem;
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 30px;
 	}
 	.flexbox {
 		display: flex;
@@ -78,7 +79,7 @@ export default function AddProduct() {
 
 	return (
 		<Form onSubmit={fetchData}>
-			<h2>Add a new Product</h2>
+			<h1>Add a new Product</h1>
 			<div className="flexbox">
 				<div className="left">
 					<label>

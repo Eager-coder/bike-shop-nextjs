@@ -1,7 +1,8 @@
-import { useContext } from "react"
+import { useContext, useState, useEffect } from "react"
 import styled from "styled-components"
-import Context from "../Context"
+import Context from "../../Context"
 import moment from "moment"
+import Popup from "../../Popup"
 const OrderBox = styled.div`
 	width: 100%;
 	border-radius: 4px;
@@ -18,7 +19,7 @@ const OrderBox = styled.div`
 		}
 	}
 	.details {
-		margin: 10px 0;
+		margin: 20px 0;
 		display: flex;
 		justify-content: space-between;
 		span {
@@ -26,7 +27,23 @@ const OrderBox = styled.div`
 		}
 	}
 `
-export default function Order({ order }) {
+const Status = styled.span`
+	padding: 2px 4px;
+	border-radius: 5px;
+	background: ${({ sts }) => {
+		if (sts === "processing") {
+			return "orange;"
+		} else if (sts === "shipped") {
+			return "purple;"
+		} else if (sts === "delivered") {
+			return "green;"
+		}
+	}};
+`
+const UpdateStatus = styled.div``
+export default function Order({ order, updateStatus }) {
+	const [newStatus, setStatus] = useState(null)
+	const [isUpdateOpen, setUpdateOpen] = useState(false)
 	const {
 		address_line,
 		city,
@@ -39,7 +56,6 @@ export default function Order({ order }) {
 		created_at,
 		status,
 	} = order
-	console.log("itemsArray:", items)
 	return (
 		<OrderBox>
 			<div className="id-total">
@@ -59,12 +75,36 @@ export default function Order({ order }) {
 				<div className="right">
 					<div className="status">
 						<span>Status: </span>
-						{status}
+						<Status sts={status}>{status}</Status>
 					</div>
-					<button className="btn-completed">Confirm completion</button>
+					{status !== "completed" ? (
+						<>
+							<button onClick={() => setUpdateOpen(true)}>Update Status</button>
+							{isUpdateOpen ? (
+								<Popup>
+									<UpdateStatus>
+										<div>Order ID: {order_id}</div>
+										<div>Select new status</div>
+										<select onInput={e => setStatus(e.target.value)}>
+											<option></option>
+											<option value="processing">processing</option>
+											<option value="on hold">on hold</option>
+											<option value="shipped">shipped</option>
+											<option value="cancelled">cancelled</option>
+										</select>
+										<div className="buttons">
+											<button onClick={() => updateStatus(order_id, newStatus, setUpdateOpen)}>
+												Update
+											</button>
+											<button onClick={() => setUpdateOpen(false)}>Cancel</button>
+										</div>
+									</UpdateStatus>
+								</Popup>
+							) : null}
+						</>
+					) : null}
 				</div>
 			</div>
-
 			{items.map(item => (
 				<Item key={item.name} item={item} />
 			))}
@@ -73,12 +113,14 @@ export default function Order({ order }) {
 }
 
 const ItemBox = styled.div`
+	border-top: rgba(0, 0, 0, 0.2) 1px solid;
+	padding-top: 10px;
 	display: flex;
 	align-items: center;
 	margin: 20px 0;
 	.image {
-		height: 70px;
-		width: 150px;
+		height: 50px;
+		width: 120px;
 		margin-right: 15px;
 		img {
 			border-radius: 7px;
@@ -103,15 +145,19 @@ const ItemBox = styled.div`
 `
 function Item({ item }) {
 	const { products } = useContext(Context)
-	console.log("item", item)
-	products.products.forEach(product => {
-		if (Number(product.id) === Number(item.product_id)) {
-			console.log(item)
-			item.image = product.image
-			item.name = product.name
-			console.log(item.image)
+	useEffect(() => {
+		if (products.length) {
+			products.products.forEach(product => {
+				if (Number(product.id) === Number(item.product_id)) {
+					console.log(item)
+					item.image = product.image
+					item.name = product.name
+					console.log(item.image)
+				}
+			})
 		}
-	})
+	}, [products])
+
 	return (
 		<ItemBox>
 			<div className="image">

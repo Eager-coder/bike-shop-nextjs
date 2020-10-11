@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import styled from "styled-components"
 import { createGlobalStyle } from "styled-components"
-import AllProducts from "../components/Admin/AllProducts"
-import AddProduct from "../components/Admin/AddProduct"
-import Orders from "../components/Admin/Orders"
+import AllProducts from "../components/Admin/Product/AllProducts"
+import AddProduct from "../components/Admin/Product/AddProduct"
+import Orders from "../components/Admin/Order/Orders"
 import Sidebar from "../components/Admin/Sidebar"
 import TopNav from "../components/Admin/TopNav"
 const GlobalStyle = createGlobalStyle`
@@ -25,7 +25,7 @@ const AdminSection = styled.div`
 `
 
 export default function Admin() {
-	const [screen, setScreen] = useState("userStats")
+	const [screen, setScreen] = useState("orders")
 	const [products, setProducts] = useState(null)
 	const [orders, setOrders] = useState(null)
 	const getProducts = async () => {
@@ -36,20 +36,31 @@ export default function Admin() {
 	const getOrders = async () => {
 		const res = await fetch("/api/admin/orders")
 		const data = await res.json()
-		console.log(data)
 		setOrders(data)
 	}
 	useEffect(() => {
 		getProducts()
 		getOrders()
 	}, [])
+	const updateStatus = async (order_id, newStatus, setUpdateOpen) => {
+		if (!newStatus) return setUpdateOpen(false)
+		const res = await fetch(`/api/user/order?order_id=${order_id}&newStatus=${newStatus}`, {
+			method: "PUT",
+		})
+		const json = await res.json()
+		if (json.isSuccess) {
+			setUpdateOpen(false)
+			console.log(json)
+			getOrders()
+		}
+	}
 	return (
 		<>
 			<TopNav />
 			<h1>Admin panel</h1>
 			<Sidebar setScreen={setScreen} />
 			<AdminSection>
-				{screen === "orders" ? <Orders orders={orders} /> : null}
+				{screen === "orders" ? <Orders orders={orders} updateStatus={updateStatus} /> : null}
 				{screen === "products" ? <AllProducts products={products} /> : null}
 				{screen === "createProduct" ? <AddProduct /> : null}
 			</AdminSection>

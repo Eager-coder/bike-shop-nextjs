@@ -29,7 +29,6 @@ export default function YourAccount() {
 		const res = await fetch(`/api/user/order?userId=${userData.id}`, { method: "GET" })
 		const json = await res.json()
 		setOrders(json.orders)
-		console.log(json.orders)
 	}
 	useEffect(() => {
 		if (!userData.isLoading && !userData.isLoggedIn) {
@@ -45,7 +44,9 @@ export default function YourAccount() {
 				<AccountSection>
 					<Sidebar name={userData.name} link={uid} />
 					{uid === "profile" ? <Profile user={userData} /> : null}
-					{uid === "orders" ? <Orders user={userData} orders={orders} /> : null}
+					{uid === "orders" ? (
+						<Orders user={userData} orders={orders} getOrders={getOrders} />
+					) : null}
 				</AccountSection>
 			) : (
 				<Loading />

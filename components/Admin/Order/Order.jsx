@@ -30,13 +30,13 @@ const OrderBox = styled.div`
 const Status = styled.span`
 	padding: 2px 4px;
 	border-radius: 5px;
-	background: ${({ sts }) => {
+	${({ sts }) => {
 		if (sts === "processing") {
-			return "orange;"
+			return "color: white; background: orange;"
 		} else if (sts === "shipped") {
-			return "purple;"
-		} else if (sts === "delivered") {
-			return "green;"
+			return "color: white; background: purple;"
+		} else if (sts === "completed") {
+			return "color: white; background: green;"
 		}
 	}};
 `

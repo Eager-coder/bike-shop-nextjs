@@ -44,7 +44,7 @@ export default function Admin() {
 	}, [])
 	const updateStatus = async (order_id, newStatus, setUpdateOpen) => {
 		if (!newStatus) return setUpdateOpen(false)
-		const res = await fetch(`/api/user/order?order_id=${order_id}&newStatus=${newStatus}`, {
+		const res = await fetch(`/api/admin/orders?order_id=${order_id}&newStatus=${newStatus}`, {
 			method: "PUT",
 		})
 		const json = await res.json()

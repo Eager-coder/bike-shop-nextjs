@@ -1,7 +1,8 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import styled from "styled-components"
 import Context from "../Context"
 import moment from "moment"
+import Popup from "../Popup"
 const OrderBox = styled.div`
 	width: 100%;
 	border-radius: 4px;
@@ -26,7 +27,8 @@ const OrderBox = styled.div`
 		}
 	}
 `
-export default function Order({ order }) {
+export default function Order({ order, getOrders }) {
+	const [isPopupOpen, setPopupOpen] = useState(false)
 	const {
 		address_line,
 		city,
@@ -39,7 +41,16 @@ export default function Order({ order }) {
 		created_at,
 		status,
 	} = order
-	console.log("itemsArray:", items)
+	const completeOrder = async order_id => {
+		const res = await fetch(`/api/user/order?order_id=${order_id}&isComplete=true`, {
+			method: "PUT",
+		})
+		const json = await res.json()
+		if (json.isSuccess) {
+			setPopupOpen(false)
+			getOrders()
+		}
+	}
 	return (
 		<OrderBox>
 			<div className="id-total">
@@ -61,7 +72,20 @@ export default function Order({ order }) {
 						<span>Status: </span>
 						{status}
 					</div>
-					<button className="btn-completed">Confirm completion</button>
+					{status !== "completed" ? (
+						<>
+							<button className="btn-complete" onClick={() => setPopupOpen(true)}>
+								Confirm completion
+							</button>
+							{isPopupOpen ? (
+								<Popup>
+									<div>You are going to comfirm your order with ID: {order_id}</div>
+									<button onClick={() => completeOrder(order_id)}>Confirm</button>
+									<button onClick={() => setPopupOpen(false)}>Cancel</button>
+								</Popup>
+							) : null}
+						</>
+					) : null}
 				</div>
 			</div>
 

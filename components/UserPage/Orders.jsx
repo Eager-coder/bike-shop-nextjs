@@ -11,11 +11,13 @@ const OrderContainer = styled.section`
 	}
 `
 import Order from "./Order"
-export default function Orders({ orders }) {
+export default function Orders({ orders, getOrders }) {
 	return (
 		<OrderContainer>
 			<h1>Orders</h1>
-			{orders.length ? orders.map(order => <Order key={order.id} order={order} />) : null}
+			{orders.length
+				? orders.map(order => <Order key={order.id} order={order} getOrders={getOrders} />)
+				: null}
 		</OrderContainer>
 	)
 }

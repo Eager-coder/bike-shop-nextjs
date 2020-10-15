@@ -20,11 +20,11 @@ const Div = styled.div`
 			padding: 0 7px;
 		}
 		input {
-			width: 200px;
+			width: 150px;
 			border: none;
 			font-size: 1rem;
 			@media (max-width: 768px) {
-				width: 150px;
+				width: 100px;
 			}
 		}
 	}
@@ -125,13 +125,13 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 	}
 	return (
 		<Div>
-			<div className="search-field">
+			{/* <div className="search-field">
 				<img
 					onClick={() => setSearchOpen(!isSearchOpen)}
 					src="https://img.icons8.com/ios-glyphs/96/000000/search.png"
 				/>
 				<input type="text" placeholder="Search..." />
-			</div>
+			</div> */}
 			<Link href="/cart" passHref>
 				<a className="cart">
 					<img src="https://img.icons8.com/cotton/96/000000/shopping-cart--v2.png" />

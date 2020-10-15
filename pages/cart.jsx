@@ -16,8 +16,6 @@ const CartContainer = styled.div`
 		text-align: center;
 	}
 	.items-container {
-		/* display: flex; */
-		/* justify-content: center; */
 		margin: 20px;
 	}
 	.empty {
@@ -53,6 +51,29 @@ const CartContainer = styled.div`
 			}
 		}
 	}
+	.checkout {
+		span {
+			font-size: 2rem;
+			font-weight: 500;
+		}
+		.checkout-link {
+			margin: 10px 0;
+			width: max-content;
+			background: black;
+			color: white;
+			display: block;
+			padding: 10px;
+			border: black solid 2px;
+			border-radius: 7px;
+			transition: all 0.3s;
+			:hover {
+				background: white;
+				color: black;
+			}
+		}
+		@media (max-width: 480px) {
+		}
+	}
 `
 
 export default function Cart() {
@@ -76,6 +97,7 @@ export default function Cart() {
 	}, [userData])
 
 	useEffect(() => {
+		console.log("changed,", products)
 		let totalCount = 0
 		for (const item of products) {
 			totalCount = totalCount + item.quantity * item.price
@@ -100,9 +122,9 @@ export default function Cart() {
 									/>
 								))}
 								<div className="checkout">
-									<span>Total: {total}</span>
-									<Link href="/checkout2">
-										<a>Checkout</a>
+									<span>Total: ${total}.00</span>
+									<Link href="/checkout">
+										<a className="checkout-link">Checkout</a>
 									</Link>
 								</div>
 							</>
@@ -125,24 +147,3 @@ export default function Cart() {
 		</Layout>
 	)
 }
-
-// const getItems = async () => {
-// 	const cartItems = JSON.parse(localStorage.getItem("cartItems"))
-// 	if (cartItems === null || cartItems.length === 0) return console.log("empty")
-// 	const productIds = cartItems.map(item => item.productId)
-// 	const res = await fetch("/api/cart", {
-// 		method: "POST",
-// 		body: JSON.stringify(productIds),
-// 	})
-// 	const data = await res.json()
-// 	cartItems.forEach(item => {
-// 		data.forEach(elem => {
-// 			if (item.productId === elem.id) {
-// 				item.image = elem.image
-// 				item.price = elem.price
-// 				item.name = elem.name
-// 			}
-// 		})
-// 	})
-// 	setProducts(cartItems)
-// }

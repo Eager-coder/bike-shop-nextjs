@@ -93,7 +93,6 @@ export default function ItemContainer({ item, products, setProducts }) {
 	const changeQty = async type => {
 		const newQty = type === "-" ? qty - 1 : qty + 1
 		if (newQty <= 0 || newQty > 20) return
-
 		setIsLoading(true)
 		const res = await fetch("/api/user/cart", {
 			method: "PUT",
@@ -103,6 +102,15 @@ export default function ItemContainer({ item, products, setProducts }) {
 		if (json.isSuccess) {
 			setQty(json.qty)
 			setPrice(json.qty * item.price)
+			const newProd = products.map(product => {
+				if (product.id === item.id) {
+					product.quantity = newQty
+					return product
+				} else {
+					return product
+				}
+			})
+			setProducts(newProd)
 			setIsLoading(false)
 		}
 	}
@@ -122,7 +130,7 @@ export default function ItemContainer({ item, products, setProducts }) {
 				<img src={item.image} />
 			</div>
 			<div className="name">{item.name}</div>
-			<div className="size"> {item.size ? "Size: " + item.size : ""}</div>
+			<div className="size"> {item.size ? "Size: " + item.size : null}</div>
 			<div className="qty-container">
 				Quantity:
 				<div className="qty">
@@ -131,7 +139,7 @@ export default function ItemContainer({ item, products, setProducts }) {
 					<button onClick={() => changeQty("+")}>+</button>
 				</div>
 			</div>
-			<div className="price">${price}</div>
+			<div className="price">${price}.00</div>
 			<button className="btn-remove" onClick={() => removeItem(item.id)}>
 				<img src="https://img.icons8.com/android/96/000000/trash.png" />
 			</button>

@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react"
 import styled from "styled-components"
 import Context from "../Context"
+import CartPopup from "./CartPopup"
 const Form = styled.div`
 	margin-top: 50px;
 	label {
@@ -44,6 +45,7 @@ const Form = styled.div`
 `
 
 export default function SelectForm({ productData }) {
+	const [isPopup, setIsPopup] = useState(false)
 	const { userData } = useContext(Context)
 	const [size, setSize] = useState(
 		productData.category === "bikes" || productData.type === "jerseys" ? 48 : 0
@@ -57,11 +59,10 @@ export default function SelectForm({ productData }) {
 		size: Number(size),
 		qty: Number(qty),
 	}
-	useEffect(() => {
-		console.log(userData)
-	}, [userData])
+
 	const addToCart = async () => {
 		if (userData.isLoggedIn) {
+			setIsPopup(true)
 			const res = await fetch("/api/user/cart", {
 				method: "POST",
 				body: JSON.stringify({ itemData: { userId: userData.id, ...newItem } }),
@@ -71,29 +72,38 @@ export default function SelectForm({ productData }) {
 		}
 	}
 	return (
-		<Form>
-			{size ? (
-				<label className="select-size">
-					<span>Select a size:</span>
-					<select name="size" value={size} onChange={e => setSize(e.target.value)}>
-						<option value="48">48</option>
-						<option value="50">50</option>
-						<option value="52">52</option>
-						<option value="54">54</option>
-						<option value="56">56</option>
-						<option value="58">58</option>
-					</select>
+		<>
+			<Form>
+				{size ? (
+					<label className="select-size">
+						<span>Select a size:</span>
+						<select name="size" value={size} onChange={e => setSize(e.target.value)}>
+							<option value="48">48</option>
+							<option value="50">50</option>
+							<option value="52">52</option>
+							<option value="54">54</option>
+							<option value="56">56</option>
+							<option value="58">58</option>
+						</select>
+					</label>
+				) : (
+					""
+				)}
+				<label className="select-qty">
+					<span>Quantity:</span>
+					<input
+						type="number"
+						min="1"
+						max="50"
+						value={qty}
+						onChange={e => setQty(e.target.value)}
+					/>
 				</label>
-			) : (
-				""
-			)}
-			<label className="select-qty">
-				<span>Quantity:</span>
-				<input type="number" min="1" max="50" value={qty} onChange={e => setQty(e.target.value)} />
-			</label>
-			<button onClick={addToCart} id="add-to-cart">
-				Add to Cart
-			</button>
-		</Form>
+				<button onClick={addToCart} id="add-to-cart">
+					Add to Cart
+				</button>
+			</Form>
+			{isPopup ? <CartPopup item={productData} setIsOpen={setIsPopup} /> : null}
+		</>
 	)
 }

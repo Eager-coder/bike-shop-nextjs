@@ -5,7 +5,6 @@ import { Category } from "../../components/Category/Filter"
 import ItemGrid from "../../components/Category/ItemGrid"
 import Banner from "../../components/Category/Banner"
 import styled from "styled-components"
-
 const Section = styled.section`
 	display: flex;
 	width: 100%;

@@ -8,7 +8,7 @@ import Loading from "../components/Loading"
 const CartContainer = styled.div`
 	margin: 50px auto;
 	width: 100%;
-	max-width: 1200px;
+	max-width: 1000px;
 	h1 {
 		padding: 20px 0;
 		font-size: 2.5rem;
@@ -141,7 +141,7 @@ export default function Cart() {
 						)}
 					</div>
 				) : (
-					<Loading />
+					<Loading size="150" />
 				)}
 			</CartContainer>
 		</Layout>

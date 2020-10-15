@@ -1,91 +1,28 @@
 import { useState } from "react"
 import styled from "styled-components"
 
-const Div = styled.div`
-	width: 100%;
-	position: relative;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	border-radius: 4px;
-	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
-	font-size: 0.9rem;
-	margin: 10px 0;
-	padding: 15px;
-	*:focus,
-	*:active {
-		outline: none;
-		border: none;
-	}
-	&::after {
-		${({ isLoading }) =>
-			isLoading
-				? `content: "";
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			background: rgba(240, 240, 240, 0.7);`
-				: null}
-	}
-	& > * {
-		width: calc(100% / 6);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.image {
-		img {
-			width: auto;
-			height: 100px;
+/* @media (max-width: 1024px) {
+		flex-flow: row;
+		justify-content: initial;
+		.image {
+			order: 1;
 		}
-	}
-	.qty-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		.qty {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			margin-top: 5px;
-			.qty-number {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				width: 25px;
-				height: 25px;
-				margin: 0 15px;
-				border: 1px solid rgba(0, 0, 0, 0.2);
-			}
-			button {
-				cursor: pointer;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				border: none;
-				background: none;
-				font-weight: 500;
-				color: rgba(89, 88, 89, 1);
-				font-size: 1.8rem;
-				width: 25px;
-				height: 25px;
-			}
+		.name {
+			order: 2;
 		}
-	}
-	.btn-remove {
-		cursor: pointer;
-		width: 25px;
-		height: 25px;
-		background: none;
-		border: none;
-		img {
-			width: auto;
-			height: 100%;
+		.price {
+			order: 4;
 		}
-	}
-`
+		.qty-container {
+			order: 5;
+		}
+		.size {
+			order: 3;
+		}
+		.btn-remove {
+			order: 6;
+		}
+	} */
 export default function ItemContainer({ item, products, setProducts }) {
 	const [isLoading, setIsLoading] = useState(false)
 	const [qty, setQty] = useState(item.quantity)
@@ -125,24 +62,156 @@ export default function ItemContainer({ item, products, setProducts }) {
 		}
 	}
 	return (
-		<Div isLoading={isLoading}>
-			<div className="image">
-				<img src={item.image} />
-			</div>
-			<div className="name">{item.name}</div>
-			<div className="size"> {item.size ? "Size: " + item.size : null}</div>
-			<div className="qty-container">
-				Quantity:
-				<div className="qty">
-					<button onClick={() => changeQty("-")}>-</button>
-					<div className="qty-number">{qty}</div>
-					<button onClick={() => changeQty("+")}>+</button>
+		<Item isLoading={isLoading}>
+			<div className="item-flex">
+				<div className="item-detalis">
+					<div className="image">
+						<img src={item.image} />
+					</div>
+					<div className="text">
+						<p className="name">{item.name}</p>
+						<div className="size"> {item.size ? "Size: " + item.size : null}</div>
+					</div>
+				</div>
+				<div className="item-qty-price">
+					<div className="qty-container">
+						Quantity:
+						<div className="qty">
+							<button onClick={() => changeQty("-")}>-</button>
+							<div className="qty-number">{qty}</div>
+							<button onClick={() => changeQty("+")}>+</button>
+						</div>
+					</div>
+					<div className="price">${price}.00</div>
 				</div>
 			</div>
-			<div className="price">${price}.00</div>
-			<button className="btn-remove" onClick={() => removeItem(item.id)}>
-				<img src="https://img.icons8.com/android/96/000000/trash.png" />
-			</button>
-		</Div>
+			<div className="btn-remove" onClick={() => removeItem(item.id)}></div>
+		</Item>
 	)
 }
+
+const Item = styled.div`
+	width: 100%;
+	position: relative;
+	border-radius: 4px;
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+	margin: 10px 0;
+	padding: 10px 30px;
+	*:focus,
+	*:active {
+		outline: none;
+		border: none;
+	}
+	&::after {
+		${({ isLoading }) =>
+			isLoading
+				? `content: "";
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: rgba(240, 240, 240, 0.7);`
+				: null}
+	}
+
+	.item-flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		@media (max-width: 640px) {
+			display: block;
+		}
+		.item-detalis {
+			display: flex;
+			width: 50%;
+			.image {
+				width: 50%;
+				margin-right: 20px;
+				img {
+					width: auto;
+					height: 100px;
+				}
+			}
+			.text {
+				width: 50%;
+				font-size: 0.8rem;
+			}
+			@media (max-width: 768px) {
+				.image img {
+					height: 80px;
+				}
+			}
+			@media (max-width: 640px) {
+				width: 100%;
+				.image {
+					margin-right: 10px;
+					img {
+						height: 60px;
+					}
+				}
+			}
+		}
+		.item-qty-price {
+			width: 50%;
+			display: flex;
+			justify-content: space-evenly;
+			align-items: center;
+			@media (max-width: 640px) {
+				width: 100%;
+				justify-content: space-between;
+			}
+			.qty-container {
+				width: 25%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				.qty {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					margin-top: 5px;
+					.qty-number {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						width: 25px;
+						height: 25px;
+						margin: 0 15px;
+						border: 1px solid rgba(0, 0, 0, 0.2);
+					}
+					button {
+						cursor: pointer;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						border: none;
+						background: none;
+						font-weight: 500;
+						color: rgba(89, 88, 89, 1);
+						font-size: 1.8rem;
+						width: 25px;
+						height: 25px;
+					}
+				}
+			}
+			.price {
+				width: 25%;
+				display: flex;
+				justify-content: center;
+			}
+		}
+	}
+
+	.btn-remove {
+		cursor: pointer;
+		position: absolute;
+		top: 5px;
+		right: 12px;
+		::after {
+			content: "\\00D7";
+			font-size: 2rem;
+		}
+	}
+`

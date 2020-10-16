@@ -1,8 +1,10 @@
 import { useContext, useState } from "react"
 import styled from "styled-components"
-import Context from "../Context"
+import Context from "../../Context"
 import moment from "moment"
-import Popup from "../Popup"
+import Popup from "../../Popup"
+import Loading from "../../Loading"
+import OrderItem from "./OrderItem"
 const OrderBox = styled.div`
 	width: 100%;
 	border-radius: 4px;
@@ -26,9 +28,38 @@ const OrderBox = styled.div`
 			font-weight: 500;
 		}
 	}
+	.btn-complete {
+		margin-top: 10px;
+		cursor: pointer;
+		border: none;
+		border-radius: 5px;
+		background: black;
+		color: white;
+		padding: 2px 5px;
+	}
+	.status {
+		border-radius: 5px;
+		background: ${({ status }) => (status === "completed" ? "#69c501" : "lightgrey")};
+		color: ${({ status }) => (status === "completed" ? "white" : "black")};
+	}
+	@media (max-width: 768px) {
+		padding: 20px;
+		.id-total {
+			.order-id,
+			.total {
+				font-size: 1rem;
+			}
+		}
+		.details {
+			font-size: 0.85rem;
+		}
+	}
 `
 export default function Order({ order, getOrders }) {
 	const [isPopupOpen, setPopupOpen] = useState(false)
+	const [isConfirmLoading, setIsConfirmLoading] = useState(false)
+	const { products } = useContext(Context)
+
 	const {
 		address_line,
 		city,
@@ -42,17 +73,19 @@ export default function Order({ order, getOrders }) {
 		status,
 	} = order
 	const completeOrder = async order_id => {
+		setIsConfirmLoading(true)
 		const res = await fetch(`/api/user/order?order_id=${order_id}&isComplete=true`, {
 			method: "PUT",
 		})
 		const json = await res.json()
 		if (json.isSuccess) {
+			setIsConfirmLoading(false)
 			setPopupOpen(false)
 			getOrders()
 		}
 	}
 	return (
-		<OrderBox>
+		<OrderBox status={status}>
 			<div className="id-total">
 				<span className="order-id">Order ID: {order_id}</span>
 				<span className="total">Total: ${total}.00</span>
@@ -68,9 +101,9 @@ export default function Order({ order, getOrders }) {
 					</div>
 				</div>
 				<div className="right">
-					<div className="status">
+					<div className="status-box">
 						<span>Status: </span>
-						{status}
+						<span className="status">{status}</span>
 					</div>
 					{status !== "completed" ? (
 						<>
@@ -79,9 +112,21 @@ export default function Order({ order, getOrders }) {
 							</button>
 							{isPopupOpen ? (
 								<Popup>
-									<div>You are going to comfirm your order with ID: {order_id}</div>
-									<button onClick={() => completeOrder(order_id)}>Confirm</button>
-									<button onClick={() => setPopupOpen(false)}>Cancel</button>
+									{isConfirmLoading ? (
+										<Loading size="120" />
+									) : (
+										<Confirm>
+											<div>You are going to comfirm your order with ID: {order_id}</div>
+											<div className="btns">
+												<button className="confirm" onClick={() => completeOrder(order_id)}>
+													Confirm
+												</button>
+												<button className="cancel" onClick={() => setPopupOpen(false)}>
+													Cancel
+												</button>
+											</div>
+										</Confirm>
+									)}
 								</Popup>
 							) : null}
 						</>
@@ -90,67 +135,31 @@ export default function Order({ order, getOrders }) {
 			</div>
 
 			{items.map(item => (
-				<Item key={item.name} item={item} />
+				<OrderItem key={item.name} item={item} products={products} />
 			))}
 		</OrderBox>
 	)
 }
 
-const ItemBox = styled.div`
+const Confirm = styled.div`
 	display: flex;
-	align-items: center;
-	margin: 20px 0;
-	.image {
-		height: 70px;
-		width: 150px;
-		margin-right: 15px;
-		img {
-			border-radius: 7px;
-			height: 100%;
-			width: auto;
-		}
-	}
-	.item-details {
-		width: 100%;
+	max-width: 300px;
+	flex-direction: column;
+	.btns {
+		margin: 10px 0;
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		.size,
-		.qty {
-			font-size: 0.85rem;
+		.confirm {
+			cursor: pointer;
+			border: none;
+			border-radius: 5px;
+			background: black;
+			color: white;
+			padding: 2px 5px;
 		}
-		.price {
-			font-size: 1.3rem;
-			font-weight: 500px;
+		.cancel {
+			cursor: pointer;
+			border: none;
 		}
 	}
 `
-function Item({ item }) {
-	const { products } = useContext(Context)
-	console.log("item", item)
-	products.products.forEach(product => {
-		if (Number(product.id) === Number(item.product_id)) {
-			console.log(item)
-			item.image = product.image
-			item.name = product.name
-			console.log(item.image)
-		}
-	})
-	return (
-		<ItemBox>
-			<div className="image">
-				<img width="50" src={item.image} alt="" />
-			</div>
-			<div className="item-details">
-				<div className="left">
-					<div>{item.name}</div>
-					<div className="size">{item.size ? "Size: " + item.size : null}</div>
-					<span className="qty">Quantity: {item.quantity}</span>
-				</div>
-				<div className="right">
-					<span className="price">${item.price}.00</span>
-				</div>
-			</div>
-		</ItemBox>
-	)
-}

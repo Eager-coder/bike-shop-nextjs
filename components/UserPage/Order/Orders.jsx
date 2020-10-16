@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react"
 import styled from "styled-components"
 
 const OrderContainer = styled.section`
@@ -8,6 +7,11 @@ const OrderContainer = styled.section`
 		text-transform: uppercase;
 		font-weight: 500;
 		margin-bottom: 40px;
+	}
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 1.7rem;
+		}
 	}
 `
 import Order from "./Order"

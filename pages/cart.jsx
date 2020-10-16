@@ -14,6 +14,9 @@ const CartContainer = styled.div`
 		font-size: 2.5rem;
 		font-weight: 500;
 		text-align: center;
+		@media (max-width: 768px) {
+			font-size: 2rem;
+		}
 	}
 	.items-container {
 		margin: 20px;
@@ -52,9 +55,12 @@ const CartContainer = styled.div`
 		}
 	}
 	.checkout {
-		span {
+		.total {
 			font-size: 2rem;
 			font-weight: 500;
+			@media (max-width: 768px) {
+				font-size: 1.4rem;
+			}
 		}
 		.checkout-link {
 			margin: 10px 0;
@@ -70,8 +76,6 @@ const CartContainer = styled.div`
 				background: white;
 				color: black;
 			}
-		}
-		@media (max-width: 480px) {
 		}
 	}
 `
@@ -122,7 +126,7 @@ export default function Cart() {
 									/>
 								))}
 								<div className="checkout">
-									<span>Total: ${total}.00</span>
+									<span className="total">Total: ${total}.00</span>
 									<Link href="/checkout">
 										<a className="checkout-link">Checkout</a>
 									</Link>

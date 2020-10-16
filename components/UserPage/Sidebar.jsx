@@ -30,9 +30,9 @@ const SideNav = styled.aside`
 	}
 	.link-active {
 		a {
-			border-left: blue 4px solid;
+			border-left: #ff4834 4px solid;
 			padding-left: 20px;
-			color: blue;
+			color: #ff4834;
 		}
 	}
 	@media (max-width: 768px) {

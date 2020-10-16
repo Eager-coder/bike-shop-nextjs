@@ -11,13 +11,28 @@ const FormContainer = styled.div`
 	form {
 		input {
 			border: 1px solid rgb(0, 0, 0, 0.3);
-			border-radius: 4px;
+			border-radius: 2px;
 			display: block;
-			width: 250px;
+			width: 300px;
 			height: 40px;
 			margin: 10px 0;
 			font-size: 1rem;
 			padding-left: 10px;
+		}
+		#btn-submit {
+			cursor: pointer;
+			background: black;
+			border: none;
+			color: white;
+			padding: 10px 15px;
+			border-radius: 4px;
+		}
+	}
+	.no-acc {
+		margin-top: 15px;
+		a {
+			color: #ff4834;
+			margin: 0 5px;
 		}
 	}
 `
@@ -47,10 +62,12 @@ export default function Signup() {
 				<form onSubmit={handleSubmit}>
 					<input type="text" name="email" placeholder="Email" onChange={handleChange} />
 					<input type="password" name="password" placeholder="Password" onChange={handleChange} />
-					<button type="submit">Sign up</button>
+					<button id="btn-submit" type="submit">
+						Sign up
+					</button>
 					<Message message={message.message} isSuccess={message.isSuccess} />
 				</form>
-				<div>
+				<div className="no-acc">
 					Don't have an account?
 					<Link href="/signup">
 						<a>Sign up</a>

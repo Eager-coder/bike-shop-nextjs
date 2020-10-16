@@ -1,6 +1,6 @@
 import { loadStripe } from "@stripe/stripe-js"
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
-import React, { useState, useEffect, useContext } from "react"
+import { Elements } from "@stripe/react-stripe-js"
+import { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import Layout from "../components/Layout"
 import styled from "styled-components"
@@ -11,29 +11,17 @@ const Container = styled.section`
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
+	@media (max-width: 1024px) {
+		display: block;
+	}
 `
+
 export default function Checkout() {
 	const { userData } = useContext(Context)
 	const [products, setProducts] = useState(null)
+
 	const router = useRouter()
-	const [address, setAddress] = useState({
-		country: "",
-		addressLine: "",
-		city: "",
-		zipCode: "",
-		state: "",
-	})
-	const makeOrder = async id => {
-		try {
-			const res = await fetch("/api/user/checkout", {
-				method: "POST",
-				body: JSON.stringify({ id, products, address, userData }),
-			})
-			console.log(await res.json())
-		} catch (error) {
-			console.log(error)
-		}
-	}
+
 	useEffect(() => {
 		if (!userData.isLoading && !userData.isLoggedIn) {
 			router.push("/login")
@@ -42,7 +30,7 @@ export default function Checkout() {
 				const res = await fetch(`/api/user/cart?userId=${userData.id}`, { method: "GET" })
 				const json = await res.json()
 				setProducts(json.data)
-				console.log(json.data)
+				console.log("order sataus", json.data)
 			}
 			getProducts()
 		}
@@ -59,10 +47,9 @@ export default function Checkout() {
 				/>
 				<Elements stripe={stripePromise}>
 					<AddressForm
+						products={products}
 						total={products.reduce((a, item) => a + item.price * item.quantity, 0)}
-						address={address}
-						setAddress={setAddress}
-						makeOrder={makeOrder}></AddressForm>
+						userData={userData}></AddressForm>
 				</Elements>
 			</Container>
 		</Layout>

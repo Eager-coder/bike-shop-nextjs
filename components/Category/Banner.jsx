@@ -3,9 +3,9 @@ import styled from "styled-components"
 const Div = styled.div`
 	width: 100%;
 	height: 350px;
-	background: url(/images/bikes.jpg) no-repeat;
+	background: url(${({ image }) => image}) no-repeat;
 	background-size: cover;
-	background-position: 0 80%;
+	background-position: 0 50%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -25,9 +25,9 @@ const Div = styled.div`
 		z-index: 1;
 	}
 `
-export default function Banner({ heading }) {
+export default function Banner({ heading, image }) {
 	return (
-		<Div>
+		<Div image={image}>
 			<h1>{heading === "Bmx" ? "BMX" : heading}</h1>
 		</Div>
 	)

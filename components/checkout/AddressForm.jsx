@@ -1,8 +1,55 @@
 import { useState } from "react"
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
 import { CountryDropdown } from "react-country-region-selector"
 import styled from "styled-components"
+import Loading from "../Loading"
+import Link from "next/link"
+import Popup from "../Popup"
 
+const MessageBox = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	img {
+		width: 150px;
+	}
+	p {
+		margin: 15px 0;
+		font-size: 1.3rem;
+	}
+	a {
+		background: black;
+		padding: 10px;
+		font-size: 1.2rem;
+		border-radius: 7px;
+		color: white;
+	}
+`
+
+const Message = ({ message }) => {
+	return (
+		<MessageBox>
+			{message?.isSuccess ? (
+				<>
+					<img src="/icons/tick.svg" alt="" />
+					<p>{message.message}</p>
+					<Link href="/myaccount/orders">
+						<a>Order Details</a>
+					</Link>
+				</>
+			) : (
+				<>
+					<p>{message.message}</p>
+					<Link href="/cart">
+						<a>Back to cart</a>
+					</Link>
+				</>
+			)}
+		</MessageBox>
+	)
+}
 const Form = styled.div`
 	width: 50%;
 	display: flex;
@@ -40,6 +87,21 @@ const Form = styled.div`
 			box-shadow: 0 0 0 1px #e0e0e0, 0 2px 4px 0 rgba(0, 0, 0, 0.07),
 				0 1px 1.5px 0 rgba(0, 0, 0, 0.05);
 		}
+		.form-error {
+			color: #d72828;
+			display: flex;
+			align-items: center;
+			img {
+				margin-right: 5px;
+				width: 15px;
+				height: 15px;
+			}
+		}
+	}
+	@media (max-width: 1024px) {
+		width: 100%;
+		margin: 30px 0;
+		padding: 0 20px;
 	}
 `
 const StripeForm = styled.form`
@@ -63,27 +125,60 @@ const StripeForm = styled.form`
 		}
 	}
 `
-export default function AddressForm({ address, setAddress, total, makeOrder }) {
+export default function AddressForm({ userData, products, total }) {
+	const [isPopupOpen, setIsPopupOpen] = useState(false)
+	const [isOrderFinished, setIsOrderFinished] = useState(false)
+	const [message, setMessage] = useState(null)
+	const [formError, setFormError] = useState(null)
 	const stripe = useStripe()
 	const elements = useElements()
+	const [address, setAddress] = useState({
+		country: "",
+		addressLine: "",
+		city: "",
+		zipCode: "",
+		state: "",
+	})
 	const handleChange = e => {
 		setAddress({ ...address, [e.target.name]: e.target.value })
-		console.log(address)
 	}
+
 	const handleSubmit = async e => {
 		e.preventDefault()
+		setIsPopupOpen(true)
 		const { error, paymentMethod } = await stripe.createPaymentMethod({
 			type: "card",
 			card: elements.getElement(CardElement),
 		})
 		if (error) {
-			console.log(error)
+			console.log(error.message)
+			setIsPopupOpen(false)
+			setFormError(error.message)
 		} else {
 			const { id } = paymentMethod
-			await makeOrder(id)
+			try {
+				const res = await fetch("/api/user/checkout", {
+					method: "POST",
+					body: JSON.stringify({ id, products, address, userData }),
+				})
+				const json = await res.json()
+				if (!json.isSuccess && json.isIncomplete) {
+					setFormError(json.message)
+					setIsPopupOpen(false)
+				} else if (!json.isSuccess) {
+					setMessage(json)
+					setIsOrderFinished(true)
+				} else if (json.isSuccess) {
+					setMessage(json)
+					setIsOrderFinished(true)
+				}
+				console.log(json)
+			} catch (error) {
+				setFormError(error.message)
+			}
 		}
-		console.log(error, paymentMethod)
 	}
+
 	return (
 		<Form>
 			<div className="form-flex">
@@ -145,7 +240,17 @@ export default function AddressForm({ address, setAddress, total, makeOrder }) {
 						Pay ${total}.00
 					</button>
 				</StripeForm>
+				{formError ? (
+					<div className="form-error">
+						<img src="/icons/error.png" alt="" />
+						{formError}{" "}
+					</div>
+				) : null}
 			</div>
+
+			{isPopupOpen ? (
+				<Popup>{isOrderFinished ? <Message message={message} /> : <Loading size="100" />}</Popup>
+			) : null}
 		</Form>
 	)
 }

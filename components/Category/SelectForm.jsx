@@ -39,6 +39,9 @@ const Form = styled.div`
 			color: black;
 		}
 	}
+	.warning {
+		color: red;
+	}
 	@media (max-width: 768px) {
 		margin-top: 20px;
 	}
@@ -99,9 +102,13 @@ export default function SelectForm({ productData }) {
 						onChange={e => setQty(e.target.value)}
 					/>
 				</label>
-				<button onClick={addToCart} id="add-to-cart">
-					Add to Cart
-				</button>
+				{userData.isLoggedIn ? (
+					<button onClick={addToCart} id="add-to-cart">
+						Add to Cart
+					</button>
+				) : (
+					<div className="warning">Sign in to add to cart</div>
+				)}
 			</Form>
 			{isPopup ? <CartPopup item={productData} setIsOpen={setIsPopup} /> : null}
 		</>

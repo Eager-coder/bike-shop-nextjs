@@ -5,7 +5,7 @@ import Layout from "../../components/Layout"
 import Context from "../../components/Context"
 import Sidebar from "../../components/UserPage/Sidebar"
 import Profile from "../../components/UserPage/Profile"
-import Orders from "../../components/UserPage/Orders"
+import Orders from "../../components/UserPage/Order/Orders"
 import ErrorPage from "../_error"
 import Loading from "../../components/Loading"
 
@@ -16,6 +16,7 @@ const AccountSection = styled.div`
 	display: flex;
 	@media (max-width: 768px) {
 		flex-direction: column;
+		padding: 0 20px;
 	}
 `
 
@@ -49,7 +50,7 @@ export default function YourAccount() {
 					) : null}
 				</AccountSection>
 			) : (
-				<Loading />
+				<Loading size="150" />
 			)}
 		</Layout>
 	) : (

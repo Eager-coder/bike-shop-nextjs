@@ -41,8 +41,16 @@ const EditBox = styled.div`
 		.buttons {
 			display: flex;
 			justify-content: space-between;
+			button {
+				cursor: pointer;
+				padding: 5px 10px;
+				background: black;
+				border: none;
+				border-radius: 4px;
+				color: white;
+			}
 			#cancel {
-				/* color:  */
+				cursor: pointer;
 			}
 		}
 	}

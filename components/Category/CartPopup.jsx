@@ -20,6 +20,11 @@ const Div = styled.div`
 		top: 100px;
 		right: 20px;
 		padding: 20px;
+		@media (max-width: 640px) {
+			right: 0;
+			width: 100%;
+			height: 300px;
+		}
 		.top {
 			display: flex;
 			justify-content: space-between;
@@ -49,8 +54,17 @@ const Div = styled.div`
 			display: flex;
 			justify-content: space-between;
 			img {
-				height: 150px;
+				height: 120px;
 				width: auto;
+			}
+			@media (max-width: 640px) {
+				img {
+					height: 80px;
+				}
+				.item-name {
+					font-size: 0.85rem;
+					margin: 0 5px;
+				}
 			}
 		}
 		.cart-link {
@@ -68,6 +82,9 @@ const Div = styled.div`
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				@media (max-width: 640px) {
+					width: 120px;
+				}
 			}
 		}
 	}

@@ -22,6 +22,9 @@ const ProfileSection = styled.section`
 			font-size: 1.1rem;
 			font-weight: 600;
 		}
+		.edit-btn {
+			cursor: pointer;
+		}
 		b {
 			font-weight: 600;
 		}
@@ -41,6 +44,11 @@ const ProfileSection = styled.section`
 			margin: 15px 0;
 		}
 	}
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 1.7rem;
+		}
+	}
 `
 const GlobalStyle = createGlobalStyle`
   body {
@@ -57,6 +65,7 @@ export default function Profile({ user }) {
 				<div className="box-heading">
 					<h2>PROFILE INFORMATION</h2>
 					<span
+						className="edit-btn"
 						onClick={() => {
 							setIsEditOpen(true)
 							setType("profile")
@@ -82,6 +91,7 @@ export default function Profile({ user }) {
 				<div className="box-heading">
 					<h2>PASSWORD</h2>
 					<span
+						className="edit-btn"
 						onClick={() => {
 							setIsEditOpen(true)
 							setType("password")
@@ -90,10 +100,6 @@ export default function Profile({ user }) {
 					</span>
 				</div>
 				<hr />
-				<div className="password property">
-					<b>Your Password</b>
-					<span>{user.passwordLength || "**********"}</span>
-				</div>
 			</div>
 			<GlobalStyle isOpen={isEditOpen} />
 		</ProfileSection>

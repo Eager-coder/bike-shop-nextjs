@@ -38,7 +38,6 @@ const Section = styled.section`
 `
 export default function Bikes({ data }) {
 	const initialList = JSON.parse(data)
-	console.log("db data", initialList)
 	const [productList, setProductList] = useState(initialList)
 	const [filterMsg, setFilterMsg] = useState(null)
 	const router = useRouter()
@@ -51,6 +50,7 @@ export default function Bikes({ data }) {
 		[1500, 3000],
 		[3000, 50000],
 	]
+
 	useEffect(() => setProductList(initialList), [data])
 	const filterList = (category, value) => {
 		setFilterMsg(`${category}: ${value}`)
@@ -71,7 +71,7 @@ export default function Bikes({ data }) {
 	}
 	return (
 		<Layout>
-			<Banner heading={heading} />
+			<Banner heading={heading} image={`/images/${router.query.uid}.jpg`} />
 			<Section>
 				<aside>
 					<h2>Filter by</h2>

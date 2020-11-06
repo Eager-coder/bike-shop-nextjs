@@ -9,7 +9,7 @@ const Header = styled.header`
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: ${props => (props.isLoggedIn ? "#1a1a1a" : "orange")};
+	background-color: #1a1a1a;
 	z-index: 2;
 	nav {
 		display: flex;

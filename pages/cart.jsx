@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import Layout from "../components/Layout"
 import styled from "styled-components"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import Context from "../components/Context"
 import ItemContainer from "../components/cart/ItemContainer"
 import Loading from "../components/Loading"
@@ -85,17 +86,20 @@ export default function Cart() {
 	const [total, setTotal] = useState(0)
 	const [isLoaded, setIsLoaded] = useState(false)
 	const { userData } = useContext(Context)
+	const router = useRouter()
+
 	const getCartItems = async () => {
 		const res = await fetch(`/api/user/cart?userId=${userData.id}`, { method: "GET" })
 		const json = await res.json()
-		console.log("get cart items", json)
 		if (json.data) {
 			setProducts(json.data)
 		}
 		setIsLoaded(true)
 	}
 	useEffect(() => {
-		if (userData.isLoggedIn && !userData.isLoading) {
+		if (!userData.isLoading && !userData.isLoggedIn) {
+			router.push("/login")
+		} else if (userData.isLoggedIn && !userData.isLoading) {
 			getCartItems()
 		}
 	}, [userData])

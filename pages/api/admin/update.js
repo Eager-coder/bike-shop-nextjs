@@ -27,7 +27,7 @@ export default async (req, res) => {
 				.join("''")}', tech_specs = '${tech_specs.split("'").join("''")}' WHERE id = ${id}`
 		)
 		console.log("update product", update)
-		if (update) return res.status(200).json({ message: "Item has been updated" })
+		if (update) return res.status(200).json({ message: "Item has been updated", isSuccess: true })
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({ message: err })

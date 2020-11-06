@@ -5,8 +5,6 @@ import { Category } from "../../components/Category/Filter"
 import ItemGrid from "../../components/Category/ItemGrid"
 import Banner from "../../components/Category/Banner"
 import styled from "styled-components"
-// import mysql from "mysql"
-// import db_info from "../../db_info"
 
 const Section = styled.section`
 	display: flex;

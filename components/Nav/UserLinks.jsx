@@ -125,13 +125,6 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 	}
 	return (
 		<Div>
-			{/* <div className="search-field">
-				<img
-					onClick={() => setSearchOpen(!isSearchOpen)}
-					src="https://img.icons8.com/ios-glyphs/96/000000/search.png"
-				/>
-				<input type="text" placeholder="Search..." />
-			</div> */}
 			<Link href="/cart" passHref>
 				<a className="cart">
 					<img src="https://img.icons8.com/cotton/96/000000/shopping-cart--v2.png" />
@@ -154,6 +147,11 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 							<Link href="/myaccount/[uid]" as="/myaccount/orders" passHref>
 								<a>Order history</a>
 							</Link>
+							{userData.isAdmin ? (
+								<Link href="/admin">
+									<a>Admin dashboard</a>
+								</Link>
+							) : null}
 							<hr />
 							<button onClick={signOut}>
 								<span>Log out</span>

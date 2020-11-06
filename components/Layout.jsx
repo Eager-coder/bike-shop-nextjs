@@ -23,8 +23,8 @@ const GlobalStyle = createGlobalStyle`
 	}
 `
 export default function Layout({ children }) {
-	const isLoggedIn = useContext(Context).userData.isLoggedIn
-	console.log(useContext(Context).userData.isAdmin)
+	const context = useContext(Context)
+	const { isLoggedIn, isAdmin } = context.userData
 	return (
 		<>
 			<Head>

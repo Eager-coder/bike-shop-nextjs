@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import styled from 'styled-components'
+import Link from "next/link"
+import styled from "styled-components"
 const Header = styled.header`
 	width: 100%;
 	height: 4rem;
@@ -8,7 +8,7 @@ const Header = styled.header`
 	nav {
 		height: 100%;
 		width: 100%;
-		max-width: 1400px;
+		padding: 0 50px;
 		margin: 0 auto;
 		display: flex;
 		justify-content: space-between;
@@ -16,6 +16,7 @@ const Header = styled.header`
 		.logo {
 			img {
 				width: 80px;
+				filter: invert(1);
 			}
 		}
 		.user-links {
@@ -35,17 +36,15 @@ export default function TopNav() {
 	return (
 		<Header>
 			<nav>
-				<Link href='/' passHref>
-					<a className='logo'>
+				<Link href="/" passHref>
+					<a className="logo">
 						<img
-							src='https://pluspng.com/img-png/puma-logo-png-white-puma-2-icon-512.png'
-							alt=''
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/FOCUS_Bikes_Logo_schwarz.svg/1280px-FOCUS_Bikes_Logo_schwarz.svg.png"
+							alt=""
 						/>
 					</a>
 				</Link>
-				<div className='user-links'>
-					<button className='logout'>Log out</button>
-				</div>
+				<div className="user-links">{/* <button className="logout">Log out</button> */}</div>
 			</nav>
 		</Header>
 	)

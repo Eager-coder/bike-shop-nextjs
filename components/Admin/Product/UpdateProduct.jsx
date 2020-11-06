@@ -86,19 +86,30 @@ const Div = styled.div`
 const Popup = styled.div`
 	width: 150px;
 	height: 50px;
-	background-color: ${({ msg }) => (msg === "Item added!" ? "green" : "red")};
+	button {
+		cursor: pointer;
+		background: white;
+		width: max-content;
+		height: max-content;
+		border: 2px solid black;
+		padding: 5px 10px;
+		margin: 20px;
+		border-radius: 7px;
+		color: black;
+		align-self: center;
+	}
 `
 export default function Update({ isUpdateOpen, setIsUpdateOpen, product }) {
 	const [list, setList] = useState({ ...product })
-	const [msg, setMsg] = useState("")
+	const [isUpdated, setIsUpdated] = useState(false)
 	const fetchData = async e => {
 		e.preventDefault()
 		const res = await fetch("/api/admin/update", {
 			method: "POST",
 			body: JSON.stringify(list),
 		})
-		const message = await res.json()
-		setMsg(message.message)
+		const json = await res.json()
+		setIsUpdated(json.isSuccess)
 	}
 	const handleChange = e => {
 		setList({ ...list, [e.target.name]: e.target.value })
@@ -106,103 +117,108 @@ export default function Update({ isUpdateOpen, setIsUpdateOpen, product }) {
 
 	return (
 		<Div>
-			<form onSubmit={fetchData}>
-				<h2>Update a product</h2>
-				<div className="flexbox">
-					<div className="left">
-						<label>
-							<div>Product name</div>
-							<input
-								onChange={e => handleChange(e)}
-								type="text"
-								name="name"
-								defaultValue={product.name}
-							/>
-						</label>
-						<label>
-							<div>Brand</div>
-							<input onInput={handleChange} type="text" name="brand" defaultValue={product.brand} />
-						</label>
-						<label>
-							<div>Category</div>
-							<select
-								onChange={e => handleChange(e)}
-								name="category"
-								defaultValue={product.category}>
-								<option></option>
-								<option value="bikes">Bikes</option>
-								<option value="accessories">Accessories</option>
-								<option value="clothing">Clothing</option>
-							</select>
-						</label>
-						<label>
-							<div>Type</div>
-							<input
-								onChange={e => handleChange(e)}
-								type="text"
-								name="type"
-								defaultValue={product.type}
-							/>
-						</label>
-						<label>
-							<div>Price</div>
-							<input
-								onChange={e => handleChange(e)}
-								type="number"
-								name="price"
-								defaultValue={product.price}
-							/>
-						</label>
-						<label>
-							<div>Year</div>
-							<input
-								onChange={e => handleChange(e)}
-								type="number"
-								name="year"
-								defaultValue={product.year}
-							/>
-						</label>
-						<label>
-							<div>Image URL</div>
-							<input
-								onChange={e => handleChange(e)}
-								type="text"
-								name="image"
-								defaultValue={product.image}
-							/>
-						</label>
+			{isUpdated ? (
+				<Popup>
+					Item Updated!
+					<button id="close" onClick={() => setIsUpdateOpen(false)}>
+						Close
+					</button>
+				</Popup>
+			) : (
+				<form onSubmit={fetchData}>
+					<h2>Update a product</h2>
+					<div className="flexbox">
+						<div className="left">
+							<label>
+								<div>Product name</div>
+								<input
+									onChange={handleChange}
+									type="text"
+									name="name"
+									defaultValue={product.name}
+								/>
+							</label>
+							<label>
+								<div>Brand</div>
+								<input
+									onInput={handleChange}
+									type="text"
+									name="brand"
+									defaultValue={product.brand}
+								/>
+							</label>
+							<label>
+								<div>Category</div>
+								<select onChange={handleChange} name="category" defaultValue={product.category}>
+									<option></option>
+									<option value="bikes">Bikes</option>
+									<option value="accessories">Accessories</option>
+									<option value="clothing">Clothing</option>
+								</select>
+							</label>
+							<label>
+								<div>Type</div>
+								<input
+									onChange={handleChange}
+									type="text"
+									name="type"
+									defaultValue={product.type}
+								/>
+							</label>
+							<label>
+								<div>Price</div>
+								<input
+									onChange={handleChange}
+									type="number"
+									name="price"
+									defaultValue={product.price}
+								/>
+							</label>
+							<label>
+								<div>Year</div>
+								<input
+									onChange={handleChange}
+									type="number"
+									name="year"
+									defaultValue={product.year}
+								/>
+							</label>
+							<label>
+								<div>Image URL</div>
+								<input
+									onChange={handleChange}
+									type="text"
+									name="image"
+									defaultValue={product.image}
+								/>
+							</label>
+						</div>
+						<div className="right">
+							<label>
+								<div>Description</div>
+								<textarea
+									onChange={handleChange}
+									name="description"
+									defaultValue={product.description}></textarea>
+							</label>
+							<label>
+								<div>Technical specs</div>
+								<textarea
+									name="tech_specs"
+									onChange={handleChange}
+									placeholder="#parameter = specification"
+									defaultValue={product.tech_specs}></textarea>
+							</label>
+						</div>
 					</div>
-					<div className="right">
-						<label>
-							<div>Description</div>
-							<textarea
-								onChange={e => handleChange(e)}
-								name="description"
-								defaultValue={product.description}></textarea>
-						</label>
-						<label>
-							<div>Technical specs</div>
-							<textarea
-								name="tech_specs"
-								onChange={e => handleChange(e)}
-								placeholder="#parameter = specification"
-								defaultValue={product.tech_specs}></textarea>
-						</label>
-					</div>
-				</div>
 
-				<input type="submit" value="Update" />
-				{msg.length ? (
-					<Popup msg="Item added!">
-						<span>{msg}</span>
-					</Popup>
-				) : (
-					""
-				)}
-				<button id="close" onClick={() => setIsUpdateOpen(false)}>
-					Close
-				</button>
-			</form>
+					<input type="submit" value="Update" />
+
+					<button id="close" onClick={() => setIsUpdateOpen(false)}>
+						Close
+					</button>
+				</form>
+			)}
 		</Div>
 	)
 }

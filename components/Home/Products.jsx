@@ -2,10 +2,12 @@ import Link from "next/link"
 import ProductBig from "./ProductBig"
 import ProductSmall from "./ProductSmall"
 import styled from "styled-components"
+
+// style of the Products component
 const ProductsGrid = styled.section`
 	width: 100%;
-	max-width: 1400px;
-	padding: 0 40px;
+	max-width: 1300px;
+	padding: 0 20px;
 	margin: 50px auto;
 	display: grid;
 	grid-template-columns: 1fr 1fr;

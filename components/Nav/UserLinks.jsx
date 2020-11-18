@@ -20,15 +20,19 @@ const Div = styled.div`
 			padding: 0 7px;
 		}
 		input {
-			width: 150px;
+			width: 200px;
 			border: none;
 			font-size: 1rem;
+			@media (max-width: 1024px) {
+				width: 150px;
+			}
 			@media (max-width: 768px) {
 				width: 100px;
 			}
 		}
 	}
 	.cart {
+		margin-left: 10px;
 		img {
 			width: 30px;
 			filter: invert(0);
@@ -43,9 +47,9 @@ const UserBox = styled.div`
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 0 10px;
 		background: ${({ isOpen }) => (isOpen ? "#ff4834" : "#1a1a1a")};
 		border-radius: 4px;
+		margin-left: 10px;
 		img {
 			filter: ${({ isOpen }) => (isOpen ? "invert(1)" : "invert(1)")};
 			width: 35px;
@@ -64,7 +68,7 @@ const UserBox = styled.div`
 		display: ${({ isOpen }) => (isOpen ? "block" : "none")};
 		position: absolute;
 		top: 4.5rem;
-		right: 30px;
+		right: 20px;
 		width: max-content;
 		height: max-content;
 		padding: 10px 20px;
@@ -125,6 +129,10 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 	}
 	return (
 		<Div>
+			<div className="search-field">
+				<img src="https://www.flaticon.com/svg/static/icons/svg/54/54481.svg" alt="" />
+				<input type="text" placeholder="Search" />
+			</div>
 			<Link href="/cart" passHref>
 				<a className="cart">
 					<img src="https://img.icons8.com/cotton/96/000000/shopping-cart--v2.png" />

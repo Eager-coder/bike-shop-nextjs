@@ -9,7 +9,7 @@ const Loader = styled.div`
 export default function Loading({ size }) {
 	return (
 		<Loader>
-			<ClipLoader color={"#1a1a1a"} size={size} />
+			<ClipLoader color={"#1a1a1a"} size={size + "px"} />
 		</Loader>
 	)
 }

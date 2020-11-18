@@ -1,4 +1,3 @@
-import { useState } from "react"
 import Layout from "../../components/Layout"
 import ImgView from "../../components/Category/ImgView"
 import SelectForm from "../../components/Category/SelectForm"

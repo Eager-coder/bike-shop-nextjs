@@ -12,6 +12,9 @@ const Header = styled.header`
 	background-color: #1a1a1a;
 	z-index: 2;
 	nav {
+		max-width: 1300px;
+		position: relative;
+		margin: 0 auto;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -34,12 +37,15 @@ const LinksLeft = styled.div`
 	align-items: center;
 	.logo {
 		margin-right: 50px;
+		@media (max-width: 1024px) {
+			margin-right: 30px;
+		}
 		img {
 			width: 80px;
 			filter: invert(0.9);
 		}
 	}
-	.nav-links {
+	ul.nav-links {
 		display: flex;
 		transition: 0.4s;
 		@media (max-width: 768px) {

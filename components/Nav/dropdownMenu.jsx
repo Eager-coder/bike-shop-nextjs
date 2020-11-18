@@ -8,9 +8,12 @@ const Li = styled.li`
 		font-weight: 500;
 		font-size: 1.1rem;
 		height: 4rem;
-		padding: 0 25px;
+		padding: 0 20px;
 		display: flex;
 		align-items: center;
+		@media (max-width: 1024px) {
+			padding: 0 15px;
+		}
 	}
 	:hover .category {
 		border-top: solid 4px #ff4834;
@@ -75,9 +78,11 @@ export default function DropdownMenu({ category, links }) {
 
 	return (
 		<Li ref={dropdownBox} width={width}>
-			<Link href={`/${category}`} as={`/${category}`}>
-				<a className="category">{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}</a>
-			</Link>
+			{/* <Link href={`/${category}`} as={`/${category}`}> */}
+			<span className="category">
+				{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
+			</span>
+			{/* </Link> */}
 			<div>
 				<ul>
 					{links.map((e, index) => (

@@ -9,8 +9,8 @@ const Container = styled.div`
 	align-items: center;
 	img {
 		width: 100%;
-		height: auto;
-		object-fit: cover;
+		height: 250px;
+		object-fit: contain;
 	}
 	header {
 		font-weight: bold;

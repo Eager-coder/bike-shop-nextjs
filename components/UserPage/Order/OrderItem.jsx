@@ -2,15 +2,15 @@ import styled from "styled-components"
 const ItemBox = styled.div`
 	display: flex;
 	align-items: center;
-	margin: 20px 0;
+	margin: 50px 0;
 	.image {
 		height: 70px;
 		width: 150px;
 		margin-right: 15px;
 		img {
 			border-radius: 7px;
-			height: 100%;
-			width: auto;
+			height: auto;
+			width: 100%;
 		}
 	}
 	.item-details {
@@ -30,7 +30,7 @@ const ItemBox = styled.div`
 	}
 	@media (max-width: 768px) {
 		.image {
-			height: 40px;
+			height: auto;
 			width: 100px;
 			margin-right: 10px;
 		}
@@ -48,13 +48,17 @@ const ItemBox = styled.div`
 			}
 		}
 	}
+	@media (max-width: 480px) {
+		.image {
+			width: 80px;
+		}
+	}
 `
 export default function OrderItem({ item, products }) {
 	products.products.forEach(product => {
 		if (Number(product.id) === Number(item.product_id)) {
 			item.image = product.image
 			item.name = product.name
-			console.log(item.image)
 		}
 	})
 	return (

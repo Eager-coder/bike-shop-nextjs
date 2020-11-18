@@ -6,12 +6,14 @@ const Div = styled.div`
 		width: 100%;
 	}
 	.text {
+		max-width: 1300px;
+		margin: 5% auto;
 		position: absolute;
 		left: 0%;
 		top: 0%;
 		bottom: 0%;
 		right: 0%;
-		padding: 5% 10%;
+		padding: 0 20px;
 		h1 {
 			color: white;
 			font-size: 3.5rem;

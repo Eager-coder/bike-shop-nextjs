@@ -17,7 +17,7 @@ const Div = styled.div`
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background: rgb(0, 0, 0, 0.2);
+		background: rgb(0, 0, 0, 0.5);
 	}
 	h1 {
 		color: white;

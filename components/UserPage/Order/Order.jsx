@@ -134,8 +134,8 @@ export default function Order({ order, getOrders }) {
 				</div>
 			</div>
 
-			{items.map(item => (
-				<OrderItem key={item.name} item={item} products={products} />
+			{items.map((item, index) => (
+				<OrderItem key={index} item={item} products={products} />
 			))}
 		</OrderBox>
 	)

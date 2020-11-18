@@ -1,10 +1,10 @@
 const mysql = require("serverless-mysql")
 const db = mysql({
 	config: {
-		host: "freedb.tech",
-		user: "freedbtech_Sultan",
-		password: "myaccount007",
-		database: "freedbtech_Bike_Shop",
+		host: process.env.DB_HOST,
+		user: process.env.DB_USER,
+		password: process.env.DB_PASS,
+		database: process.env.DB_NAME,
 	},
 })
 exports.query = async (query, value) => {
@@ -12,7 +12,7 @@ exports.query = async (query, value) => {
 		console.log("db connection")
 		const results = await db.query(query, value)
 		await db.end()
-		console.log("finish connection")
+		console.log("connection finished")
 		return results
 	} catch (error) {
 		return { error }

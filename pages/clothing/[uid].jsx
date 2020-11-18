@@ -71,7 +71,7 @@ export default function Clothing({ data }) {
 	}
 	return (
 		<Layout>
-			<Banner heading={heading} />
+			<Banner heading={heading} image={`/images/${router.query.uid}.jpg`} />
 			<Section>
 				<aside>
 					<h2>Filter by</h2>

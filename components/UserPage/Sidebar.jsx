@@ -3,12 +3,10 @@ import Link from "next/link"
 import styled from "styled-components"
 const SideNav = styled.aside`
 	width: 500px;
-	.username {
-		span {
-			text-transform: uppercase;
-			font-size: 1.4rem;
-			font-weight: 600;
-		}
+	.username span {
+		text-transform: uppercase;
+		font-size: 1.4rem;
+		font-weight: 600;
 	}
 	.links {
 		margin: 20px 30px;
@@ -35,7 +33,13 @@ const SideNav = styled.aside`
 			color: #ff4834;
 		}
 	}
+	@media (max-width: 1024px) {
+		width: 350px;
+	}
 	@media (max-width: 768px) {
+		.username span {
+			font-size: 1.2rem;
+		}
 		width: 100%;
 	}
 `

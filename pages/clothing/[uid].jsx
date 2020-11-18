@@ -103,7 +103,7 @@ export default function Clothing({ data }) {
 						))}
 					</Category>
 				</aside>
-				<ItemGrid productList={productList} />
+				<ItemGrid productList={productList} padding="0 0 0 50px" />
 			</Section>
 		</Layout>
 	)

@@ -7,10 +7,11 @@ import Banner from "../../components/Category/Banner"
 import styled from "styled-components"
 const Section = styled.section`
 	display: flex;
+	justify-content: space-between;
 	width: 100%;
-	max-width: 1500px;
+	max-width: 1400px;
 	margin: 50px auto;
-	padding: 0 50px;
+	padding: 0 20px;
 	aside {
 		width: 200px;
 		.filter-msg {
@@ -103,7 +104,7 @@ export default function Bikes({ data }) {
 						))}
 					</Category>
 				</aside>
-				<ItemGrid productList={productList} />
+				<ItemGrid productList={productList} padding="0 0 0 50px" />
 			</Section>
 		</Layout>
 	)

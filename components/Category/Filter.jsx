@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import React, { useState, useEffect } from "react"
 const Li = styled.li`
+	width: 200px;
 	header {
 		cursor: pointer;
 		width: 100%;
@@ -25,7 +26,8 @@ const Li = styled.li`
 			cursor: pointer;
 		}
 	}
-	@media (max-width: 1000px) {
+	@media (max-width: 1280px) {
+		width: 100%;
 		.list li {
 			font-size: 0.9rem;
 		}
@@ -35,14 +37,12 @@ export function Category({ children, name }) {
 	const array = React.Children.toArray(children)
 	const [isOpen, setOpen] = useState(false)
 	return (
-		<div>
-			<Li isOpen={isOpen}>
-				<header onClick={() => setOpen(!isOpen)}>
-					<span>{name}</span>
-					<img src="/icons/chevron-down.svg" alt="" />
-				</header>
-				<ul className="list">{array.map((item, index) => item)}</ul>
-			</Li>
-		</div>
+		<Li isOpen={isOpen}>
+			<header onClick={() => setOpen(!isOpen)}>
+				<span>{name}</span>
+				<img src="/icons/chevron-down.svg" alt="" />
+			</header>
+			<ul className="list">{array.map((item, index) => item)}</ul>
+		</Li>
 	)
 }

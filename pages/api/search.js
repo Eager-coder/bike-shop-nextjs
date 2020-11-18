@@ -10,6 +10,6 @@ export default async (req, res) => {
 		const string = (name + brand + type + category).toLowerCase().replace(/\s/g, "")
 		if (string.includes(word)) return item
 	})
-	if (!searchResult.length) return res.status(404).json({ message: "Not found" })
+	if (!searchResult.length) return res.status(404).json({ searchResult: [], message: "Not found" })
 	return res.status(200).json({ searchResult })
 }

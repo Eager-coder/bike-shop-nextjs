@@ -72,7 +72,6 @@ export default function DropdownMenu({ category, links }) {
 	useEffect(() => {
 		if (dropdownBox.current) {
 			setWidth(dropdownBox.current.offsetWidth)
-			console.log(dropdownBox.current.offsetWidth)
 		}
 	}, [])
 

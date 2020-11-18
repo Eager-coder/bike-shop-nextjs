@@ -3,34 +3,10 @@ import styled from "styled-components"
 import { useState, useContext } from "react"
 import Context from "../Context"
 import { useRouter } from "next/router"
+import SearchField from "./SearchField"
 const Div = styled.div`
 	display: flex;
 	align-items: center;
-	.search-field {
-		width: max-content;
-		background-color: white;
-		height: 2rem;
-		display: flex;
-		align-items: center;
-		border-radius: 4px;
-		margin-right: 15px;
-		img {
-			width: auto;
-			height: 20px;
-			padding: 0 7px;
-		}
-		input {
-			width: 200px;
-			border: none;
-			font-size: 1rem;
-			@media (max-width: 1024px) {
-				width: 150px;
-			}
-			@media (max-width: 768px) {
-				width: 100px;
-			}
-		}
-	}
 	.cart {
 		margin-left: 10px;
 		img {
@@ -129,10 +105,7 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 	}
 	return (
 		<Div>
-			<div className="search-field">
-				<img src="https://www.flaticon.com/svg/static/icons/svg/54/54481.svg" alt="" />
-				<input type="text" placeholder="Search" />
-			</div>
+			<SearchField />
 			<Link href="/cart" passHref>
 				<a className="cart">
 					<img src="https://img.icons8.com/cotton/96/000000/shopping-cart--v2.png" />

@@ -11,12 +11,12 @@ import Loading from "../../components/Loading"
 
 const AccountSection = styled.div`
 	width: 100%;
-	padding: 0 50px;
-	margin: 100px 0;
+	max-width: 1300px;
+	padding: 0 20px;
+	margin: 100px auto;
 	display: flex;
 	@media (max-width: 768px) {
 		flex-direction: column;
-		padding: 0 20px;
 	}
 `
 

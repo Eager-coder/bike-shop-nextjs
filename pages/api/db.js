@@ -18,10 +18,3 @@ exports.query = async (query, value) => {
 		return { error }
 	}
 }
-
-// config: {
-// 	host: "sql7.freemysqlhosting.net",
-// 	user: "sql7369675",
-// 	password: "KcCL2pbdme",
-// 	database: "sql7369675",
-// },

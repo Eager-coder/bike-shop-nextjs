@@ -2,9 +2,9 @@ const db = require("../db")
 import bcrypt from "bcrypt"
 import { sign } from "jsonwebtoken"
 import cookie from "cookie"
-import jwt_secret from "../../../jwt_secret"
 
 export default async (req, res) => {
+	console.log(process.env.JWT_SECRET)
 	const { email: reqEmail, password: reqPassword } = JSON.parse(req.body)
 	if (req.method === "POST") {
 		if (!reqEmail || !reqPassword)
@@ -17,7 +17,7 @@ export default async (req, res) => {
 		const match = await bcrypt.compare(reqPassword, result.password)
 		if (match && result.email === reqEmail) {
 			const { id, email, name, surname, isAdmin } = result
-			const token = sign({ id: result.id }, jwt_secret, { expiresIn: "48h" })
+			const token = sign({ id: result.id }, process.env.JWT_SECRET, { expiresIn: "48h" })
 			res.setHeader(
 				"Set-Cookie",
 				cookie.serialize("auth", token, {

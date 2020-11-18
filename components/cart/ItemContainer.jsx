@@ -1,28 +1,6 @@
 import { useState } from "react"
+import Link from "next/link"
 import styled from "styled-components"
-
-/* @media (max-width: 1024px) {
-		flex-flow: row;
-		justify-content: initial;
-		.image {
-			order: 1;
-		}
-		.name {
-			order: 2;
-		}
-		.price {
-			order: 4;
-		}
-		.qty-container {
-			order: 5;
-		}
-		.size {
-			order: 3;
-		}
-		.btn-remove {
-			order: 6;
-		}
-	} */
 export default function ItemContainer({ item, products, setProducts }) {
 	const [isLoading, setIsLoading] = useState(false)
 	const [qty, setQty] = useState(item.quantity)
@@ -69,7 +47,9 @@ export default function ItemContainer({ item, products, setProducts }) {
 						<img src={item.image} />
 					</div>
 					<div className="text">
-						<p className="name">{item.name}</p>
+						<Link href={`/product/${item.name}`}>
+							<a className={name}>{item.name}</a>
+						</Link>
 						<div className="size"> {item.size ? "Size: " + item.size : null}</div>
 					</div>
 				</div>
@@ -89,12 +69,11 @@ export default function ItemContainer({ item, products, setProducts }) {
 		</Item>
 	)
 }
-
 const Item = styled.div`
 	width: 100%;
 	position: relative;
 	border-radius: 4px;
-	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
 	margin: 10px 0;
 	padding: 10px 30px;
 	*:focus,
@@ -114,7 +93,6 @@ const Item = styled.div`
 			background: rgba(240, 240, 240, 0.7);`
 				: null}
 	}
-
 	.item-flex {
 		display: flex;
 		justify-content: space-between;

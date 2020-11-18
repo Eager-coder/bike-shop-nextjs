@@ -2,7 +2,11 @@ import checkAuth from "../user/checkAuth"
 const db = require("../db")
 export default checkAuth(async (req, res) => {
 	if (req.method === "GET") {
-		const orders = await db.query("SELECT * FROM orders")
+		const orders = await db.query(`
+			SELECT  orders.*, users.email, users.name, users.surname
+			FROM orders
+			INNER JOIN users ON orders.user_id=users.id
+		`)
 		const orderItems = await db.query(`
       SELECT name, image, quantity, orderDetails.price, order_id, size
       FROM orderDetails

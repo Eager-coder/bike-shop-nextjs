@@ -37,12 +37,20 @@ const LinksLeft = styled.div`
 	align-items: center;
 	.logo {
 		margin-right: 50px;
-		@media (max-width: 1024px) {
-			margin-right: 30px;
-		}
 		img {
 			width: 80px;
 			filter: invert(0.9);
+		}
+		@media (max-width: 1024px) {
+			margin-right: 30px;
+		}
+		@media (max-width: 768px) {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			img {
+				width: 70px;
+			}
 		}
 	}
 	ul.nav-links {

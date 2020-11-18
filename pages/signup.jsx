@@ -4,6 +4,7 @@ import styled from "styled-components"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import Message from "../components/Auth/Message"
+import Head from "next/head"
 const FormContainer = styled.div`
 	width: max-content;
 	margin: 150px auto;
@@ -52,6 +53,9 @@ export default function Signup() {
 	}
 	return (
 		<Layout>
+			<Head>
+				<title>Sign up | Focus - Online Bike Shop</title>
+			</Head>
 			<FormContainer>
 				<h1>Sign up</h1>
 				<form onSubmit={handleSubmit}>

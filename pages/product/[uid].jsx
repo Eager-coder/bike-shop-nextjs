@@ -3,6 +3,7 @@ import ImgView from "../../components/Category/ImgView"
 import SelectForm from "../../components/Category/SelectForm"
 import SpecsTable from "../../components/Category/SpecsTable"
 import styled from "styled-components"
+import Head from "next/head"
 const Top = styled.section`
 	margin: auto;
 	display: flex;
@@ -54,6 +55,9 @@ export default function Bikes({ product }) {
 
 	return (
 		<Layout>
+			<Head>
+				<title>{data.name} | Focus - Online Bike Shop</title>
+			</Head>
 			<Top>
 				<ImgView image={data.image} />
 				<div className="right">

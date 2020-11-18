@@ -86,7 +86,6 @@ export async function getServerSideProps({ req, res }) {
 			},
 		}
 	}
-
 	return {
 		props: {
 			data: json,

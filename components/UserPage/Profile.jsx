@@ -12,7 +12,7 @@ const ProfileSection = styled.section`
 	.box {
 		width: 100%;
 		border-radius: 4px;
-		box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+		box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
 		margin: 10px 0;
 		padding: 30px 25px;
 		* {

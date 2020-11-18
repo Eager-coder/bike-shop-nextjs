@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { useState, useContext, useEffect } from "react"
 import Message from "../components/Auth/Message"
 import Context from "../components/Context"
+import Head from "next/head"
 const FormContainer = styled.div`
 	width: max-content;
 	margin: 150px auto;
@@ -57,13 +58,16 @@ export default function Signup() {
 	}
 	return (
 		<Layout>
+			<Head>
+				<title>Log in | Focus - Online Bike Shop</title>
+			</Head>
 			<FormContainer>
 				<h1>Login</h1>
 				<form onSubmit={handleSubmit}>
 					<input type="text" name="email" placeholder="Email" onChange={handleChange} />
 					<input type="password" name="password" placeholder="Password" onChange={handleChange} />
 					<button id="btn-submit" type="submit">
-						Sign up
+						Log in
 					</button>
 					<Message message={message.message} isSuccess={message.isSuccess} />
 				</form>

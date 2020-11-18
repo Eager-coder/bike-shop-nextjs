@@ -5,6 +5,7 @@ import { Category } from "../../components/Category/Filter"
 import ItemGrid from "../../components/Category/ItemGrid"
 import Banner from "../../components/Category/Banner"
 import styled from "styled-components"
+import Head from "next/head"
 const Section = styled.section`
 	display: flex;
 	justify-content: space-between;
@@ -72,6 +73,9 @@ export default function Bikes({ data }) {
 	}
 	return (
 		<Layout>
+			<Head>
+				<title>{heading} bikes | Focus - Online Bike Shop</title>
+			</Head>
 			<Banner heading={heading} image={`/images/${router.query.uid}.jpg`} />
 			<Section>
 				<aside>

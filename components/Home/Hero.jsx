@@ -1,4 +1,5 @@
 import styled from "styled-components"
+
 const Div = styled.div`
 	width: 100%;
 	position: relative;
@@ -76,8 +77,8 @@ export default function Hero() {
 				<div className="text">
 					<h1>Crazy light, crazy fast</h1>
 					<p>
-						The all-new Giant Defy Advanced 3. Lorem ipsum, dolor sit amet consectetur adipisicing
-						elit. Quos eos alias rerum quas error quibusdam.
+						The all-new Giant Defy Advanced 3. Choose the longer route. Climb higher mountains. It’s
+						smooth, it’s efficient, and it’s fast.
 					</p>
 					<Link href="/product/Giant Defy Advanced 3 Hydraulic" passHref>
 						<a>Shop now</a>

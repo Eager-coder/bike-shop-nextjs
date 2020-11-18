@@ -105,7 +105,6 @@ export default function Cart() {
 	}, [userData])
 
 	useEffect(() => {
-		console.log("changed,", products)
 		let totalCount = 0
 		for (const item of products) {
 			totalCount = totalCount + item.quantity * item.price

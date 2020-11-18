@@ -1,5 +1,10 @@
+/*The mysql module allows make connection to 
+  the MySQL database remotely */
+
 const mysql = require("serverless-mysql")
 const db = mysql({
+	/*For security puropses, database information is stored in
+	Environment variables */
 	config: {
 		host: process.env.DB_HOST,
 		user: process.env.DB_USER,

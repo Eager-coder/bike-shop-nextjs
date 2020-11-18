@@ -8,7 +8,7 @@ import OrderItem from "./OrderItem"
 const OrderBox = styled.div`
 	width: 100%;
 	border-radius: 4px;
-	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
 	margin: 10px 0;
 	padding: 30px 40px;
 	.id-total {
@@ -59,7 +59,6 @@ export default function Order({ order, getOrders }) {
 	const [isPopupOpen, setPopupOpen] = useState(false)
 	const [isConfirmLoading, setIsConfirmLoading] = useState(false)
 	const { products } = useContext(Context)
-
 	const {
 		address_line,
 		city,

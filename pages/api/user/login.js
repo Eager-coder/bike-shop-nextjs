@@ -4,20 +4,38 @@ import { sign } from "jsonwebtoken"
 import cookie from "cookie"
 
 export default async (req, res) => {
-	console.log(process.env.JWT_SECRET)
+	// email and password of a user is parsed from the request body
 	const { email: reqEmail, password: reqPassword } = JSON.parse(req.body)
+
+	// Check if the request method is post. If yes, the following lines will be executed
 	if (req.method === "POST") {
+		// Returns status 400 ("Bad request"), if fields are not filled
 		if (!reqEmail || !reqPassword)
-			return res.status(400).json({ message: "Please fill all the fields!", isSuccess: false })
+			return res.status(400).json({
+				message: "Please fill all the fields!",
+				isSuccess: false,
+			})
 
-		const [result] = await db.query(`SELECT * FROM users WHERE email = '${reqEmail}'`)
+		//  Checks for the existence of an email in the database
+		const [result] = await db.query(
+			`SELECT * FROM users WHERE email = '${reqEmail}'`
+		)
 		if (!result)
-			return res.status(404).json({ message: "Email is not registered!", isSuccess: false })
+			return res.status(404).json({
+				message: "Email is not registered!",
+				isSuccess: false,
+			})
 
+		// a password-hashing function "bcrypt" compares the password with
+		// its hashed version retrieved from the database
 		const match = await bcrypt.compare(reqPassword, result.password)
 		if (match && result.email === reqEmail) {
 			const { id, email, name, surname, isAdmin } = result
-			const token = sign({ id: result.id }, process.env.JWT_SECRET, { expiresIn: "48h" })
+
+			// Create and set token to the response header
+			const token = sign({ id: result.id }, process.env.JWT_SECRET, {
+				expiresIn: "48h",
+			})
 			res.setHeader(
 				"Set-Cookie",
 				cookie.serialize("auth", token, {
@@ -36,9 +54,15 @@ export default async (req, res) => {
 				isLoggedIn: true,
 			})
 		} else {
-			res.status(400).json({ message: "Password is incorrect!", isSuccess: false })
+			res.status(400).json({
+				message: "Password is incorrect!",
+				isSuccess: false,
+			})
 		}
 	} else {
-		res.status(405).json({ message: "We only support POST", isSuccess: false })
+		res.status(405).json({
+			message: "We only support POST",
+			isSuccess: false,
+		})
 	}
 }

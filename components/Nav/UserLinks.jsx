@@ -10,8 +10,11 @@ const Div = styled.div`
 	.cart {
 		margin-left: 10px;
 		img {
-			width: 30px;
-			filter: invert(0);
+			width: 25px;
+			filter: invert(1);
+		}
+		@media (max-width: 768px) {
+			display: none;
 		}
 	}
 `
@@ -53,18 +56,38 @@ const UserBox = styled.div`
 		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 		div.greeting {
 			margin: 15px 0;
-			font-size: 1.1rem;
+			font-size: 1rem;
 			font-weight: 500;
+			width: max-content;
+			width: 200px;
+		}
+		.cart-section {
+			display: none;
+			@media (max-width: 768px) {
+				display: flex;
+				align-items: center;
+				width: 100%;
+				a {
+					font-size: 1rem;
+					color: black;
+				}
+				img {
+					width: 15px;
+					height: 15px;
+					margin-right: 10px;
+				}
+			}
 		}
 		hr {
 			background: #ff4834;
 			border: none;
 			height: 2px;
 		}
-		a {
+		> a {
 			display: block;
 			margin: 10px 0;
 			font-weight: 400;
+			font-size: 0.9rem;
 			color: black;
 			:hover {
 				color: #ff4834;
@@ -93,7 +116,7 @@ const UserBox = styled.div`
 		}
 	}
 `
-export default function UserLinks({ isSearchOpen, setSearchOpen }) {
+export default function UserLinks() {
 	const [isUserBoxOpen, setIsUserBoxOpen] = useState(false)
 	const { userData, setUserData } = useContext(Context)
 	const router = useRouter()
@@ -108,7 +131,7 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 			<SearchField />
 			<Link href="/cart" passHref>
 				<a className="cart">
-					<img src="https://img.icons8.com/cotton/96/000000/shopping-cart--v2.png" />
+					<img src="/icons/cart.svg" />
 				</a>
 			</Link>
 			<UserBox isOpen={isUserBoxOpen}>
@@ -122,6 +145,14 @@ export default function UserLinks({ isSearchOpen, setSearchOpen }) {
 					{userData.isLoggedIn ? (
 						<>
 							<div className="greeting">Welcome back, {userData.name}!</div>
+							<div className="cart-section">
+								<Link href="/cart" passHref>
+									<a>
+										<img src="./icons/cart.svg" />
+										Go to cart
+									</a>
+								</Link>
+							</div>
 							<Link href="/myaccount/[uid]" as="/myaccount/profile" passHref>
 								<a>Your account</a>
 							</Link>

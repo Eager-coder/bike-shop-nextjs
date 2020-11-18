@@ -6,7 +6,7 @@ import Popup from "../../Popup"
 const OrderBox = styled.div`
 	width: 100%;
 	border-radius: 4px;
-	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
 	margin: 10px 0;
 	padding: 30px 40px;
 	.id-total {
@@ -22,6 +22,21 @@ const OrderBox = styled.div`
 		margin: 20px 0;
 		display: flex;
 		justify-content: space-between;
+		.left {
+			.user {
+				display: flex;
+				flex-direction: column;
+				span {
+					margin: 5px 0;
+				}
+			}
+		}
+		.right {
+			text-align: right;
+			> div {
+				margin: 5px 0;
+			}
+		}
 		span {
 			font-weight: 500;
 		}
@@ -37,6 +52,10 @@ const Status = styled.span`
 			return "color: white; background: purple;"
 		} else if (sts === "completed") {
 			return "color: white; background: green;"
+		} else if (sts === "cancelled") {
+			return "color: white; background: red;"
+		} else if (sts === "on hold") {
+			return "color: white; background: grey;"
 		}
 	}};
 `
@@ -55,7 +74,11 @@ export default function Order({ order, updateStatus }) {
 		total,
 		created_at,
 		status,
+		name,
+		surname,
+		email,
 	} = order
+	console.log(name, surname, email)
 	return (
 		<OrderBox>
 			<div className="id-total">
@@ -65,16 +88,27 @@ export default function Order({ order, updateStatus }) {
 
 			<div className="details">
 				<div className="left">
-					<div className="addres">
-						<span>Address:</span> {address_line}, {city}, <br /> {state}, {country}, {zip_code}
+					<div className="user">
+						<span>
+							<b>Name: </b> {name}
+						</span>
+						<span>
+							<b>Surname: </b> {surname}
+						</span>
+						<span>
+							<b>Email: </b> {email}
+						</span>
 					</div>
-					<div className="time-created">
-						<span>Time ordered:</span> {moment(created_at).format("LLL")}
+					<div className="addres">
+						<b>Address:</b> {address_line}, {city}, <br /> {state}, {country}, {zip_code}
 					</div>
 				</div>
 				<div className="right">
+					<div className="time-created">
+						<b>Time ordered:</b> <br /> {moment(created_at).format("LLL")}
+					</div>
 					<div className="status">
-						<span>Status: </span>
+						<b>Status:</b>
 						<Status sts={status}>{status}</Status>
 					</div>
 					{status !== "completed" ? (

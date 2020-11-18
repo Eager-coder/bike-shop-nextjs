@@ -2,11 +2,13 @@ import checkAuth from "./checkAuth"
 const db = require("../db")
 
 export default checkAuth(async (req, res) => {
+	// GET REQUEST
 	if (req.method === "GET") {
 		console.log(req.query)
 		const id = req.query.userId
 		const allProducts = await db.query(`SELECT 
-					cartItem.product_id AS product_id, cartItem.id, createdAt, size, quantity, name, price, image
+					cartItem.product_id AS product_id, cartItem.id, createdAt, size, 
+					quantity, name, price, image
 			FROM 
 					cartItem
 			INNER JOIN 
@@ -20,6 +22,7 @@ export default checkAuth(async (req, res) => {
 		if (!allProducts.length) return res.status(400).json({ message: "Cart is empty" })
 		res.json({ data: allProducts })
 	}
+	// POST REQUEST
 	if (req.method === "POST") {
 		const { userId, productId, qty, size } = JSON.parse(req.body).itemData
 		if (!userId || !productId || !qty)

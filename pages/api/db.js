@@ -1,15 +1,18 @@
 /*The mysql module allows make connection to 
   the MySQL database remotely */
-
 const mysql = require("serverless-mysql")
 const db = mysql({
 	/*For security puropses, database information is stored in
 	Environment variables */
 	config: {
-		host: process.env.DB_HOST,
-		user: process.env.DB_USER,
-		password: process.env.DB_PASS,
-		database: process.env.DB_NAME,
+		// host: process.env.DB_HOST,
+		// user: process.env.DB_USER,
+		// password: process.env.DB_PASS,
+		// database: process.env.DB_NAME,
+		host: "sql7.freesqldatabase.com",
+		user: "sql7369675",
+		password: "KcCL2pbdme",
+		database: "sql7369675",
 	},
 })
 exports.query = async (query, value) => {
@@ -20,6 +23,7 @@ exports.query = async (query, value) => {
 		console.log("connection finished")
 		return results
 	} catch (error) {
+		console.log(error)
 		return { error }
 	}
 }

@@ -81,7 +81,7 @@ export default function Nav({ isLoggedIn }) {
 			<nav>
 				<LinksLeft isMenuOpen={isMenuOpen}>
 					<MenuBtn onClick={() => setMenuOpen(!isMenuOpen)}>
-						<img src="/icons/burger.svg" alt="" />
+						<img src="http://localhost:3000/icons/burger.svg" alt="" />
 					</MenuBtn>
 					<Link href="/" passHref>
 						<a className="logo">
@@ -92,12 +92,18 @@ export default function Nav({ isLoggedIn }) {
 						</a>
 					</Link>
 					<ul className="nav-links">
-						<DropdownMenu category="bikes" links={["mountain", "bmx", "road", "city"]} />
+						<DropdownMenu
+							category="bikes"
+							links={["mountain", "bmx", "road", "city"]}
+						/>
 						<DropdownMenu
 							category="accessories"
 							links={["lighting", "pumps", "locks", "bottles"]}
 						/>
-						<DropdownMenu category="clothing" links={["helmets", "gloves", "jerseys"]} />
+						<DropdownMenu
+							category="clothing"
+							links={["helmets", "gloves", "jerseys"]}
+						/>
 					</ul>
 				</LinksLeft>
 				<UserLinks isSearchOpen={isSearchOpen} setSearchOpen={setSearchOpen} />

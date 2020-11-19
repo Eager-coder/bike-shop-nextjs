@@ -14,8 +14,12 @@ const MessageBox = styled.div`
 
 	img {
 		width: 150px;
+		@media (max-width: 640px) {
+			width: 100px;
+		}
 	}
 	p {
+		text-align: center;
 		margin: 15px 0;
 		font-size: 1.3rem;
 	}
@@ -243,13 +247,19 @@ export default function AddressForm({ userData, products, total }) {
 				{formError ? (
 					<div className="form-error">
 						<img src="/icons/error.png" alt="" />
-						{formError}{" "}
+						{formError}
 					</div>
 				) : null}
 			</div>
 
 			{isPopupOpen ? (
-				<Popup>{isOrderFinished ? <Message message={message} /> : <Loading size="100" />}</Popup>
+				<Popup>
+					{isOrderFinished ? (
+						<Message message={message} />
+					) : (
+						<Loading size="100" />
+					)}
+				</Popup>
 			) : null}
 		</Form>
 	)

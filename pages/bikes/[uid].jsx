@@ -43,7 +43,8 @@ export default function Bikes({ data }) {
 	const [productList, setProductList] = useState(initialList)
 	const [filterMsg, setFilterMsg] = useState(null)
 	const router = useRouter()
-	const heading = router.query.uid.charAt(0).toUpperCase() + router.query.uid.slice(1)
+	const heading =
+		router.query.uid.charAt(0).toUpperCase() + router.query.uid.slice(1)
 	const brands = [...new Set(initialList.map(e => e.brand))]
 	const years = [...new Set(initialList.map(e => e.year))]
 	const priceRange = [
@@ -64,7 +65,9 @@ export default function Bikes({ data }) {
 				setProductList(initialList.filter(e => e.year === value))
 				break
 			case "price":
-				setProductList(initialList.filter(e => e.price >= value[0] && e.price <= value[1]))
+				setProductList(
+					initialList.filter(e => e.price >= value[0] && e.price <= value[1])
+				)
 		}
 	}
 	const resetFilter = () => {
@@ -104,7 +107,11 @@ export default function Bikes({ data }) {
 					</Category>
 					<Category name="Price">
 						{priceRange.map((e, index) => (
-							<li key={index} onClick={() => filterList("price", e)}>{`$${e[0]} - $${e[1]}`}</li>
+							<li
+								key={index}
+								onClick={() =>
+									filterList("price", e)
+								}>{`$${e[0]} - $${e[1]}`}</li>
 						))}
 					</Category>
 				</aside>
@@ -116,7 +123,10 @@ export default function Bikes({ data }) {
 const db = require("../api/db")
 
 export async function getServerSideProps({ query }) {
-	const data = await db.query(`SELECT * FROM products WHERE type = '${query.uid}'`)
+	const data = await db.query(
+		`SELECT * FROM products WHERE type = '${query.uid}'`
+	)
+	console.log(data)
 	return {
 		props: { data: JSON.stringify(data) },
 	}

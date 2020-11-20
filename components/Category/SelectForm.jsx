@@ -71,7 +71,6 @@ export default function SelectForm({ productData }) {
 				body: JSON.stringify({ itemData: { userId: userData.id, ...newItem } }),
 			})
 			const json = await res.json()
-			console.log(json)
 		}
 	}
 	return (

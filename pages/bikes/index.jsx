@@ -72,37 +72,25 @@ export default function Bikes({ product }) {
 			<Section>
 				<Link href="/bikes/[uid]" as="/bikes/road">
 					<Category>
-						<img
-							src="https://images.unsplash.com/photo-1516725630185-19ae408fbc83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80"
-							alt=""
-						/>
+						<img src="https://focus-bike-shop.vercel.app/images/road_card.jpg" alt="" />
 						<h2>Road</h2>
 					</Category>
 				</Link>
 				<Link href="/bikes/[uid]" as="/bikes/mountain">
 					<Category>
-						<img
-							src="https://specials-images.forbesimg.com/imageserve/5ed67af53ffc140007dfaec0/960x0.jpg?fit=scale"
-							alt=""
-						/>
+						<img src="https://focus-bike-shop.vercel.app/images/mtb_card.jpg" alt="" />
 						<h2>Mountain</h2>
 					</Category>
 				</Link>
 				<Link href="/bikes/[uid]" as="/bikes/bmx">
 					<Category>
-						<img
-							src="https://www.monsterenergy.com/media/uploads_image/2019/06/10/1600/800/f4a46832e2f64a0a267dd315bd44d94f.jpg?mod=v1_8fb21560b3894a49435c48d139bb96e0"
-							alt=""
-						/>
+						<img src="https://focus-bike-shop.vercel.app/images/bmx_card.jpg" alt="" />
 						<h2>BMX</h2>
 					</Category>
 				</Link>
 				<Link href="/bikes/[uid]" as="/bikes/city">
 					<Category>
-						<img
-							src="https://i0.wp.com/post.healthline.com/wp-content/uploads/2019/12/Woman-Riding-Rented-Bicycle-In-A-City.-Cycling-and-smiling-1296x728-header-1296x728.jpg?w=1155&h=1528"
-							alt=""
-						/>
+						<img src="https://focus-bike-shop.vercel.app/images/city_card.jpg" alt="" />
 						<h2>City</h2>
 					</Category>
 				</Link>

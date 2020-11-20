@@ -8,13 +8,12 @@ const ContextWrapper = ({ children }) => {
 		const checkLoggedIn = async () => {
 			const res = await fetch("/api/user/isTokenValid")
 			const json = await res.json()
-			console.log("user data", json)
 			setUserData({ ...json, isLoading: false })
 		}
 		const getProducts = async () => {
 			const res = await fetch("/api/getProducts")
 			const json = await res.json()
-			setProducts({ products: json.products, isLoading: false })
+			setProducts({ products: json, isLoading: false })
 		}
 		checkLoggedIn()
 		getProducts()

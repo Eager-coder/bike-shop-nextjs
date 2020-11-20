@@ -114,7 +114,6 @@ export default function Accessories({ data }) {
 const db = require("../../db")
 export async function getStaticProps({ params }) {
 	const data = await db.query(`SELECT * FROM products WHERE type = '${params.uid}'`)
-	console.log(data)
 	return {
 		props: { data: JSON.stringify(data) },
 		revalidate: 1,

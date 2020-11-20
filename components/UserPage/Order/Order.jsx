@@ -5,60 +5,12 @@ import moment from "moment"
 import Popup from "../../Popup"
 import Loading from "../../Loading"
 import OrderItem from "./OrderItem"
-const OrderBox = styled.div`
-	width: 100%;
-	border-radius: 4px;
-	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
-	margin: 10px 0;
-	padding: 30px 40px;
-	.id-total {
-		display: flex;
-		justify-content: space-between;
-		.order-id,
-		.total {
-			font-size: 1.6rem;
-			font-weight: 500;
-		}
-	}
-	.details {
-		margin: 10px 0;
-		display: flex;
-		justify-content: space-between;
-		span {
-			font-weight: 500;
-		}
-	}
-	.btn-complete {
-		margin-top: 10px;
-		cursor: pointer;
-		border: none;
-		border-radius: 5px;
-		background: black;
-		color: white;
-		padding: 2px 5px;
-	}
-	.status {
-		border-radius: 5px;
-		background: ${({ status }) => (status === "completed" ? "#69c501" : "lightgrey")};
-		color: ${({ status }) => (status === "completed" ? "white" : "black")};
-	}
-	@media (max-width: 768px) {
-		padding: 20px;
-		.id-total {
-			.order-id,
-			.total {
-				font-size: 1rem;
-			}
-		}
-		.details {
-			font-size: 0.85rem;
-		}
-	}
-`
+
 export default function Order({ order, getOrders }) {
 	const [isPopupOpen, setPopupOpen] = useState(false)
 	const [isConfirmLoading, setIsConfirmLoading] = useState(false)
 	const { products } = useContext(Context)
+	console.log(products)
 	const {
 		address_line,
 		city,
@@ -159,6 +111,56 @@ const Confirm = styled.div`
 		.cancel {
 			cursor: pointer;
 			border: none;
+		}
+	}
+`
+const OrderBox = styled.div`
+	width: 100%;
+	border-radius: 4px;
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+	margin: 10px 0;
+	padding: 30px 40px;
+	.id-total {
+		display: flex;
+		justify-content: space-between;
+		.order-id,
+		.total {
+			font-size: 1.6rem;
+			font-weight: 500;
+		}
+	}
+	.details {
+		margin: 10px 0;
+		display: flex;
+		justify-content: space-between;
+		span {
+			font-weight: 500;
+		}
+	}
+	.btn-complete {
+		margin-top: 10px;
+		cursor: pointer;
+		border: none;
+		border-radius: 5px;
+		background: black;
+		color: white;
+		padding: 2px 5px;
+	}
+	.status {
+		border-radius: 5px;
+		background: ${({ status }) => (status === "completed" ? "#69c501" : "lightgrey")};
+		color: ${({ status }) => (status === "completed" ? "white" : "black")};
+	}
+	@media (max-width: 768px) {
+		padding: 20px;
+		.id-total {
+			.order-id,
+			.total {
+				font-size: 1rem;
+			}
+		}
+		.details {
+			font-size: 0.85rem;
 		}
 	}
 `

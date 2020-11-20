@@ -43,7 +43,6 @@ const Text = styled.div`
 	}
 `
 export default function Bikes({ product }) {
-	console.log("product size", JSON.parse(product).size)
 	const data = JSON.parse(product)
 	const table = data.tech_specs
 		.replace(/[\r\n\t]/g, "")
@@ -53,7 +52,6 @@ export default function Bikes({ product }) {
 			return e.split("=")
 		})
 	console.log(table)
-
 	return (
 		<Layout>
 			<Head>
@@ -78,12 +76,36 @@ export default function Bikes({ product }) {
 }
 
 const db = require("../../db")
-export async function getServerSideProps(context) {
-	const product_name = context.query.uid
-	const [data] = await db.query(
-		`SELECT * FROM products WHERE name = '${product_name}'`
-	)
+export async function getStaticProps({ params }) {
+	const [product] = await db.query(`SELECT * FROM products WHERE name = '${params.uid}'`)
+	console.log(params.uid)
 	return {
-		props: { product: JSON.stringify(data) },
+		props: { product: JSON.stringify(product) },
+		revalidate: 1,
 	}
 }
+
+export const getStaticPaths = async () => {
+	const products = await db.query(`SELECT * FROM products`)
+	const paths = products.map(item => ({
+		params: {
+			uid: encodeURIComponent(item.name).toString(),
+		},
+	}))
+	// console.log(paths)
+	return {
+		fallback: true,
+		paths,
+	}
+}
+
+// const db = require("../../db")
+// export async function getServerSideProps(context) {
+// 	const product_name = context.query.uid
+// 	const [data] = await db.query(
+// 		`SELECT * FROM products WHERE name = '${product_name}'`
+// 	)
+// 	return {
+// 		props: { product: JSON.stringify(data) },
+// 	}
+// }

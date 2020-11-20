@@ -9,13 +9,13 @@ const ProductsSection = styled.section`
 	}
 	width: 100%;
 `
-export default function AllProducts({ products, setProducts }) {
+export default function AllProducts({ products, getProducts, setProducts }) {
 	return (
 		<ProductsSection>
 			<h1>All Products</h1>
 			{products ? (
 				products.map((e, index) => (
-					<Item key={index} product={e} setProducts={setProducts} />
+					<Item key={index} product={e} getProducts={getProducts} setProducts={setProducts} />
 				))
 			) : (
 				<Loading size="100" />

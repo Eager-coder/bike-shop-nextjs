@@ -30,7 +30,7 @@ export default function Admin() {
 	const [products, setProducts] = useState(null)
 	const [orders, setOrders] = useState(null)
 	const getProducts = async () => {
-		const res = await fetch("/api/admin/products")
+		const res = await fetch("/api/getProducts")
 		const data = await res.json()
 		setProducts(data)
 	}
@@ -45,12 +45,9 @@ export default function Admin() {
 	}, [])
 	const updateStatus = async (order_id, newStatus, setUpdateOpen) => {
 		if (!newStatus) return setUpdateOpen(false)
-		const res = await fetch(
-			`/api/admin/orders?order_id=${order_id}&newStatus=${newStatus}`,
-			{
-				method: "PUT",
-			}
-		)
+		const res = await fetch(`/api/admin/orders?order_id=${order_id}&newStatus=${newStatus}`, {
+			method: "PUT",
+		})
 		const json = await res.json()
 		if (json.isSuccess) {
 			setUpdateOpen(false)
@@ -67,11 +64,9 @@ export default function Admin() {
 			<h1>Admin panel</h1>
 			<Sidebar setScreen={setScreen} />
 			<AdminSection>
-				{screen === "orders" ? (
-					<Orders orders={orders} updateStatus={updateStatus} />
-				) : null}
+				{screen === "orders" ? <Orders orders={orders} updateStatus={updateStatus} /> : null}
 				{screen === "products" ? (
-					<AllProducts products={products} setProducts={setProducts} />
+					<AllProducts products={products} getProducts={getProducts} setProducts={setProducts} />
 				) : null}
 				{screen === "createProduct" ? <AddProduct /> : null}
 			</AdminSection>
@@ -82,12 +77,9 @@ export default function Admin() {
 
 export async function getServerSideProps({ req, res }) {
 	const cookie = req.headers.cookie
-	const response = await fetch(
-		`http://${req.headers.host}/api/user/isTokenValid`,
-		{
-			headers: { cookie },
-		}
-	)
+	const response = await fetch(`http://${req.headers.host}/api/user/isTokenValid`, {
+		headers: { cookie },
+	})
 	const json = await response.json()
 	console.log(json.isAdmin ? "admin" : "not admin")
 	if (!json.isAdmin) {

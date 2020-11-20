@@ -16,9 +16,7 @@ export default function Orders({ orders, updateStatus }) {
 		<OrderContainer>
 			<h1>Orders</h1>
 			{orders ? (
-				orders
-					.reverse()
-					.map(order => <Order key={order.id} order={order} updateStatus={updateStatus} />)
+				orders.map(order => <Order key={order.id} order={order} updateStatus={updateStatus} />)
 			) : (
 				<Loading size="100" />
 			)}

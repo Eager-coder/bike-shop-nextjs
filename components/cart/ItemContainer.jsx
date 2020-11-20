@@ -48,9 +48,9 @@ export default function ItemContainer({ item, products, setProducts }) {
 					</div>
 					<div className="text">
 						<Link href={`/product/${item.name}`}>
-							<a className={name}>{item.name}</a>
+							<a className="name">{item.name}</a>
 						</Link>
-						<div className="size"> {item.size ? "Size: " + item.size : null}</div>
+						{item.size ? <div className="size"> Size: {item.size} </div> : null}
 					</div>
 				</div>
 				<div className="item-qty-price">
@@ -114,7 +114,16 @@ const Item = styled.div`
 			}
 			.text {
 				width: 50%;
-				font-size: 0.8rem;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				.name {
+					color: black;
+					font-size: 0.95rem;
+				}
+				.size {
+					font-size: 0.85rem;
+				}
 			}
 			@media (max-width: 768px) {
 				.image img {
@@ -123,6 +132,9 @@ const Item = styled.div`
 			}
 			@media (max-width: 640px) {
 				width: 100%;
+				.text .name {
+					font-size: 0.9rem;
+				}
 				.image {
 					margin-right: 10px;
 					img {

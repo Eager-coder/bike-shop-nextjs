@@ -84,7 +84,8 @@ export default function Bikes({ product, error }) {
 const db = require("../../db")
 export async function getStaticProps({ params }) {
 	const [product] = await db.query(`SELECT * FROM products WHERE name = '${params.uid}'`)
-	if (!product || !product.length) {
+	console.log(product)
+	if (!product) {
 		return {
 			props: {
 				products: null,
@@ -92,7 +93,6 @@ export async function getStaticProps({ params }) {
 			},
 		}
 	}
-	console.log(product)
 	return {
 		props: { product: JSON.stringify(product), error: false },
 		revalidate: 1,

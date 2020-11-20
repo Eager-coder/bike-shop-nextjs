@@ -6,7 +6,7 @@ import Context from "../../components/Context"
 import Sidebar from "../../components/UserPage/Sidebar"
 import Profile from "../../components/UserPage/Profile"
 import Orders from "../../components/UserPage/Order/Orders"
-import ErrorPage from "../_error"
+import ErrorPage from "../404"
 import Loading from "../../components/Loading"
 import Head from "next/head"
 const AccountSection = styled.div`

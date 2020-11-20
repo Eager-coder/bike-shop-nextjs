@@ -43,7 +43,7 @@ const Text = styled.div`
 	}
 `
 export default function Bikes({ product }) {
-	const data = JSON.parse(product)
+	const data = product
 	const table = data.tech_specs
 		.replace(/[\r\n\t]/g, "")
 		.split("#")
@@ -80,7 +80,7 @@ export async function getStaticProps({ params }) {
 	const [product] = await db.query(`SELECT * FROM products WHERE name = '${params.uid}'`)
 	console.log(params.uid)
 	return {
-		props: { product: JSON.stringify(product) },
+		props: { product },
 		revalidate: 1,
 	}
 }

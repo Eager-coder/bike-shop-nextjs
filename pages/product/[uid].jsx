@@ -4,6 +4,7 @@ import SelectForm from "../../components/Category/SelectForm"
 import SpecsTable from "../../components/Category/SpecsTable"
 import styled from "styled-components"
 import Head from "next/head"
+import { useRouter } from "next/router"
 const Top = styled.section`
 	margin: auto;
 	display: flex;
@@ -42,7 +43,12 @@ const Text = styled.div`
 		}
 	}
 `
-export default function Bikes({ product }) {
+export default function Bikes({ product, error }) {
+	const router = useRouter()
+	if (router.isFallback) {
+		return <div>Loading...</div>
+	}
+	if (error) return <>Error</>
 	const data = JSON.parse(product)
 	const table = data.tech_specs
 		.replace(/[\r\n\t]/g, "")
@@ -78,9 +84,17 @@ export default function Bikes({ product }) {
 const db = require("../../db")
 export async function getStaticProps({ params }) {
 	const [product] = await db.query(`SELECT * FROM products WHERE name = '${params.uid}'`)
+	if (!product || !product.length) {
+		return {
+			props: {
+				products: null,
+				error: true,
+			},
+		}
+	}
 	console.log(product)
 	return {
-		props: { product: JSON.stringify(product) },
+		props: { product: JSON.stringify(product), error: false },
 		revalidate: 1,
 	}
 }

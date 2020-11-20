@@ -73,7 +73,7 @@ export default function Hero() {
 	return (
 		<Div className="hero">
 			<div className="hero-container">
-				<img src="images/black-bike.jpg" alt="" />
+				<img src="/images/black-bike.jpg" alt="" />
 				<div className="text">
 					<h1>Crazy light, crazy fast</h1>
 					<p>

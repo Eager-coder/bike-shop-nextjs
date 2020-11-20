@@ -7,6 +7,7 @@ import styled from "styled-components"
 import Products from "../components/checkout/Products"
 import AddressForm from "../components/checkout/AddressForm"
 import Context from "../components/Context"
+import Head from "next/head"
 const Container = styled.section`
 	width: 100%;
 	display: flex;
@@ -27,7 +28,9 @@ export default function Checkout() {
 			router.push("/login")
 		} else if (!userData.isLoading && userData.isLoggedIn) {
 			const getProducts = async () => {
-				const res = await fetch(`/api/user/cart?userId=${userData.id}`, { method: "GET" })
+				const res = await fetch(`/api/user/cart?userId=${userData.id}`, {
+					method: "GET",
+				})
 				const json = await res.json()
 				setProducts(json.data)
 				console.log("order sataus", json.data)
@@ -40,15 +43,24 @@ export default function Checkout() {
 	)
 	return userData.isLoggedIn && products ? (
 		<Layout>
+			<Head>
+				<title>Checkout | Focus - Online Bike Shop</title>
+			</Head>
 			<Container>
 				<Products
 					products={products}
-					total={products.reduce((a, item) => a + item.price * item.quantity, 0)}
+					total={products.reduce(
+						(a, item) => a + item.price * item.quantity,
+						0
+					)}
 				/>
 				<Elements stripe={stripePromise}>
 					<AddressForm
 						products={products}
-						total={products.reduce((a, item) => a + item.price * item.quantity, 0)}
+						total={products.reduce(
+							(a, item) => a + item.price * item.quantity,
+							0
+						)}
 						userData={userData}></AddressForm>
 				</Elements>
 			</Container>

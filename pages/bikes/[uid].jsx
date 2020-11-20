@@ -120,7 +120,7 @@ export default function Bikes({ data }) {
 		</Layout>
 	)
 }
-const db = require("../api/db")
+const db = require("../../db")
 
 export async function getServerSideProps({ query }) {
 	const data = await db.query(

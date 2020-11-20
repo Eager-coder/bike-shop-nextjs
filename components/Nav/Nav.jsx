@@ -95,14 +95,17 @@ export default function Nav({ isLoggedIn }) {
 						<DropdownMenu
 							category="bikes"
 							links={["mountain", "bmx", "road", "city"]}
+							setMenuOpen={setMenuOpen}
 						/>
 						<DropdownMenu
 							category="accessories"
 							links={["lighting", "pumps", "locks", "bottles"]}
+							setMenuOpen={setMenuOpen}
 						/>
 						<DropdownMenu
 							category="clothing"
 							links={["helmets", "gloves", "jerseys"]}
+							setMenuOpen={setMenuOpen}
 						/>
 					</ul>
 				</LinksLeft>

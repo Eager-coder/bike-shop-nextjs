@@ -1,5 +1,5 @@
 import checkAuth from "../user/checkAuth"
-const db = require("../db")
+const db = require("../../../db")
 export default checkAuth(async (req, res) => {
 	if (req.method === "GET") {
 		const orders = await db.query(`
@@ -26,7 +26,9 @@ export default checkAuth(async (req, res) => {
 	} else if (req.method === "PUT") {
 		const { newStatus, order_id } = req.query
 		if (!newStatus || !order_id)
-			return res.status(400).json({ message: "Something went wrong!", isSuccess: true })
+			return res
+				.status(400)
+				.json({ message: "Something went wrong!", isSuccess: true })
 		const result = await db.query(`
 			UPDATE orders SET status = '${newStatus}' WHERE order_id = '${order_id}'
 		`)

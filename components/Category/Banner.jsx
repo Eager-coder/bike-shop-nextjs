@@ -5,11 +5,14 @@ const Div = styled.div`
 	height: 350px;
 	background: url(${({ image }) => image}) no-repeat;
 	background-size: cover;
-	background-position: 0 50%;
+	background-position: center;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	position: relative;
+	@media (max-width: 640px) {
+		height: 250px;
+	}
 	&::after {
 		content: "";
 		position: absolute;
@@ -23,6 +26,9 @@ const Div = styled.div`
 		color: white;
 		font-size: 4.5rem;
 		z-index: 1;
+		@media (max-width: 640px) {
+			font-size: 3.2rem;
+		}
 	}
 `
 export default function Banner({ heading, image }) {

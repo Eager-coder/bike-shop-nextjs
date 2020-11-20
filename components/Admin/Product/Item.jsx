@@ -58,7 +58,7 @@ const ItemContainer = styled.div`
 	}
 `
 
-export default function Item({ product }) {
+export default function Item({ product, setProducts }) {
 	const [isUpdateOpen, setIsUpdateOpen] = useState(false)
 	const [isShown, setIsShown] = useState(false)
 	const table = product.tech_specs
@@ -68,6 +68,7 @@ export default function Item({ product }) {
 		.map(e => {
 			return e.split("=")
 		})
+
 	return (
 		<ItemContainer>
 			<div className="item-flex">
@@ -131,6 +132,7 @@ export default function Item({ product }) {
 				<button id="update-btn" onClick={() => setIsUpdateOpen(true)}>
 					Update
 				</button>
+
 				{isUpdateOpen ? (
 					<UpdateProduct
 						isUpdateOpen={isUpdateOpen}

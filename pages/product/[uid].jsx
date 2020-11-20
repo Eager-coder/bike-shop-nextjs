@@ -52,6 +52,7 @@ export default function Bikes({ product }) {
 		.map(e => {
 			return e.split("=")
 		})
+	console.log(table)
 
 	return (
 		<Layout>
@@ -76,10 +77,12 @@ export default function Bikes({ product }) {
 	)
 }
 
-const db = require("../api/db")
+const db = require("../../db")
 export async function getServerSideProps(context) {
 	const product_name = context.query.uid
-	const [data] = await db.query(`SELECT * FROM products WHERE name = '${product_name}'`)
+	const [data] = await db.query(
+		`SELECT * FROM products WHERE name = '${product_name}'`
+	)
 	return {
 		props: { product: JSON.stringify(data) },
 	}

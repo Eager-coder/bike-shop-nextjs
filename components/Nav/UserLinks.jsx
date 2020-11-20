@@ -131,7 +131,7 @@ export default function UserLinks() {
 			<SearchField />
 			<Link href="/cart" passHref>
 				<a className="cart">
-					<img src="/icons/cart.svg" />
+					<img src="https://focus-bike-shop.vercel.app/icons/cart.svg" />
 				</a>
 			</Link>
 			<UserBox isOpen={isUserBoxOpen}>
@@ -148,7 +148,7 @@ export default function UserLinks() {
 							<div className="cart-section">
 								<Link href="/cart" passHref>
 									<a>
-										<img src="./icons/cart.svg" />
+										<img src="https://focus-bike-shop.vercel.app/icons/cart.svg" />
 										Go to cart
 									</a>
 								</Link>

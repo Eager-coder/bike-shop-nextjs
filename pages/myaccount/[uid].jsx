@@ -8,7 +8,7 @@ import Profile from "../../components/UserPage/Profile"
 import Orders from "../../components/UserPage/Order/Orders"
 import ErrorPage from "../_error"
 import Loading from "../../components/Loading"
-
+import Head from "next/head"
 const AccountSection = styled.div`
 	width: 100%;
 	max-width: 1300px;
@@ -27,7 +27,9 @@ export default function YourAccount() {
 	const [orders, setOrders] = useState([])
 	const [isReady, setIsReady] = useState(false)
 	const getOrders = async () => {
-		const res = await fetch(`/api/user/order?userId=${userData.id}`, { method: "GET" })
+		const res = await fetch(`/api/user/order?userId=${userData.id}`, {
+			method: "GET",
+		})
 		const json = await res.json()
 		setOrders(json.orders)
 	}
@@ -41,6 +43,9 @@ export default function YourAccount() {
 	}, [userData])
 	return uid === "profile" || uid === "orders" ? (
 		<Layout>
+			<Head>
+				<title>My Account | Focus - Online Bike Shop</title>
+			</Head>
 			{isReady ? (
 				<AccountSection>
 					<Sidebar name={userData.name} link={uid} />

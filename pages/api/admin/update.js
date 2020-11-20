@@ -1,9 +1,20 @@
-const db = require("../db")
+const db = require("../../../db")
 
 export default async (req, res) => {
 	try {
 		const data = JSON.parse(req.body)
-		const { id, name, brand, price, category, type, year, image, description, tech_specs } = data
+		const {
+			id,
+			name,
+			brand,
+			price,
+			category,
+			type,
+			year,
+			image,
+			description,
+			tech_specs,
+		} = data
 
 		if (Object.keys(data).length !== 10)
 			return res.status(400).json({ message: "Please fill all the fields" })
@@ -18,16 +29,21 @@ export default async (req, res) => {
 			typeof description !== "string" ||
 			typeof tech_specs !== "string"
 		)
-			return res.status(400).json({ message: "Invalid credentials" })
+			return res.status(400).json({ message: "Invalid data" })
 		const update = await db.query(
 			`UPDATE products SET name = '${name}', brand = '${brand}', 
 			category = '${category}', type = '${type}', price = '${price}', 
 			year = '${year}', image = '${image}', description = '${description
 				.split("'")
-				.join("''")}', tech_specs = '${tech_specs.split("'").join("''")}' WHERE id = ${id}`
+				.join("''")}', tech_specs = '${tech_specs
+				.split("'")
+				.join("''")}' WHERE id = ${id}`
 		)
 		console.log("update product", update)
-		if (update) return res.status(200).json({ message: "Item has been updated", isSuccess: true })
+		if (update)
+			return res
+				.status(200)
+				.json({ message: "Item has been updated", isSuccess: true })
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({ message: err })

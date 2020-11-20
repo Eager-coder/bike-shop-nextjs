@@ -1,10 +1,9 @@
 import checkAuth from "./checkAuth"
-const db = require("../db")
+const db = require("../../../db")
 
 export default checkAuth(async (req, res) => {
 	// GET REQUEST
 	if (req.method === "GET") {
-		console.log(req.query)
 		const id = req.query.userId
 		const allProducts = await db.query(`SELECT 
 					cartItem.product_id AS product_id, cartItem.id, createdAt, size, 
@@ -18,8 +17,8 @@ export default checkAuth(async (req, res) => {
 			WHERE 
 					cartItem.user_id = '${id}'
 		`)
-		console.log("~Cart Items~", allProducts)
-		if (!allProducts.length) return res.status(400).json({ message: "Cart is empty" })
+		if (!allProducts.length)
+			return res.status(400).json({ message: "Cart is empty" })
 		res.json({ data: allProducts })
 	}
 	// POST REQUEST
@@ -30,10 +29,11 @@ export default checkAuth(async (req, res) => {
 		const [existingItem] = await db.query(`
 			SELECT * from cartItem WHERE user_id = '${userId}' AND product_id = '${productId}'
 		`)
-		console.log("~~is item in cart~~", existingItem)
 		if (existingItem && existingItem.size === size) {
 			const newQty = Number(existingItem.quantity) + Number(qty)
-			await db.query(`UPDATE cartItem SET quantity = '${newQty}' WHERE id = '${existingItem.id}'`)
+			await db.query(
+				`UPDATE cartItem SET quantity = '${newQty}' WHERE id = '${existingItem.id}'`
+			)
 		} else {
 			const dbResult = await db.query(`INSERT INTO cartItem (quantity, size, product_id, user_id)
 				VALUES ('${qty}', '${size}', '${productId}', '${userId}')
@@ -41,11 +41,9 @@ export default checkAuth(async (req, res) => {
 		}
 	} else if (req.method === "PUT") {
 		const { itemId, qty } = JSON.parse(req.body)
-		console.log(`itemId is ${itemId} and qty = ${qty}`)
 		const dbResult = await db.query(
 			`UPDATE cartItem SET quantity = '${qty}' WHERE id = '${itemId}'`
 		)
-
 		return res.status(200).json({ isSuccess: true, qty })
 	} else if (req.method === "DELETE") {
 		const id = req.query.itemId

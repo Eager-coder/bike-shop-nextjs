@@ -1,6 +1,10 @@
-const db = require("./db")
+const db = require("../../db")
 
 export default async (req, res) => {
-	const products = await db.query("SELECT * FROM products")
-	res.json({ products })
+	try {
+		const data = await db.query(`SELECT * FROM products ORDER BY id DESC`)
+		res.status(200).send(data)
+	} catch (err) {
+		res.status(500).send(err)
+	}
 }

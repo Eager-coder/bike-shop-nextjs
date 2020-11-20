@@ -8,12 +8,14 @@ import styled from "styled-components"
 
 const Section = styled.section`
 	display: flex;
+	justify-content: space-between;
 	width: 100%;
 	max-width: 1500px;
 	margin: 50px auto;
 	padding: 0 50px;
 	aside {
-		width: 200px;
+		min-width: 200px;
+		margin-right: 50px;
 		.filter-msg {
 			margin: 20px 0;
 			#reset {
@@ -104,15 +106,29 @@ export default function Accessories({ data }) {
 						))}
 					</Category>
 				</aside>
-				<ItemGrid productList={productList} padding="0 0 0 50px" />
+				<ItemGrid productList={productList} />
 			</Section>
 		</Layout>
 	)
 }
-const db = require("../api/db")
-export async function getServerSideProps({ query }) {
-	const data = await db.query(`SELECT * FROM products WHERE type = '${query.uid}'`)
+const db = require("../../db")
+export async function getStaticProps({ params }) {
+	const data = await db.query(`SELECT * FROM products WHERE type = '${params.uid}'`)
+	console.log(data)
 	return {
 		props: { data: JSON.stringify(data) },
+		revalidate: 1,
+	}
+}
+
+export const getStaticPaths = async () => {
+	const paths = ["lighting", "bottles", "pumps", "locks"].map(uid => ({
+		params: {
+			uid,
+		},
+	}))
+	return {
+		fallback: false,
+		paths,
 	}
 }

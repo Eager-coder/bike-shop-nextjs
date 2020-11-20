@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
 import Loading from "../components/Loading"
 import ItemGrid from "../components/Category/ItemGrid"
+import Head from "next/head"
 const Container = styled.section`
 	max-width: 1300px;
 	padding: 0 20px;
@@ -28,6 +29,9 @@ export default function Search() {
 	}, [router])
 	return (
 		<Layout>
+			<Head>
+				<title>Search Results | Focus - Online Bike Shop</title>
+			</Head>
 			<Container>
 				{result.isLoading ? (
 					<Loading size={150} />

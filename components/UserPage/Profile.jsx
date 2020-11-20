@@ -59,7 +59,9 @@ export default function Profile({ user }) {
 	const [type, setType] = useState(null)
 	return (
 		<ProfileSection>
-			{isEditOpen ? <EditProfile type={type} user={user} setIsEditOpen={setIsEditOpen} /> : null}
+			{isEditOpen ? (
+				<EditProfile type={type} user={user} setIsEditOpen={setIsEditOpen} />
+			) : null}
 			<h1>Profile</h1>
 			<div className="name-email-box box">
 				<div className="box-heading">
@@ -75,11 +77,11 @@ export default function Profile({ user }) {
 				</div>
 				<hr />
 				<div className="name property">
-					<b>Name</b>
+					<b>First Name</b>
 					<span>{user.name}</span>
 				</div>
 				<div className="surname property">
-					<b>Surame</b>
+					<b>Last Name</b>
 					<span>{user.surname}</span>
 				</div>
 				<div className="email property">

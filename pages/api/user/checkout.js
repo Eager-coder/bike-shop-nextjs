@@ -1,5 +1,5 @@
 import Stripe from "stripe"
-const db = require("../db")
+const db = require("../../../db")
 import checkAuth from "./checkAuth"
 import shortid from "shortid"
 const stripe = new Stripe(
@@ -15,13 +15,18 @@ export default checkAuth(async (req, res) => {
 				isSuccess: false,
 				isIncomplete: true,
 			})
-		const total = products.reduce((a, item) => a + item.price * item.quantity, 0)
+		const total = products.reduce(
+			(a, item) => a + item.price * item.quantity,
+			0
+		)
 		try {
 			let productList = {}
 			products.forEach((item, index) => {
-				productList[`Item_${index + 1}`] = `Product name: ${item.name}, Product id: ${
-					item.id
-				}, Quantity: ${item.quantity}, Size: ${item.size ? item.size : "-"}, Price: $${item.price}`
+				productList[`Item_${index + 1}`] = `Product name: ${
+					item.name
+				}, Product id: ${item.id}, Quantity: ${item.quantity}, Size: ${
+					item.size ? item.size : "-"
+				}, Price: $${item.price}`
 			})
 
 			const payment = await stripe.paymentIntents.create({

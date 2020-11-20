@@ -6,7 +6,6 @@ const Section = styled.section`
 	grid-template-columns: repeat(3, 1fr);
 	column-gap: 20px;
 	row-gap: 20px;
-	padding: ${({ padding }) => padding};
 	@media (max-width: 1280px) {
 		width: 100%;
 		grid-template-columns: 1fr 1fr;
@@ -15,10 +14,9 @@ const Section = styled.section`
 		grid-template-columns: 1fr;
 	}
 `
-export default function ItemGrid({ productList, padding }) {
-	console.log(padding)
+export default function ItemGrid({ productList }) {
 	return (
-		<Section padding={padding}>
+		<Section>
 			{productList.map((e, index) => (
 				<Item key={index} data={e} />
 			))}

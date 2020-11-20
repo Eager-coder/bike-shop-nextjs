@@ -1,8 +1,18 @@
-const db = require("../db")
+const db = require("../../../db")
 export default async (req, res) => {
 	try {
 		const data = JSON.parse(req.body)
-		const { name, brand, price, category, type, year, image, description, tech_specs } = data
+		const {
+			name,
+			brand,
+			price,
+			category,
+			type,
+			year,
+			image,
+			description,
+			tech_specs,
+		} = data
 		let isEpmty = false
 		for (const prop in data) {
 			if (
@@ -13,7 +23,9 @@ export default async (req, res) => {
 				return (isEpmty = true)
 		}
 		if (Object.keys(data).length !== 9 || isEpmty)
-			return res.status(400).json({ message: "Please fill all the fields", status: 400 })
+			return res
+				.status(400)
+				.json({ message: "Please fill all the fields", status: 400 })
 		if (
 			typeof name !== "string" ||
 			typeof brand !== "string" ||
@@ -25,7 +37,9 @@ export default async (req, res) => {
 			typeof description !== "string" ||
 			typeof tech_specs !== "string"
 		)
-			return res.status(400).json({ message: "Invalid credentials", status: 400 })
+			return res
+				.status(400)
+				.json({ message: "Invalid credentials", status: 400 })
 		await db.query(
 			`INSERT INTO products (name, brand, category, type, price, year, image, description, tech_specs) VALUES
 			('${name}', '${brand}', '${category}', '${type}', '${price}', '${year}', '${image}', '${description

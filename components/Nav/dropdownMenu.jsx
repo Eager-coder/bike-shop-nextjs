@@ -1,9 +1,43 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import styled from "styled-components"
+
+export default function DropdownMenu({ category, links, setMenuOpen }) {
+	const categoryName = category === "bikes" ? "bicycles" : category
+	const dropdownBox = useRef(null)
+	const [width, setWidth] = useState(0)
+	useEffect(() => {
+		if (dropdownBox.current) {
+			setWidth(dropdownBox.current.offsetWidth)
+		}
+	}, [dropdownBox])
+
+	return (
+		<Li ref={dropdownBox} width={width}>
+			<Link href={`/${category}`} as={`/${category}`}>
+				<span className="category" onClick={() => setMenuOpen(false)}>
+					{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
+				</span>
+			</Link>
+			<div>
+				<ul>
+					{links.map((e, index) => (
+						<li key={index} onClick={() => setMenuOpen(false)}>
+							<Link href={`/${category}/[uid]`} as={`/${category}/${e}`}>
+								<a>{e.charAt(0).toUpperCase() + e.slice(1)}</a>
+							</Link>
+						</li>
+					))}
+				</ul>
+			</div>
+		</Li>
+	)
+}
+
 const Li = styled.li`
 	display: block;
 	.category {
+		cursor: pointer;
 		color: whitesmoke;
 		font-weight: 500;
 		font-size: 1.1rem;
@@ -64,35 +98,3 @@ const Li = styled.li`
 		}
 	}
 `
-
-export default function DropdownMenu({ category, links }) {
-	const categoryName = category === "bikes" ? "bicycles" : category
-	const dropdownBox = useRef(null)
-	const [width, setWidth] = useState(0)
-	useEffect(() => {
-		if (dropdownBox.current) {
-			setWidth(dropdownBox.current.offsetWidth)
-		}
-	}, [])
-
-	return (
-		<Li ref={dropdownBox} width={width}>
-			{/* <Link href={`/${category}`} as={`/${category}`}> */}
-			<span className="category">
-				{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
-			</span>
-			{/* </Link> */}
-			<div>
-				<ul>
-					{links.map((e, index) => (
-						<li key={index}>
-							<Link href={`/${category}/[uid]`} as={`/${category}/${e}`}>
-								<a>{e.charAt(0).toUpperCase() + e.slice(1)}</a>
-							</Link>
-						</li>
-					))}
-				</ul>
-			</div>
-		</Li>
-	)
-}

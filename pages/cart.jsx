@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import Context from "../components/Context"
 import ItemContainer from "../components/cart/ItemContainer"
 import Loading from "../components/Loading"
+import Head from "next/head"
 const CartContainer = styled.div`
 	margin: 50px auto;
 	width: 100%;
@@ -89,7 +90,9 @@ export default function Cart() {
 	const router = useRouter()
 
 	const getCartItems = async () => {
-		const res = await fetch(`/api/user/cart?userId=${userData.id}`, { method: "GET" })
+		const res = await fetch(`/api/user/cart?userId=${userData.id}`, {
+			method: "GET",
+		})
 		const json = await res.json()
 		if (json.data) {
 			setProducts(json.data)
@@ -114,6 +117,9 @@ export default function Cart() {
 
 	return (
 		<Layout>
+			<Head>
+				<title>Cart | Focus - Online Bike Shop</title>
+			</Head>
 			<CartContainer>
 				<h1>Shopping cart</h1>
 				{isLoaded ? (

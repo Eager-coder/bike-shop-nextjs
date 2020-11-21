@@ -10,12 +10,19 @@ const StyledFooter = styled.footer`
 			justify-content: space-between;
 			margin-bottom: 150px;
 			width: 100%;
+			.left {
+				.payment {
+					img {
+						width: 40px;
+					}
+				}
+			}
 		}
 	}
 
 	.links {
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		width: 50%;
 	}
 	.link-column {
@@ -148,9 +155,19 @@ export default function Footer() {
 		<StyledFooter>
 			<div class="container">
 				<div class="flex-container">
-					<div class="logo">
-						<img src="https://focus-bike-shop.vercel.app/icons/logo.png" alt="" />
+					<div className="left">
+						<div class="logo">
+							<img src="https://focus-bike-shop.vercel.app/icons/logo.png" alt="" />
+						</div>
+						<div className="payment">
+							<img src="https://focus-bike-shop.vercel.app/icons/visa.png" alt="" />
+							<img src="https://focus-bike-shop.vercel.app/icons/mastercard.png" alt="" />
+							<img src="https://focus-bike-shop.vercel.app/icons/ae.png" alt="" />
+							<img src="https://focus-bike-shop.vercel.app/icons/diners.png" alt="" />
+							<img src="https://focus-bike-shop.vercel.app/icons/jcb.png" alt="" />
+						</div>
 					</div>
+
 					<div class="links">
 						<div class="link-column">
 							<span class="column-name">SHOP</span>
@@ -180,18 +197,6 @@ export default function Footer() {
 							</a>
 							<a href="#" class="link">
 								Vendors
-							</a>
-						</div>
-						<div class="link-column">
-							<span class="column-name">USEFUL LINKS</span>
-							<a href="#" class="link">
-								Help
-							</a>
-							<a href="#" class="link">
-								Web Player
-							</a>
-							<a href="#" class="link">
-								Free Mobile App
 							</a>
 						</div>
 					</div>

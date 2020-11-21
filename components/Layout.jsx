@@ -35,7 +35,7 @@ export default function Layout({ children }) {
 			</Head>
 			<Nav isLoggedIn={isLoggedIn} />
 			<main>{children}</main>
-			{/* <Footer /> */}
+			<Footer />
 			<GlobalStyle />
 		</>
 	)

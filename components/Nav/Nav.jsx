@@ -81,7 +81,7 @@ export default function Nav({ isLoggedIn }) {
 			<nav>
 				<LinksLeft isMenuOpen={isMenuOpen}>
 					<MenuBtn onClick={() => setMenuOpen(!isMenuOpen)}>
-						<img src="http://localhost:3000/icons/burger.svg" alt="" />
+						<img src="https://focus-bike-shop.vercel.app/icons/burger.svg" alt="" />
 					</MenuBtn>
 					<Link href="/" passHref>
 						<a className="logo">

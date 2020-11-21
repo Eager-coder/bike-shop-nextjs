@@ -72,7 +72,7 @@ export default function Bikes({ product }) {
 			<Section>
 				<Link href="/bikes/[uid]" as="/bikes/road">
 					<Category>
-						<img src="https://focus-bike-shop.vercel.app/images/road_card.jpg" alt="" />
+						<img src="https://focus-bike-shop.vercel.app/images/road_card.jfif" alt="" />
 						<h2>Road</h2>
 					</Category>
 				</Link>

@@ -11,6 +11,10 @@ const Container = styled.section`
 	margin: 100px auto;
 	h1 {
 		font-size: 2rem;
+		margin-bottom: 50px;
+		@media (max-width: 640px) {
+			font-size: 1.5rem;
+		}
 	}
 `
 export default function Search() {

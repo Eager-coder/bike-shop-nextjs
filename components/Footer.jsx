@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import Link from "next/link"
 const StyledFooter = styled.footer`
 	background-color: black;
 	.container {
@@ -11,8 +12,18 @@ const StyledFooter = styled.footer`
 			margin-bottom: 150px;
 			width: 100%;
 			.left {
+				.logo {
+					display: block;
+					margin-bottom: 50px;
+					img {
+						width: 150px;
+						margin-right: 50px;
+						filter: invert(1);
+					}
+				}
 				.payment {
 					img {
+						margin: 5px 10px 5px 0;
 						width: 40px;
 					}
 				}
@@ -29,16 +40,24 @@ const StyledFooter = styled.footer`
 		display: flex;
 		flex-direction: column;
 	}
-	.logo > img {
-		width: 132px;
-		margin-right: 50px;
-		filter: invert(1);
-	}
+
 	.social-media {
-		margin-left: 100px;
+		/* margin-left: 100px; */
 		display: flex;
+		img {
+			width: 100%;
+			filter: invert(1);
+			transition: 0.2s;
+			::hover {
+				filter: initial;
+				fill: orange;
+			}
+		}
+		svg {
+			fill: red;
+		}
 	}
-	.social-media > div {
+	.social-media > a {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -48,22 +67,19 @@ const StyledFooter = styled.footer`
 		height: 54px;
 		background-color: rgb(44, 44, 44);
 		margin-left: 20px;
+		:hover > img {
+			filter: invert(31%) sepia(51%) saturate(2291%) hue-rotate(340deg) brightness(115%)
+				contrast(101%);
+		}
 	}
-	.fab {
-		font-size: 30px;
-		color: white;
-		transition: 0.2s;
-	}
-	.fab:hover {
-		color: rgb(22, 190, 0);
-	}
+
 	a {
 		text-decoration: none;
 		color: white;
 		margin: 10px 0;
 	}
 	a:hover {
-		color: rgb(22, 190, 0);
+		color: #ff4834;
 		transition: 0.2s;
 	}
 	span {
@@ -98,7 +114,7 @@ const StyledFooter = styled.footer`
 	}
 	@media screen and (max-width: 1000px) {
 		.container {
-			padding: 50px 100px;
+			/* padding: 50px 100px; */
 		}
 		.flex-container {
 			display: block;
@@ -153,68 +169,73 @@ const StyledFooter = styled.footer`
 export default function Footer() {
 	return (
 		<StyledFooter>
-			<div class="container">
-				<div class="flex-container">
+			<div className="container">
+				<div className="flex-container">
 					<div className="left">
-						<div class="logo">
-							<img src="https://focus-bike-shop.vercel.app/icons/logo.png" alt="" />
-						</div>
+						<Link href="/">
+							<a className="logo">
+								<img src="https://focus-bike-shop.vercel.app/icons/logo.png" alt="" />
+							</a>
+						</Link>
 						<div className="payment">
 							<img src="https://focus-bike-shop.vercel.app/icons/visa.png" alt="" />
 							<img src="https://focus-bike-shop.vercel.app/icons/mastercard.png" alt="" />
 							<img src="https://focus-bike-shop.vercel.app/icons/ae.png" alt="" />
+							<br />
+							<img src="https://focus-bike-shop.vercel.app/icons/discover.png" alt="" />
 							<img src="https://focus-bike-shop.vercel.app/icons/diners.png" alt="" />
 							<img src="https://focus-bike-shop.vercel.app/icons/jcb.png" alt="" />
 						</div>
 					</div>
 
-					<div class="links">
-						<div class="link-column">
-							<span class="column-name">SHOP</span>
-							<a href="#" class="link">
+					<div className="links">
+						<div className="link-column">
+							<span className="column-name">SHOP</span>
+							<a href="#" className="link">
 								About
 							</a>
-							<a href="#" class="link">
+							<a href="#" className="link">
 								Jobs
 							</a>
-							<a href="#" class="link">
+							<a href="#" className="link">
 								For the Record
 							</a>
 						</div>
-						<div class="link-column">
-							<span class="column-name">HELP & SERVICE</span>
-							<a href="#" class="link">
+						<div className="link-column">
+							<span className="column-name">HELP & SERVICE</span>
+							<a href="#" className="link">
 								For Artists
 							</a>
-							<a href="#" class="link">
+							<a href="#" className="link">
 								Developers
 							</a>
-							<a href="#" class="link">
+							<a href="#" className="link">
 								Brands
 							</a>
-							<a href="#" class="link">
+							<a href="#" className="link">
 								Investors
 							</a>
-							<a href="#" class="link">
+							<a href="#" className="link">
 								Vendors
 							</a>
 						</div>
 					</div>
-					<div class="social-media">
-						<div>
-							<i class="fab fa-instagram"></i>
-						</div>
-						<div>
-							<i class="fab fa-twitter"></i>
-						</div>
-						<div>
-							<i class="fab fa-facebook-f"></i>
-						</div>
+					<div className="social-media">
+						<a href="https://instagram.com" target="_blank">
+							<img src="/icons/014-instagram.svg" alt="" />
+						</a>
+						<a href="https://facebook.com" target="_blank">
+							<img src="/icons/013-facebook.svg" alt="" />
+						</a>
+						<a href="https://twitter.com" target="_blank">
+							<img src="/icons/004-twitter.svg" alt="" />
+						</a>
+						<div></div>
 					</div>
 				</div>
 
-				<div class="bottom-items">
-					<ul class="bottom-links">
+				<div className="bottom-items">
+					<ul className="bottom-links">
 						<li>
 							<a href="#">Legal</a>
 						</li>
@@ -227,15 +248,9 @@ export default function Footer() {
 						<li>
 							<a href="#">Cookies</a>
 						</li>
-						<li>
-							<a href="#">About Ads</a>
-						</li>
-						<li>
-							<a href="#">Additional CA Privacy Disclosures</a>
-						</li>
 					</ul>
-					<div class="date">
-						<span>© 2020 Focus AB</span>
+					<div className="date">
+						<span>© 2020 Focus Bike Shop</span>
 					</div>
 				</div>
 			</div>

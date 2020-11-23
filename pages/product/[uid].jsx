@@ -54,10 +54,8 @@ export default function Bikes({ product, error }) {
 		.replace(/[\r\n\t]/g, "")
 		.split("#")
 		.filter(e => e.length)
-		.map(e => {
-			return e.split("=")
-		})
-	console.log(table)
+		.map(e => e.split("="))
+	console.log(data.tech_specs, table)
 	return (
 		<Layout>
 			<Head>
@@ -82,23 +80,28 @@ export default function Bikes({ product, error }) {
 }
 
 const db = require("../../db")
+
+// This function gets called at build time on server-side.
+// It may be called again, if new request comes in
 export async function getStaticProps({ params }) {
-	const [product] = await db.query(`SELECT * FROM products WHERE name = '${params.uid}'`)
-	console.log(product)
-	if (!product) {
+	const [product] = await db.query(
+		`SELECT * FROM products WHERE name = '${params.uid}'`
+	)
+	if (!product)
 		return {
 			props: {
 				products: null,
 				error: true,
 			},
 		}
-	}
+
 	return {
 		props: { product: JSON.stringify(product), error: false },
 		revalidate: 1,
 	}
 }
-
+// This function define a list of paths that
+// have to be rendered to HTML at build time.
 export const getStaticPaths = async () => {
 	const products = await db.query(`SELECT * FROM products`)
 	const paths = products.map(item => ({
@@ -106,20 +109,8 @@ export const getStaticPaths = async () => {
 			uid: encodeURIComponent(item.name).toString(),
 		},
 	}))
-	// console.log(paths)
 	return {
 		fallback: true,
 		paths,
 	}
 }
-
-// const db = require("../../db")
-// export async function getServerSideProps(context) {
-// 	const product_name = context.query.uid
-// 	const [data] = await db.query(
-// 		`SELECT * FROM products WHERE name = '${product_name}'`
-// 	)
-// 	return {
-// 		props: { product: JSON.stringify(data) },
-// 	}
-// }

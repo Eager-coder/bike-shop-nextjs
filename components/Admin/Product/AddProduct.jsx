@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import styled from "styled-components"
+import Message from "../../Auth/Message"
 const Form = styled.form`
 	width: 100%;
 	h1 {
@@ -8,7 +9,7 @@ const Form = styled.form`
 	}
 	.flexbox {
 		display: flex;
-		width: 800px;
+		width: 900px;
 		justify-content: space-between;
 	}
 	label {
@@ -49,7 +50,7 @@ const Form = styled.form`
 		background: black;
 		width: 120px;
 		height: 50px;
-		margin-top: 20px;
+		margin-top: 0px;
 		border-radius: 7px;
 		color: white;
 		align-self: center;
@@ -128,15 +129,7 @@ export default function AddProduct() {
 							onInput={handleChange}
 							placeholder="#parameter = specification"></textarea>
 					</label>
-					{msg ? (
-						<Popup status={msg.status}>
-							<span>
-								{msg.status === 201 ? "Success! " + msg.message : "Error! " + msg.message}
-							</span>
-						</Popup>
-					) : (
-						""
-					)}
+					{msg ? <Message message={msg.message} status={msg.isSuccess} /> : ""}
 				</div>
 			</div>
 

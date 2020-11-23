@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react"
 import styled from "styled-components"
 const MessageContainer = styled.div`
 	max-width: 100%;
@@ -13,6 +12,8 @@ const MessageContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 `
-export default function Message({ message, isSuccess }) {
-	return message ? <MessageContainer status={isSuccess}>{message}</MessageContainer> : null
+export default function Message({ message, status }) {
+	return message ? (
+		<MessageContainer status={status}>{message}</MessageContainer>
+	) : null
 }

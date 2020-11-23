@@ -4,7 +4,11 @@ const checkAuth = fn => async (req, res) => {
 		if (err && !decoded) {
 			res
 				.status(401)
-				.json({ message: "You are not authenticated", isSuccess: false, isLoggedIn: false })
+				.json({
+					message: "You are not authenticated",
+					isSuccess: false,
+					isLoggedIn: false,
+				})
 		} else {
 			fn(req, res)
 		}

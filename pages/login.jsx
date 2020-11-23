@@ -6,9 +6,13 @@ import { useState, useContext, useEffect } from "react"
 import Message from "../components/Auth/Message"
 import Context from "../components/Context"
 import Head from "next/head"
+import Loading from "../components/Loading"
 const FormContainer = styled.div`
 	width: max-content;
 	margin: 150px auto;
+	h1 {
+		margin-bottom: 50px;
+	}
 	form {
 		input {
 			border: 1px solid rgb(0, 0, 0, 0.3);
@@ -40,13 +44,21 @@ const FormContainer = styled.div`
 export default function Signup() {
 	const [userData, setUserData] = useState({})
 	const [message, setMessage] = useState({})
+	const [isLoading, setLoading] = useState(false)
 	const context = useContext(Context)
 	const router = useRouter()
 	const handleSubmit = async e => {
 		e.preventDefault()
-		const res = await fetch("/api/user/login", { method: "POST", body: JSON.stringify(userData) })
+		setLoading(true)
+		const res = await fetch("/api/user/login", {
+			method: "POST",
+			body: JSON.stringify(userData),
+		})
 		const json = await res.json()
 		console.log("login:", json)
+		if (!json.isSuccess) {
+			setLoading(false)
+		}
 		setMessage({ message: json.message, isSuccess: json.isSuccess })
 		if (json.isLoggedIn) {
 			context.setUserData(json)
@@ -61,23 +73,38 @@ export default function Signup() {
 			<Head>
 				<title>Log in | Focus - Online Bike Shop</title>
 			</Head>
-			<FormContainer>
-				<h1>Login</h1>
-				<form onSubmit={handleSubmit}>
-					<input type="text" name="email" placeholder="Email" onChange={handleChange} />
-					<input type="password" name="password" placeholder="Password" onChange={handleChange} />
-					<button id="btn-submit" type="submit">
-						Log in
-					</button>
-					<Message message={message.message} isSuccess={message.isSuccess} />
-				</form>
-				<div className="no-acc">
-					Don't have an account?
-					<Link href="/signup">
-						<a>Sign up</a>
-					</Link>
-				</div>
-			</FormContainer>
+			{!isLoading ? (
+				<FormContainer>
+					<h1>Login</h1>
+					<form onSubmit={handleSubmit}>
+						<input
+							type="text"
+							name="email"
+							placeholder="Email"
+							onChange={handleChange}
+						/>
+						<input
+							type="password"
+							name="password"
+							placeholder="Password"
+							onChange={handleChange}
+						/>
+						<button id="btn-submit" type="submit">
+							Log in
+						</button>
+						<Message message={message.message} isSuccess={message.isSuccess} />
+					</form>
+
+					<div className="no-acc">
+						Don't have an account?
+						<Link href="/signup">
+							<a>Sign up</a>
+						</Link>
+					</div>
+				</FormContainer>
+			) : (
+				<Loading size="80" />
+			)}
 		</Layout>
 	)
 }

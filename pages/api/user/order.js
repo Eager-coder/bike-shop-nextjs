@@ -5,7 +5,8 @@ export default checkAuth(async (req, res) => {
 	if (req.method === "GET") {
 		const userId = req.query.userId
 		const orders = await db.query(`
-    SELECT * FROM orders WHERE user_id = '${userId}'
+			SELECT * FROM orders WHERE user_id = '${userId}'
+			ORDER BY orders.created_at DESC
 		`)
 		const orderIds = orders.map(item => item.order_id)
 		const items = await db.query(

@@ -46,6 +46,7 @@ const StyledFooter = styled.footer`
 		display: flex;
 		img {
 			width: 100%;
+			height: auto;
 			filter: invert(1);
 			transition: 0.2s;
 			::hover {

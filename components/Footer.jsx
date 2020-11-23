@@ -68,8 +68,8 @@ const StyledFooter = styled.footer`
 		background-color: rgb(44, 44, 44);
 		margin-left: 20px;
 		:hover > img {
-			filter: invert(31%) sepia(51%) saturate(2291%) hue-rotate(340deg) brightness(115%)
-				contrast(101%);
+			filter: invert(31%) sepia(51%) saturate(2291%) hue-rotate(340deg)
+				brightness(115%) contrast(101%);
 		}
 	}
 
@@ -174,17 +174,38 @@ export default function Footer() {
 					<div className="left">
 						<Link href="/">
 							<a className="logo">
-								<img src="https://focus-bike-shop.vercel.app/icons/logo.png" alt="" />
+								<img
+									src="https://focus-bike-shop.vercel.app/icons/logo.png"
+									alt=""
+								/>
 							</a>
 						</Link>
 						<div className="payment">
-							<img src="https://focus-bike-shop.vercel.app/icons/visa.png" alt="" />
-							<img src="https://focus-bike-shop.vercel.app/icons/mastercard.png" alt="" />
-							<img src="https://focus-bike-shop.vercel.app/icons/ae.png" alt="" />
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/visa.png"
+								alt=""
+							/>
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/mastercard.png"
+								alt=""
+							/>
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/ae.png"
+								alt=""
+							/>
 							<br />
-							<img src="https://focus-bike-shop.vercel.app/icons/discover.png" alt="" />
-							<img src="https://focus-bike-shop.vercel.app/icons/diners.png" alt="" />
-							<img src="https://focus-bike-shop.vercel.app/icons/jcb.png" alt="" />
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/discover.png"
+								alt=""
+							/>
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/diners.png"
+								alt=""
+							/>
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/jcb.png"
+								alt=""
+							/>
 						</div>
 					</div>
 
@@ -222,13 +243,22 @@ export default function Footer() {
 					</div>
 					<div className="social-media">
 						<a href="https://instagram.com" target="_blank">
-							<img src="/icons/014-instagram.svg" alt="" />
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/014-instagram.svg"
+								alt=""
+							/>
 						</a>
 						<a href="https://facebook.com" target="_blank">
-							<img src="/icons/013-facebook.svg" alt="" />
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/013-facebook.svg"
+								alt=""
+							/>
 						</a>
 						<a href="https://twitter.com" target="_blank">
-							<img src="/icons/004-twitter.svg" alt="" />
+							<img
+								src="https://focus-bike-shop.vercel.app/icons/004-twitter.svg"
+								alt=""
+							/>
 						</a>
 						<div></div>
 					</div>

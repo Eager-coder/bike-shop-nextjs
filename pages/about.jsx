@@ -10,9 +10,6 @@ const Container = styled.div`
 			object-fit: cover;
 			object-position: right;
 			opacity: 0.4;
-			@include mobile() {
-				object-position: 80%;
-			}
 		}
 		.mission-text {
 			position: absolute;
@@ -23,12 +20,6 @@ const Container = styled.div`
 			text-transform: uppercase;
 			color: white;
 
-			@include tablet() {
-				width: 500px;
-			}
-			@include mobile() {
-				width: 300px;
-			}
 			span {
 				display: block;
 				font-size: 1.5rem;

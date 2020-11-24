@@ -198,7 +198,7 @@ export default function Footer() {
 					<div className="links">
 						<div className="link-column">
 							<span className="column-name">SHOP</span>
-							<a href="#" className="link">
+							<a href="/about" className="link">
 								About us
 							</a>
 							<a href="#" className="link">

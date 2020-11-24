@@ -67,31 +67,16 @@ const Container = styled.div`
 			border-bottom: 2px solid rgb(187, 3, 3);
 			margin: 50px 0 50px 100px;
 			width: 500px;
-			@include tablet() {
-				font-size: 1.5rem;
-				width: 400px;
-				margin-left: 50px;
-			}
-			@include mobile() {
-				font-size: 1.2rem;
-				font-weight: 500;
-				width: 250px;
-			}
 		}
 		.flex-container {
 			display: flex;
 			justify-content: space-between;
 			width: 100%;
-			@include laptop() {
-				flex-direction: column;
-			}
+
 			.flex-item {
 				width: 31vw;
 				position: relative;
-				@include laptop() {
-					width: 100%;
-					margin-bottom: 20px;
-				}
+
 				&::after {
 					content: "";
 					width: 100%;
@@ -134,44 +119,28 @@ const Container = styled.div`
 		max-width: 1340px;
 		margin: 200px auto;
 		padding: 0 20px;
-		@include tablet() {
-			margin: 30px auto;
-		}
+
 		h2 {
 			font-size: 3rem;
 			color: rgb(17, 17, 17);
 			text-transform: uppercase;
 			margin: 30px 0;
-			@include mobile() {
-				font-size: 2rem;
-			}
 		}
 		.figures-flex {
 			display: flex;
 			justify-content: space-between;
 			width: 100%;
-			@include laptop() {
-				flex-wrap: wrap;
-			}
+
 			.figure {
 				margin-bottom: 30px;
 				.figure-text {
 					width: 200px;
-				}
-				@include laptop() {
-					width: 50%;
-				}
-				@include tablet() {
-					width: 100%;
 				}
 			}
 			h3 {
 				font-size: 3.5rem;
 				font-weight: 900;
 				color: rgb(53, 53, 53);
-				@include mobile() {
-					font-size: 3rem;
-				}
 			}
 			span {
 				font-size: 1.5rem;

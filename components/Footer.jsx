@@ -5,6 +5,7 @@ const StyledFooter = styled.footer`
 	.container {
 		max-width: 1300px;
 		margin: 0 auto;
+		margin-top: 150px;
 		padding: 80px 20px;
 		.flex-container {
 			display: flex;

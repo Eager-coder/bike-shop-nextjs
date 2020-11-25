@@ -174,9 +174,19 @@ const OrderBox = styled.div`
 		padding: 0 5px;
 		font-size: 0.9rem;
 		border-radius: 5px;
-		background: ${({ status }) =>
-			status === "completed" ? "#69c501" : "lightgrey"};
-		color: ${({ status }) => (status === "completed" ? "white" : "black")};
+		${({ status }) => {
+			if (status === "processing") {
+				return "color: white; background: orange;"
+			} else if (status === "shipped") {
+				return "color: white; background: purple;"
+			} else if (status === "completed") {
+				return "color: white; background: green;"
+			} else if (status === "cancelled") {
+				return "color: white; background: red;"
+			} else if (status === "on hold") {
+				return "color: white; background: grey;"
+			}
+		}};
 	}
 	@media (max-width: 768px) {
 		padding: 20px;

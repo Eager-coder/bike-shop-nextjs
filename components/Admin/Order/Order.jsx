@@ -40,6 +40,16 @@ const OrderBox = styled.div`
 		span {
 			font-weight: 500;
 		}
+		.update-btn {
+			margin-top: 10px;
+			cursor: pointer;
+			border: none;
+			border-radius: 5px;
+			background: black;
+			color: white;
+			padding: 3px 5px;
+			box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+		}
 	}
 `
 const Status = styled.span`
@@ -59,7 +69,47 @@ const Status = styled.span`
 		}
 	}};
 `
-const UpdateStatus = styled.div``
+const UpdateStatus = styled.div`
+	border-radius: 4px;
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+	padding: 30px 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	.info {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		span {
+			margin: 10px 0;
+		}
+	}
+	select {
+		width: 120px;
+		font-size: 1rem;
+		option {
+			height: 30px;
+		}
+	}
+	.buttons {
+		margin-top: 20px;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		button {
+			font-size: 1.1rem;
+			margin-top: 10px;
+			cursor: pointer;
+			border: none;
+			border-radius: 4px;
+			padding: 3px 5px;
+		}
+		button.update {
+			background: black;
+			color: white;
+		}
+	}
+`
 export default function Order({ order, updateStatus }) {
 	const [newStatus, setStatus] = useState(null)
 	const [isUpdateOpen, setUpdateOpen] = useState(false)
@@ -100,7 +150,8 @@ export default function Order({ order, updateStatus }) {
 						</span>
 					</div>
 					<div className="addres">
-						<b>Address:</b> {address_line}, {city}, <br /> {state}, {country}, {zip_code}
+						<b>Address:</b> {address_line}, {city}, <br /> {state}, {country},{" "}
+						{zip_code}
 					</div>
 				</div>
 				<div className="right">
@@ -113,12 +164,21 @@ export default function Order({ order, updateStatus }) {
 					</div>
 					{status !== "completed" ? (
 						<>
-							<button onClick={() => setUpdateOpen(true)}>Update Status</button>
+							<button
+								className="update-btn"
+								onClick={() => setUpdateOpen(true)}>
+								Update Status
+							</button>
 							{isUpdateOpen ? (
 								<Popup>
 									<UpdateStatus>
-										<div>Order ID: {order_id}</div>
-										<div>Select new status</div>
+										<div className="info">
+											<span>Order ID: {order_id}</span>
+											<span>
+												Current stattus: <b>{status}</b>
+											</span>
+										</div>
+										<div>Select new status:</div>
 										<select onInput={e => setStatus(e.target.value)}>
 											<option></option>
 											<option value="processing">processing</option>
@@ -127,10 +187,18 @@ export default function Order({ order, updateStatus }) {
 											<option value="cancelled">cancelled</option>
 										</select>
 										<div className="buttons">
-											<button onClick={() => updateStatus(order_id, newStatus, setUpdateOpen)}>
+											<button
+												className="update"
+												onClick={() =>
+													updateStatus(order_id, newStatus, setUpdateOpen)
+												}>
 												Update
 											</button>
-											<button onClick={() => setUpdateOpen(false)}>Cancel</button>
+											<button
+												className="cancel"
+												onClick={() => setUpdateOpen(false)}>
+												Cancel
+											</button>
 										</div>
 									</UpdateStatus>
 								</Popup>

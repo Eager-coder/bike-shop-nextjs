@@ -25,9 +25,12 @@ export default function Order({ order, getOrders }) {
 	} = order
 	const completeOrder = async order_id => {
 		setIsConfirmLoading(true)
-		const res = await fetch(`/api/user/order?order_id=${order_id}&isComplete=true`, {
-			method: "PUT",
-		})
+		const res = await fetch(
+			`/api/user/order?order_id=${order_id}&isComplete=true`,
+			{
+				method: "PUT",
+			}
+		)
 		const json = await res.json()
 		if (json.isSuccess) {
 			setIsConfirmLoading(false)
@@ -45,7 +48,8 @@ export default function Order({ order, getOrders }) {
 			<div className="details">
 				<div className="left">
 					<div className="addres">
-						<span>Address:</span> {address_line}, {city}, <br /> {state}, {country}, {zip_code}
+						<span>Address:</span> {address_line}, {city}, <br /> {state},{" "}
+						{country}, {zip_code}
 					</div>
 					<div className="time-created">
 						<span>Time ordered:</span> {moment(created_at).format("LLL")}
@@ -58,7 +62,9 @@ export default function Order({ order, getOrders }) {
 					</div>
 					{status !== "completed" ? (
 						<>
-							<button className="btn-complete" onClick={() => setPopupOpen(true)}>
+							<button
+								className="btn-complete"
+								onClick={() => setPopupOpen(true)}>
 								Confirm completion
 							</button>
 							{isPopupOpen ? (
@@ -67,12 +73,18 @@ export default function Order({ order, getOrders }) {
 										<Loading size="120" />
 									) : (
 										<Confirm>
-											<div>You are going to comfirm your order with ID: {order_id}</div>
+											<p>
+												You are going to comfirm your order with ID: {order_id}
+											</p>
 											<div className="btns">
-												<button className="confirm" onClick={() => completeOrder(order_id)}>
+												<button
+													className="confirm"
+													onClick={() => completeOrder(order_id)}>
 													Confirm
 												</button>
-												<button className="cancel" onClick={() => setPopupOpen(false)}>
+												<button
+													className="cancel"
+													onClick={() => setPopupOpen(false)}>
 													Cancel
 												</button>
 											</div>
@@ -94,13 +106,22 @@ export default function Order({ order, getOrders }) {
 
 const Confirm = styled.div`
 	display: flex;
-	max-width: 300px;
+	max-width: 350px;
 	flex-direction: column;
+	border-radius: 4px;
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+	background: white;
+	padding: 20px;
+	p {
+		font-size: 1.2rem;
+		margin-bottom: 20px;
+	}
 	.btns {
 		margin: 10px 0;
 		display: flex;
 		justify-content: space-between;
 		.confirm {
+			font-size: 1.2rem;
 			cursor: pointer;
 			border: none;
 			border-radius: 5px;
@@ -109,8 +130,11 @@ const Confirm = styled.div`
 			padding: 2px 5px;
 		}
 		.cancel {
+			font-size: 1.2rem;
+			padding: 2px 5px;
 			cursor: pointer;
 			border: none;
+			border-radius: 5px;
 		}
 	}
 `
@@ -148,7 +172,8 @@ const OrderBox = styled.div`
 	}
 	.status {
 		border-radius: 5px;
-		background: ${({ status }) => (status === "completed" ? "#69c501" : "lightgrey")};
+		background: ${({ status }) =>
+			status === "completed" ? "#69c501" : "lightgrey"};
 		color: ${({ status }) => (status === "completed" ? "white" : "black")};
 	}
 	@media (max-width: 768px) {

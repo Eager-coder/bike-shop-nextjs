@@ -208,7 +208,7 @@ export default function AddressForm({ userData, products, total }) {
 				<label>
 					<input
 						name="city"
-						placeholder="City"
+						placeholder="City/Village"
 						type="text"
 						className="field"
 						value={address.city}
@@ -228,7 +228,7 @@ export default function AddressForm({ userData, products, total }) {
 				<label>
 					<input
 						name="zipCode"
-						placeholder="Zip code"
+						placeholder="Zip/postal code"
 						type="text"
 						className="field"
 						value={address.zipCode}

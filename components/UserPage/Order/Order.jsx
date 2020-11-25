@@ -171,6 +171,8 @@ const OrderBox = styled.div`
 		padding: 2px 5px;
 	}
 	.status {
+		padding: 0 5px;
+		font-size: 0.9rem;
 		border-radius: 5px;
 		background: ${({ status }) =>
 			status === "completed" ? "#69c501" : "lightgrey"};

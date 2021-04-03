@@ -1,6 +1,7 @@
 import checkAuth from "./checkAuth"
 const db = require("../../../db")
 const cron = require("node-cron")
+const fs = require("fs")
 import { verify } from "jsonwebtoken"
 export default checkAuth(async (req, res) => {
 	const userData = verify(req.cookies.auth, process.env.JWT_SECRET)
@@ -15,8 +16,12 @@ export default checkAuth(async (req, res) => {
 	} else {
 		res.status(401).json({ message: "User not found", isLoggedIn: false })
 	}
-})
-cron.schedule("*/5 * * * * *", async () => {
-	const res = await db.query("SELECT 2 + 2")
-	console.log(res)
+	if (!fs.existsSync("./cron.txt")) {
+		fs.writeFile("./cron.txt", "nothing", () => {
+			cron.schedule("*/5 * * * * *", async () => {
+				const res = await db.query("SELECT 2 + 2")
+				console.log("cron job")
+			})
+		})
+	}
 })

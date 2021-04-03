@@ -1,5 +1,5 @@
 const db = require("../../../db")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 import { sign } from "jsonwebtoken"
 import cookie from "cookie"
 

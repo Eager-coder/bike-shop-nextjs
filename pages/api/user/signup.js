@@ -1,5 +1,5 @@
 const db = require("../../../db")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 
 export default async (req, res) => {
 	// Check if the request method is post. If yes, the following lines will be executed

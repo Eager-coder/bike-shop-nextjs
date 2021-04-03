@@ -4,15 +4,26 @@ export default checkAuthAdmin(async (req, res) => {
 	try {
 		if (req.method === "GET") {
 			const orders = await db.query(`
-				SELECT  orders.*, users.email, users.name, users.surname
-				FROM orders
-				INNER JOIN users ON orders.user_id=users.id
-				ORDER BY orders.created_at DESC
+				SELECT  
+					orders.*, users.email, users.name, users.surname
+				FROM 
+					orders
+				INNER JOIN 
+					users 
+				ON 
+					orders.user_id=users.id
+				ORDER BY 
+					orders.created_at DESC
 			`)
 			const orderItems = await db.query(`
-				SELECT name, image, quantity, orderDetails.price, order_id, size
-				FROM orderDetails
-				LEFT JOIN products ON products.id=orderDetails.product_id
+				SELECT 
+					name, image, quantity, orderedProducts.price, order_id, size
+				FROM 
+					orderedProducts 
+				LEFT JOIN 
+					products 
+				ON 
+					products.id=orderedProducts.product_id
 			`)
 			orders.forEach(order => {
 				order.items = []

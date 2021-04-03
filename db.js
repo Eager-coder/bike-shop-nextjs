@@ -14,6 +14,7 @@ const db = mysql({
 	onClose: () => console.log("connection finished"),
 	connUtilization: 0.9,
 })
+
 exports.query = async (query, value) => {
 	/* A try-catch block is used 
 		for error (exception) handling */

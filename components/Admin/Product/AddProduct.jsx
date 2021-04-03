@@ -11,6 +11,9 @@ const Form = styled.form`
 		display: flex;
 		width: 900px;
 		justify-content: space-between;
+		@media (max-width: 900px) {
+			display: block;
+		}
 	}
 	label {
 		display: flex;

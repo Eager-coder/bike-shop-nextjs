@@ -10,9 +10,7 @@ export default checkAuth(async (req, res) => {
 		`)
 		const orderIds = orders.map(item => item.order_id)
 		const items = await db.query(
-			`SELECT * FROM orderDetails WHERE order_id  IN ('${orderIds.join(
-				"','"
-			)}')`
+			`SELECT * FROM orderedProducts WHERE order_id  IN ('${orderIds.join("','")}')`
 		)
 		orders.forEach(order => {
 			order.items = []
@@ -26,9 +24,7 @@ export default checkAuth(async (req, res) => {
 	} else if (req.method === "PUT") {
 		const { isComplete, order_id } = req.query
 		if (!isComplete || !order_id)
-			return res
-				.status(400)
-				.json({ message: "Something went wrong!", isSuccess: true })
+			return res.status(400).json({ message: "Something went wrong!", isSuccess: true })
 		const result = await db.query(`
 			UPDATE orders SET status = 'completed' WHERE order_id = '${order_id}'
 		`)

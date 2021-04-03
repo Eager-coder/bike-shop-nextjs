@@ -7,9 +7,10 @@ export default checkAuth(async (req, res) => {
 	if (req.method === "GET") {
 		const id = req.query.userId
 		// Example of an inner join
-		const allProducts = await db.query(`SELECT 
+		const allProducts = await db.query(`
+				SELECT 
 						cartItem.product_id AS product_id, cartItem.id, 
-						createdAt, size, quantity, name, price, image
+						created_at, size, quantity, name, price, image
 				FROM 
 						cartItem
 				INNER JOIN 
@@ -19,8 +20,7 @@ export default checkAuth(async (req, res) => {
 				WHERE 
 						cartItem.user_id = '${id}'
 			`)
-		if (!allProducts.length)
-			return res.status(400).json({ message: "Cart is empty" })
+		if (!allProducts.length) return res.status(400).json({ message: "Cart is empty" })
 		res.json({ data: allProducts })
 	}
 	// POST REQUEST
@@ -33,9 +33,7 @@ export default checkAuth(async (req, res) => {
 			`)
 		if (existingItem && existingItem.size === size) {
 			const newQty = Number(existingItem.quantity) + Number(qty)
-			await db.query(
-				`UPDATE cartItem SET quantity = '${newQty}' WHERE id = '${existingItem.id}'`
-			)
+			await db.query(`UPDATE cartItem SET quantity = '${newQty}' WHERE id = '${existingItem.id}'`)
 		} else {
 			const dbResult = await db.query(`INSERT INTO cartItem (quantity, size, product_id, user_id)
 					VALUES ('${qty}', '${size}', '${productId}', '${userId}')

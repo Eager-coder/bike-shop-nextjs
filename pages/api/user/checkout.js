@@ -15,18 +15,13 @@ export default checkAuth(async (req, res) => {
 				isSuccess: false,
 				isIncomplete: true,
 			})
-		const total = products.reduce(
-			(a, item) => a + item.price * item.quantity,
-			0
-		)
+		const total = products.reduce((a, item) => a + item.price * item.quantity, 0)
 		try {
 			let productList = {}
 			products.forEach((item, index) => {
-				productList[`Item_${index + 1}`] = `Product name: ${
-					item.name
-				}, Product id: ${item.id}, Quantity: ${item.quantity}, Size: ${
-					item.size ? item.size : "-"
-				}, Price: $${item.price}`
+				productList[`Item_${index + 1}`] = `Product name: ${item.name}, Product id: ${
+					item.id
+				}, Quantity: ${item.quantity}, Size: ${item.size ? item.size : "-"}, Price: $${item.price}`
 			})
 
 			const payment = await stripe.paymentIntents.create({
@@ -60,7 +55,7 @@ export default checkAuth(async (req, res) => {
 				.join(", ")
 			console.log("ordered items", orderedItems)
 			const insertOrderDetails = await db.query(
-				`INSERT INTO orderDetails (size, quantity, price, product_id, order_id) VALUES ${orderedItems}`
+				`INSERT INTO orderedProducts (size, quantity, price, product_id, order_id) VALUES ${orderedItems}`
 			)
 
 			return res.status(200).json({

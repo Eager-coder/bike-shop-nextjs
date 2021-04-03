@@ -15,7 +15,7 @@ export default function Orders({ orders, updateStatus }) {
 	return (
 		<OrderContainer>
 			<h1>Orders</h1>
-			{orders ? (
+			{orders?.length ? (
 				orders.map(order => <Order key={order.id} order={order} updateStatus={updateStatus} />)
 			) : (
 				<Loading size="100" />

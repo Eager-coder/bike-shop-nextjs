@@ -19,8 +19,12 @@ export default checkAuth(async (req, res) => {
 	if (!fs.existsSync("./cron.txt")) {
 		fs.writeFile("./cron.txt", "nothing", () => {
 			cron.schedule("*/5 * * * * *", async () => {
-				const res = await db.query("SELECT 2 + 2")
-				console.log("cron job")
+				// const res = await db.query("SELECT 2 + 2")
+				const res = await fetch(
+					"https://kenesyerassyl-kenesyerassyl-node-chat-app.zeet.app/api/test"
+				)
+				const json = await res.json()
+				console.log(json)
 			})
 		})
 	}

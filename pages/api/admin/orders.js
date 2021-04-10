@@ -1,5 +1,5 @@
-import checkAuthAdmin from "./checkAuthAdmin"
-const db = require("../../../db")
+import checkAuthAdmin from "../../../middlewares/checkAuthAdmin"
+const db = require("../../../utils/db")
 export default checkAuthAdmin(async (req, res) => {
 	try {
 		if (req.method === "GET") {
@@ -23,7 +23,7 @@ export default checkAuthAdmin(async (req, res) => {
 				LEFT JOIN 
 					products 
 				ON 
-					products.id=orderedProducts.product_id
+					products.id = orderedProducts.product_id
 			`)
 			orders.forEach(order => {
 				order.items = []
@@ -33,15 +33,17 @@ export default checkAuthAdmin(async (req, res) => {
 					}
 				})
 			})
-			return res.json(orders)
+			return res.json({ data: orders })
 		} else if (req.method === "PUT") {
 			const { newStatus, order_id } = req.query
-			if (!newStatus || !order_id)
-				return res.status(400).json({ message: "Something went wrong!", isSuccess: true })
-			const result = await db.query(`
-				UPDATE orders SET status = '${newStatus}' WHERE order_id = '${order_id}'
-			`)
-			return res.json({ message: "Status has been changed!", isSuccess: true })
+			if (!newStatus || !order_id) return res.status(400).json({ message: "Something went wrong!" })
+			await db.query(
+				`
+				UPDATE orders SET status = ? WHERE order_id = ?
+			`,
+				[newStatus, order_id]
+			)
+			return res.json({ message: "Status has been changed!" })
 		}
 	} catch (error) {
 		console.log(error)

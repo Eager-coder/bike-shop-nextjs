@@ -12,7 +12,7 @@ const db = mysql({
 	},
 	onConnect: () => console.log("db connected"),
 	onClose: () => console.log("connection finished"),
-	connUtilization: 0.9,
+	connUtilization: 1,
 })
 
 exports.query = async (query, value) => {

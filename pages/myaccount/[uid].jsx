@@ -9,6 +9,7 @@ import Orders from "../../components/UserPage/Order/Orders"
 import ErrorPage from "../404"
 import Loading from "../../components/Loading"
 import Head from "next/head"
+import { client } from "../../client"
 const AccountSection = styled.div`
 	width: 100%;
 	max-width: 1300px;
@@ -26,12 +27,11 @@ export default function YourAccount() {
 	const { userData } = useContext(Context)
 	const [orders, setOrders] = useState([])
 	const [isReady, setIsReady] = useState(false)
+
 	const getOrders = async () => {
-		const res = await fetch(`/api/user/order?userId=${userData.id}`, {
-			method: "GET",
-		})
-		const json = await res.json()
-		setOrders(json.orders)
+		const { data } = await client(`/api/user/order?userId=${userData.id}`)
+		console.log(data)
+		setOrders(data)
 	}
 	useEffect(() => {
 		if (!userData.isLoading && !userData.isLoggedIn) {

@@ -1,17 +1,27 @@
-const db = require("../../../db")
-import checkAuth from "./checkAuth"
+const db = require("../../../utils/db")
+import checkAuth from "../../../middlewares/checkAuth"
 
 export default checkAuth(async (req, res) => {
 	if (req.method === "GET") {
 		const userId = req.query.userId
-		const orders = await db.query(`
-			SELECT * FROM orders WHERE user_id = '${userId}'
+		const orders = await db.query(
+			`
+			SELECT * FROM orders WHERE user_id = ?
 			ORDER BY orders.created_at DESC
-		`)
-		const orderIds = orders.map(item => item.order_id)
-		const items = await db.query(
-			`SELECT * FROM orderedProducts WHERE order_id  IN ('${orderIds.join("','")}')`
+		`,
+			[userId]
 		)
+		const orderIds = orders.map(item => item.order_id)
+		// const items = await db.query(
+		// 	`SELECT * FROM orderedProducts WHERE order_id  IN ('${orderIds.join("','")}')`
+		// )
+		const items = await db.query(
+			`
+			SELECT orderedProducts.*, name, image FROM orderedProducts, products 
+			WHERE products.id = orderedProducts.product_id AND orderedProducts.order_id IN (?)`,
+			[orderIds]
+		)
+		// example of nested loop
 		orders.forEach(order => {
 			order.items = []
 			items.forEach(item => {
@@ -20,7 +30,7 @@ export default checkAuth(async (req, res) => {
 				}
 			})
 		})
-		res.json({ orders })
+		res.json({ data: orders })
 	} else if (req.method === "PUT") {
 		const { isComplete, order_id } = req.query
 		if (!isComplete || !order_id)

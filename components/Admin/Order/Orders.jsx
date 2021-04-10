@@ -11,12 +11,12 @@ const OrderContainer = styled.section`
 		margin-bottom: 30px;
 	}
 `
-export default function Orders({ orders, updateStatus }) {
+export default function Orders({ orders, getOrders }) {
 	return (
 		<OrderContainer>
 			<h1>Orders</h1>
 			{orders?.length ? (
-				orders.map(order => <Order key={order.id} order={order} updateStatus={updateStatus} />)
+				orders.map(order => <Order key={order.id} order={order} getOrders={getOrders} />)
 			) : (
 				<Loading size="100" />
 			)}

@@ -2,6 +2,8 @@ import styled from "styled-components"
 import { useState, useContext } from "react"
 import { useRouter } from "next/router"
 import Context from "../Context"
+import Message from "../Auth/Message"
+import { client } from "../../client"
 const EditBox = styled.div`
 	position: fixed;
 	width: 100%;
@@ -59,7 +61,7 @@ const EditBox = styled.div`
 export default function EditProfile({ user, type, setIsEditOpen }) {
 	const [newProfile, setProfile] = useState({ ...user, newEmail: user.email })
 	const [newPassword, setPasswords] = useState({ email: user.email })
-	const [message, setMessage] = useState(null)
+	const [message, setMessage] = useState({ text: null, isSuccess: false })
 	const router = useRouter()
 	const { setUserData } = useContext(Context)
 	const handleEdit = e => {
@@ -71,18 +73,18 @@ export default function EditProfile({ user, type, setIsEditOpen }) {
 	}
 	const handleSubmit = async e => {
 		e.preventDefault()
-		const res = await fetch("/api/user/updateUser", {
-			body: JSON.stringify({ data: type === "profile" ? newProfile : newPassword, type }),
-			method: "POST",
+
+		const { ok, message } = await client("/api/user/updateUser", "POST", {
+			data: type === "profile" ? newProfile : newPassword,
+			type,
 		})
-		const json = await res.json()
-		if (json.isSuccess) {
-			const res = await fetch("/api/user/logout")
-			const json = await res.json()
-			setUserData(json)
+		if (ok) {
+			await client("/api/auth/logout", "DELETE")
+			setUserData({ isLoggedIn: false, isLoading: false })
+			localStorage.removeItem("accessToken")
 			router.push("/login")
 		} else {
-			setMessage(json.message)
+			setMessage({ isSuccess: ok, text: message })
 		}
 	}
 	return (
@@ -157,7 +159,8 @@ export default function EditProfile({ user, type, setIsEditOpen }) {
 						</label>
 					</>
 				)}
-				<div className="message">{message}</div>
+				{/* <div className="message">{message}</div> */}
+				{message.text ? <Message message={message.text} status={message.isSuccess} /> : null}
 				<div className="buttons">
 					<button type="submit">Confirm</button>
 					<span id="cancel" onClick={() => setIsEditOpen(false)}>

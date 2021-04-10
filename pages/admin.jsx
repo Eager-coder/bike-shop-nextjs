@@ -7,6 +7,10 @@ import Orders from "../components/Admin/Order/Orders"
 import Sidebar from "../components/Admin/Sidebar"
 import TopNav from "../components/Admin/TopNav"
 import Head from "next/head"
+import { useContext } from "react"
+import Context from "../components/Context"
+import ErrorPage from "./404"
+import { client } from "../client"
 const GlobalStyle = createGlobalStyle`
 	* {
 		box-sizing: border-box;
@@ -29,31 +33,23 @@ export default function Admin() {
 	const [screen, setScreen] = useState("orders")
 	const [products, setProducts] = useState(null)
 	const [orders, setOrders] = useState(null)
+	const { userData } = useContext(Context)
+
 	const getProducts = async () => {
-		const res = await fetch("/api/getProducts")
-		const data = await res.json()
+		const { data } = await client("/api/product/all")
 		setProducts(data)
 	}
 	const getOrders = async () => {
-		const res = await fetch("/api/admin/orders")
-		const data = await res.json()
+		const { data } = await client("/api/admin/orders")
 		setOrders(data)
 	}
 	useEffect(() => {
 		getProducts()
 		getOrders()
 	}, [])
-	const updateStatus = async (order_id, newStatus, setUpdateOpen) => {
-		if (!newStatus) return setUpdateOpen(false)
-		const res = await fetch(`/api/admin/orders?order_id=${order_id}&newStatus=${newStatus}`, {
-			method: "PUT",
-		})
-		const json = await res.json()
-		if (json.isSuccess) {
-			setUpdateOpen(false)
-			console.log(json)
-			getOrders()
-		}
+
+	if (!userData.isAdmin && !userData.isLoading) {
+		return <ErrorPage />
 	}
 	return (
 		<>
@@ -64,37 +60,37 @@ export default function Admin() {
 			<h1>Admin panel</h1>
 			<Sidebar setScreen={setScreen} />
 			<AdminSection>
-				{screen === "orders" ? <Orders orders={orders} updateStatus={updateStatus} /> : null}
+				{screen === "orders" ? <Orders orders={orders} getOrders={getOrders} /> : null}
 				{screen === "products" ? (
 					<AllProducts products={products} getProducts={getProducts} setProducts={setProducts} />
 				) : null}
-				{screen === "createProduct" ? <AddProduct /> : null}
+				{screen === "createProduct" ? <AddProduct getProducts={getProducts} /> : null}
 			</AdminSection>
 			<GlobalStyle />
 		</>
 	)
 }
 
-export async function getServerSideProps({ req, res }) {
-	const cookie = req.headers.cookie
-	const response = await fetch(`http://${req.headers.host}/api/user/isTokenValid`, {
-		headers: { cookie },
-	})
-	const json = await response.json()
-	console.log(json.isAdmin ? "admin" : "not admin")
-	if (!json.isAdmin) {
-		res.setHeader("location", "/")
-		res.statusCode = 302
-		res.end()
-		return {
-			props: {
-				data: json,
-			},
-		}
-	}
-	return {
-		props: {
-			data: json,
-		},
-	}
-}
+// export async function getServerSideProps({ req, res }) {
+// 	const cookie = req.headers.cookie
+// 	console.log(req.headers)
+// 	const response = await fetch(`http://${req.headers.host}/api/user/isTokenValid`, {
+// 		headers: { cookie },
+// 	})
+// 	const json = await response.json()
+// 	if (!json.isAdmin) {
+// 		res.setHeader("location", "/")
+// 		res.statusCode = 302
+// 		res.end()
+// 		return {
+// 			props: {
+// 				data: json,
+// 			},
+// 		}
+// 	}
+// 	return {
+// 		props: {
+// 			data: json,
+// 		},
+// 	}
+// }

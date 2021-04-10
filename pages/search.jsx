@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import Loading from "../components/Loading"
 import ItemGrid from "../components/Category/ItemGrid"
 import Head from "next/head"
+import { client } from "../client"
 const Container = styled.section`
 	max-width: 1300px;
 	padding: 0 20px;
@@ -23,10 +24,8 @@ export default function Search() {
 	const word = router?.query?.word
 	const searchItem = async () => {
 		setResult({ ...result, isLoading: true })
-		const res = await fetch(`/api/search?word=${word}`)
-		const json = await res.json()
-		setResult({ data: json.searchResult, isLoading: false })
-		console.log(json)
+		const { data } = await client(`/api/product/search?word=${word}`)
+		setResult({ data, isLoading: false })
 	}
 	useEffect(() => {
 		if (word && word.length) searchItem()

@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react"
 import styled from "styled-components"
+import { client } from "../../../client"
+import Message from "../../Auth/Message"
+import { BtnSecondary, BtnPrimary, BtnDanger } from "../../Buttons"
+import Modal from "../../Modal"
 import UpdateProduct from "./UpdateProduct"
 const ItemContainer = styled.div`
 	width: 100%;
@@ -36,16 +40,7 @@ const ItemContainer = styled.div`
 			padding: 3px;
 		}
 	}
-	#update-btn {
-		cursor: pointer;
-		background: black;
-		width: max-content;
-		height: max-content;
-		border: none;
-		border-radius: 7px;
-		color: white;
-		padding: 10px;
-	}
+
 	#show-all {
 		cursor: pointer;
 		background: white;
@@ -56,11 +51,22 @@ const ItemContainer = styled.div`
 		padding: 2px 5px;
 		margin-top: 5px;
 	}
+	.buttons {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		button {
+			margin-bottom: 20px;
+		}
+	}
 `
 
-export default function Item({ product, setProducts }) {
+export default function Item({ product, getProducts }) {
 	const [isUpdateOpen, setIsUpdateOpen] = useState(false)
+	const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 	const [isShown, setIsShown] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+	const [message, setMessage] = useState({ isSuccess: false, text: null })
 	const table = product.tech_specs
 		.replace(/[\r\n\t]/g, "")
 		.split("#")
@@ -68,7 +74,16 @@ export default function Item({ product, setProducts }) {
 		.map(e => {
 			return e.split("=")
 		})
-
+	const deleteProduct = async () => {
+		setIsLoading(true)
+		const { ok, message } = await client(`/api/admin/delete?productId=${product.id}`, "DELETE")
+		setMessage({ isSuccess: ok, text: message })
+		setIsLoading(false)
+		if (ok) {
+			setIsDeleteOpen(false)
+			await getProducts()
+		}
+	}
 	return (
 		<ItemContainer>
 			<div className="item-flex">
@@ -123,15 +138,18 @@ export default function Item({ product, setProducts }) {
 					) : (
 						""
 					)}
-
-					<button id="show-all" onClick={() => setIsShown(!isShown)}>
-						{isShown ? "Hide" : "Show all"}
-					</button>
+					<BtnSecondary
+						fontSize="1rem"
+						padding="2px 5px"
+						margin="10px 0"
+						label={isShown ? "Hide" : "Show all"}
+						onClick={() => setIsShown(!isShown)}
+					/>
 				</div>
-
-				<button id="update-btn" onClick={() => setIsUpdateOpen(true)}>
-					Update
-				</button>
+				<div className="buttons">
+					<BtnPrimary label="Update" fontSize="1rem" onClick={() => setIsUpdateOpen(true)} />
+					<BtnDanger label="Delete" fontSize="1rem" onClick={() => setIsDeleteOpen(true)} />
+				</div>
 
 				{isUpdateOpen ? (
 					<UpdateProduct
@@ -139,6 +157,27 @@ export default function Item({ product, setProducts }) {
 						setIsUpdateOpen={setIsUpdateOpen}
 						product={product}
 					/>
+				) : (
+					""
+				)}
+				{isDeleteOpen ? (
+					<Modal isForm={true}>
+						<h2>Do you really want to delete this item?</h2>
+						<p>Name: {product.name}</p>
+						<div style={{ display: "flex", justifyContent: "center" }}>
+							<img width="200" height="auto" src={product.image} alt="" />
+						</div>
+						{message.text ? <Message status={message.isSuccess} message={message.text} /> : null}
+
+						<div className="buttons">
+							<BtnSecondary
+								label="Cancel"
+								disabled={isLoading}
+								onClick={() => setIsDeleteOpen(false)}
+							/>
+							<BtnPrimary label="Delete" disabled={isLoading} onClick={() => deleteProduct()} />
+						</div>
+					</Modal>
 				) : (
 					""
 				)}

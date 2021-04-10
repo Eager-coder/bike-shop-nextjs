@@ -8,6 +8,7 @@ import Products from "../components/checkout/Products"
 import AddressForm from "../components/checkout/AddressForm"
 import Context from "../components/Context"
 import Head from "next/head"
+import { client } from "../client"
 const Container = styled.section`
 	width: 100%;
 	display: flex;
@@ -22,21 +23,18 @@ export default function Checkout() {
 	const [products, setProducts] = useState(null)
 
 	const router = useRouter()
-
+	const getProducts = async () => {
+		const { data } = await client(`/api/user/cart`, "GET")
+		setProducts(data)
+	}
 	useEffect(() => {
 		if (!userData.isLoading && !userData.isLoggedIn) {
 			router.push("/login")
 		} else if (!userData.isLoading && userData.isLoggedIn) {
-			const getProducts = async () => {
-				const res = await fetch(`/api/user/cart?userId=${userData.id}`, {
-					method: "GET",
-				})
-				const json = await res.json()
-				setProducts(json.data)
-			}
 			getProducts()
 		}
 	}, [userData])
+
 	const stripePromise = loadStripe(
 		"pk_test_51HGfGQIig73WQN7K9q09PsnsZ6EkJ3srfB50IoVXuUK5E0lD2U9Uxgb5mHSrsKq8PGAWfR58IVfBFonSw7dAZdWu00jkFR4r2O"
 	)

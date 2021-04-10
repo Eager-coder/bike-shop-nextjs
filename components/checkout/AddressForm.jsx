@@ -4,7 +4,8 @@ import { CountryDropdown } from "react-country-region-selector"
 import styled from "styled-components"
 import Loading from "../Loading"
 import Link from "next/link"
-import Popup from "../Popup"
+import { client } from "../../client"
+import Modal from "../Modal"
 
 const MessageBox = styled.div`
 	display: flex;
@@ -22,6 +23,9 @@ const MessageBox = styled.div`
 		text-align: center;
 		margin: 15px 0;
 		font-size: 1.3rem;
+	}
+	p.error {
+		color: red;
 	}
 	a {
 		background: black;
@@ -45,7 +49,8 @@ const Message = ({ message }) => {
 				</>
 			) : (
 				<>
-					<p>{message.message}</p>
+					<img src="/icons/sad-smiley.webp" alt="" />
+					<p className="error">{message.message}</p>
 					<Link href="/cart">
 						<a>Back to cart</a>
 					</Link>
@@ -155,30 +160,23 @@ export default function AddressForm({ userData, products, total }) {
 			card: elements.getElement(CardElement),
 		})
 		if (error) {
-			console.log(error.message)
 			setIsPopupOpen(false)
 			setFormError(error.message)
 		} else {
 			const { id } = paymentMethod
-			try {
-				const res = await fetch("/api/user/checkout", {
-					method: "POST",
-					body: JSON.stringify({ id, products, address, userData }),
-				})
-				const json = await res.json()
-				if (!json.isSuccess && json.isIncomplete) {
-					setFormError(json.message)
-					setIsPopupOpen(false)
-				} else if (!json.isSuccess) {
-					setMessage(json)
-					setIsOrderFinished(true)
-				} else if (json.isSuccess) {
-					setMessage(json)
-					setIsOrderFinished(true)
-				}
-				console.log(json)
-			} catch (error) {
-				setFormError(error.message)
+
+			const { ok, data, message } = await client("/api/user/checkout", "POST", {
+				id,
+				products,
+				address,
+				userData,
+			})
+			if (!ok && data?.isIncomplete) {
+				setFormError(message)
+				setIsPopupOpen(false)
+			} else {
+				setMessage({ message, isSuccess: ok })
+				setIsOrderFinished(true)
 			}
 		}
 	}
@@ -253,13 +251,9 @@ export default function AddressForm({ userData, products, total }) {
 			</div>
 
 			{isPopupOpen ? (
-				<Popup>
-					{isOrderFinished ? (
-						<Message message={message} />
-					) : (
-						<Loading size="100" />
-					)}
-				</Popup>
+				<Modal bgColor="rgba(255, 255, 255, 0.95)">
+					{isOrderFinished ? <Message message={message} /> : <Loading size="100" />}
+				</Modal>
 			) : null}
 		</Form>
 	)

@@ -1,8 +1,9 @@
-import { useContext, useState, useEffect } from "react"
+import { useState } from "react"
 import styled from "styled-components"
-import Context from "../../Context"
 import moment from "moment"
-import Popup from "../../Popup"
+import Modal from "../../Modal"
+import { BtnSecondary, BtnPrimary } from "../../Buttons"
+import { client } from "../../../client"
 const OrderBox = styled.div`
 	width: 100%;
 	border-radius: 4px;
@@ -69,50 +70,12 @@ const Status = styled.span`
 		}
 	}};
 `
-const UpdateStatus = styled.div`
-	border-radius: 4px;
-	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
-	padding: 30px 40px;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	.info {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		span {
-			margin: 10px 0;
-		}
-	}
-	select {
-		width: 120px;
-		font-size: 1rem;
-		option {
-			height: 30px;
-		}
-	}
-	.buttons {
-		margin-top: 20px;
-		display: flex;
-		justify-content: space-between;
-		width: 100%;
-		button {
-			font-size: 1.1rem;
-			margin-top: 10px;
-			cursor: pointer;
-			border: none;
-			border-radius: 4px;
-			padding: 3px 5px;
-		}
-		button.update {
-			background: black;
-			color: white;
-		}
-	}
-`
-export default function Order({ order, updateStatus }) {
+
+export default function Order({ order, getOrders }) {
 	const [newStatus, setStatus] = useState(null)
-	const [isUpdateOpen, setUpdateOpen] = useState(false)
+	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+
 	const {
 		address_line,
 		city,
@@ -128,7 +91,19 @@ export default function Order({ order, updateStatus }) {
 		surname,
 		email,
 	} = order
-	console.log(name, surname, email)
+	const updateStatus = async (order_id, newStatus) => {
+		setIsLoading(true)
+		if (!newStatus) return setUpdateModalOpen(false)
+		const { ok } = await client(
+			`/api/admin/orders?order_id=${order_id}&newStatus=${newStatus}`,
+			"PUT"
+		)
+		if (ok) {
+			setUpdateModalOpen(false)
+			getOrders()
+		}
+		setIsLoading(false)
+	}
 	return (
 		<OrderBox>
 			<div className="id-total">
@@ -150,8 +125,7 @@ export default function Order({ order, updateStatus }) {
 						</span>
 					</div>
 					<div className="addres">
-						<b>Address:</b> {address_line}, {city}, <br /> {state}, {country},{" "}
-						{zip_code}
+						<b>Address:</b> {address_line}, {city}, <br /> {state}, {country}, {zip_code}
 					</div>
 				</div>
 				<div className="right">
@@ -164,44 +138,41 @@ export default function Order({ order, updateStatus }) {
 					</div>
 					{status !== "completed" ? (
 						<>
-							<button
-								className="update-btn"
-								onClick={() => setUpdateOpen(true)}>
+							<button className="update-btn" onClick={() => setUpdateModalOpen(true)}>
 								Update Status
 							</button>
-							{isUpdateOpen ? (
-								<Popup>
-									<UpdateStatus>
-										<div className="info">
-											<span>Order ID: {order_id}</span>
-											<span>
-												Current stattus: <b>{status}</b>
-											</span>
-										</div>
-										<div>Select new status:</div>
-										<select onInput={e => setStatus(e.target.value)}>
-											<option></option>
-											<option value="processing">processing</option>
-											<option value="on hold">on hold</option>
-											<option value="shipped">shipped</option>
-											<option value="cancelled">cancelled</option>
-										</select>
-										<div className="buttons">
-											<button
-												className="update"
-												onClick={() =>
-													updateStatus(order_id, newStatus, setUpdateOpen)
-												}>
-												Update
-											</button>
-											<button
-												className="cancel"
-												onClick={() => setUpdateOpen(false)}>
-												Cancel
-											</button>
-										</div>
-									</UpdateStatus>
-								</Popup>
+							{isUpdateModalOpen ? (
+								<Modal isForm>
+									{/* <UpdateStatus> */}
+									<div className="info">
+										<h2>Update order status</h2>
+										<p>Order ID: {order_id}</p>
+										<p>
+											Current stattus: <b>{status}</b>
+										</p>
+									</div>
+									<div>Select new status:</div>
+									<select onInput={e => setStatus(e.target.value)}>
+										<option></option>
+										<option value="processing">processing</option>
+										<option value="on hold">on hold</option>
+										<option value="shipped">shipped</option>
+										<option value="cancelled">cancelled</option>
+									</select>
+									<div className="buttons">
+										<BtnPrimary
+											label="Update"
+											disabled={isLoading}
+											onClick={() => updateStatus(order_id, newStatus)}
+										/>
+										<BtnSecondary
+											label="Cancel"
+											disabled={isLoading}
+											onClick={() => setUpdateModalOpen(false)}
+										/>
+									</div>
+									{/* </UpdateStatus> */}
+								</Modal>
 							) : null}
 						</>
 					) : null}
@@ -246,20 +217,6 @@ const ItemBox = styled.div`
 	}
 `
 function Item({ item }) {
-	const { products } = useContext(Context)
-	useEffect(() => {
-		if (products.length) {
-			products.products.forEach(product => {
-				if (Number(product.id) === Number(item.product_id)) {
-					console.log(item)
-					item.image = product.image
-					item.name = product.name
-					console.log(item.image)
-				}
-			})
-		}
-	}, [products])
-
 	return (
 		<ItemBox>
 			<div className="image">

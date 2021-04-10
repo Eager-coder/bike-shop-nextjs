@@ -54,13 +54,13 @@ const ItemBox = styled.div`
 		}
 	}
 `
-export default function OrderItem({ item, products }) {
-	products.products.forEach(product => {
-		if (Number(product.id) === Number(item.product_id)) {
-			item.image = product.image
-			item.name = product.name
-		}
-	})
+export default function OrderItem({ item }) {
+	// products.products.forEach(product => {
+	// 	if (Number(product.id) === Number(item.product_id)) {
+	// 		item.image = product.image
+	// 		item.name = product.name
+	// 	}
+	// })
 	return (
 		<ItemBox>
 			<div className="image">

@@ -1,11 +1,11 @@
-import checkAuth from "./checkAuth"
-const db = require("../../../db")
+import checkAuth from "../../../middlewares/checkAuth"
+const db = require("../../../utils/db")
 const bcrypt = require("bcryptjs")
 
 export default checkAuth(async (req, res) => {
 	if (!req.method === "POST")
 		return res.status(401).json({ message: "We only support POST!", isSuccess: false })
-	const userData = JSON.parse(req.body)
+	const userData = req.body
 	if (userData.type === "profile") {
 		const { newEmail, email, name, surname } = userData.data
 		if (!newEmail || !email || !name || !surname)

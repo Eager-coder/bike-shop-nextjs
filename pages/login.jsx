@@ -7,6 +7,7 @@ import Message from "../components/Auth/Message"
 import Context from "../components/Context"
 import Head from "next/head"
 import Loading from "../components/Loading"
+import { client } from "../client"
 const FormContainer = styled.div`
 	width: max-content;
 	margin: 150px auto;
@@ -50,18 +51,14 @@ export default function Signup() {
 	const handleSubmit = async e => {
 		e.preventDefault()
 		setLoading(true)
-		const res = await fetch("/api/user/login", {
-			method: "POST",
-			body: JSON.stringify(userData),
-		})
-		const json = await res.json()
-		console.log("login:", json)
-		if (!json.isSuccess) {
+		const { message, ok, data: accessToken } = await client("/api/auth/login", "POST", userData)
+		if (!ok) {
 			setLoading(false)
-		}
-		setMessage({ message: json.message, isSuccess: json.isSuccess })
-		if (json.isLoggedIn) {
-			context.setUserData(json)
+			setMessage({ message: message, isSuccess: ok })
+		} else {
+			localStorage.setItem("accessToken", accessToken)
+			const { data: profile } = await client("/api/user/profile")
+			context.setUserData({ ...profile, isLoading: false, isLoggedIn: true })
 			router.push("/")
 		}
 	}
@@ -77,18 +74,8 @@ export default function Signup() {
 				<FormContainer>
 					<h1>Login</h1>
 					<form onSubmit={handleSubmit}>
-						<input
-							type="text"
-							name="email"
-							placeholder="Email"
-							onChange={handleChange}
-						/>
-						<input
-							type="password"
-							name="password"
-							placeholder="Password"
-							onChange={handleChange}
-						/>
+						<input type="text" name="email" placeholder="Email" onChange={handleChange} />
+						<input type="password" name="password" placeholder="Password" onChange={handleChange} />
 						<button id="btn-submit" type="submit">
 							Log in
 						</button>

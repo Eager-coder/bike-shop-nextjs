@@ -4,6 +4,7 @@ import { useState, useContext } from "react"
 import Context from "../Context"
 import { useRouter } from "next/router"
 import SearchField from "./SearchField"
+import { client } from "../../client"
 const Div = styled.div`
 	display: flex;
 	align-items: center;
@@ -121,9 +122,10 @@ export default function UserLinks() {
 	const { userData, setUserData } = useContext(Context)
 	const router = useRouter()
 	const signOut = async () => {
-		const res = await fetch("/api/user/logout")
-		const json = await res.json()
-		setUserData(json)
+		await client("/api/auth/logout", "DELETE")
+
+		setUserData({ isLoading: false, isLoggedIn: false })
+		localStorage.removeItem("accessToken")
 		router.push("/login")
 	}
 	return (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import styled from "styled-components"
 import Message from "../../Auth/Message"
+import { client } from "../../../client"
 const Form = styled.form`
 	width: 100%;
 	h1 {
@@ -24,11 +25,11 @@ const Form = styled.form`
 			font-size: 1rem;
 		}
 		input {
-			width: 300px;
+			width: 350px;
 			height: 30px;
 			font-size: 1rem;
 			border: 1px black solid;
-			border-radius: 2px;
+			border-radius: 3px;
 			padding-left: 5px;
 		}
 		select {
@@ -48,15 +49,20 @@ const Form = styled.form`
 			padding: 5px;
 		}
 	}
-	input[type="submit"] {
-		cursor: pointer;
-		background: black;
+	button {
 		width: 120px;
 		height: 50px;
-		margin-top: 0px;
-		border-radius: 7px;
+		border-radius: 4px;
+		border: white 2px solid;
 		color: white;
-		align-self: center;
+		font-size: 1.1rem;
+		font-weight: 500;
+		background-color: black;
+		cursor: pointer;
+		&:disabled {
+			background-color: grey;
+			opacity: 0.6;
+		}
 	}
 `
 const Popup = styled.div`
@@ -65,24 +71,24 @@ const Popup = styled.div`
 	background-color: ${({ status }) => (status === 201 ? "green" : "red")};
 	color: "white";
 `
-export default function AddProduct() {
+export default function AddProduct({ getProducts }) {
 	const [list, setList] = useState({})
 	const [msg, setMsg] = useState(null)
-	const fetchData = async e => {
+	const [isLoading, setIsLoading] = useState(false)
+	const submitData = async e => {
 		e.preventDefault()
-		const res = await fetch("/api/admin/insert", {
-			method: "POST",
-			body: JSON.stringify(list),
-		})
-		const message = await res.json()
-		setMsg(message)
+		setIsLoading(true)
+		const { ok, message } = await client("/api/admin/insert", "POST", list)
+		setMsg({ message, isSuccess: ok })
+		setIsLoading(false)
+		if (ok) getProducts()
 	}
 	const handleChange = e => {
 		setList({ ...list, [e.target.name]: e.target.value.replace(/'/g, "''") })
 	}
 
 	return (
-		<Form onSubmit={fetchData}>
+		<Form onSubmit={submitData}>
 			<h1>Add a new Product</h1>
 			<div className="flexbox">
 				<div className="left">
@@ -136,7 +142,9 @@ export default function AddProduct() {
 				</div>
 			</div>
 
-			<input type="submit" value="Post item" />
+			<button type="submit" disabled={isLoading}>
+				Post item
+			</button>
 		</Form>
 	)
 }

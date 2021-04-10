@@ -19,8 +19,8 @@ export default function Orders({ orders, getOrders }) {
 	return (
 		<OrderContainer>
 			<h1>Orders</h1>
-			{orders.length
-				? orders.map(order => <Order key={order.id} order={order} getOrders={getOrders} />)
+			{orders?.length
+				? orders?.map(order => <Order key={order.id} order={order} getOrders={getOrders} />)
 				: null}
 		</OrderContainer>
 	)

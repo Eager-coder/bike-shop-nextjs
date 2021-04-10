@@ -55,7 +55,6 @@ export default function Bikes({ product, error }) {
 		.split("#")
 		.filter(e => e.length)
 		.map(e => e.split("="))
-	console.log(data.tech_specs, table)
 	return (
 		<Layout>
 			<Head>
@@ -79,14 +78,14 @@ export default function Bikes({ product, error }) {
 	)
 }
 
-const db = require("../../db")
+const db = require("../../utils/db")
 
 // This function gets called at build time on server-side.
 // It may be called again, if new request comes in
 export async function getStaticProps({ params }) {
-	const [product] = await db.query(
-		`SELECT * FROM products WHERE name = '${params.uid}'`
-	)
+	const [product] = await db.query(`SELECT * FROM products WHERE name = ? AND is_deleted = 0`, [
+		params.uid,
+	])
 	if (!product)
 		return {
 			props: {

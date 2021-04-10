@@ -14,8 +14,8 @@ export default function AllProducts({ products, getProducts, setProducts }) {
 		<ProductsSection>
 			<h1>All Products</h1>
 			{products ? (
-				products.map((e, index) => (
-					<Item key={index} product={e} getProducts={getProducts} setProducts={setProducts} />
+				products.map(e => (
+					<Item key={e.id} product={e} getProducts={getProducts} setProducts={setProducts} />
 				))
 			) : (
 				<Loading size="100" />

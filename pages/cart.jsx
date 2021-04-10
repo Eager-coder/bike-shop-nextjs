@@ -4,9 +4,10 @@ import styled from "styled-components"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import Context from "../components/Context"
-import ItemContainer from "../components/cart/ItemContainer"
+import ItemContainer from "../components/Cart/ItemContainer"
 import Loading from "../components/Loading"
 import Head from "next/head"
+import { client } from "../client"
 const CartContainer = styled.div`
 	margin: 50px auto;
 	width: 100%;
@@ -90,12 +91,11 @@ export default function Cart() {
 	const router = useRouter()
 
 	const getCartItems = async () => {
-		const res = await fetch(`/api/user/cart?userId=${userData.id}`, {
-			method: "GET",
-		})
-		const json = await res.json()
-		if (json.data) {
-			setProducts(json.data)
+		const { data, ok } = await client("/api/user/cart")
+		if (ok && data?.length) {
+			setProducts(data)
+		} else {
+			setProducts([])
 		}
 		setIsLoaded(true)
 	}
@@ -130,7 +130,7 @@ export default function Cart() {
 									<ItemContainer
 										key={e.id}
 										item={e}
-										setProducts={setProducts}
+										getCartItems={getCartItems}
 										products={products}
 									/>
 								))}

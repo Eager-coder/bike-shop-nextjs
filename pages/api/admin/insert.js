@@ -1,18 +1,8 @@
-const db = require("../../../db")
+const db = require("../../../utils/db")
 export default async (req, res) => {
 	try {
-		const data = JSON.parse(req.body)
-		const {
-			name,
-			brand,
-			price,
-			category,
-			type,
-			year,
-			image,
-			description,
-			tech_specs,
-		} = data
+		const data = req.body
+		const { name, brand, price, category, type, year, image, description, tech_specs } = data
 		let isEpmty = false
 		for (const prop in data) {
 			if (
@@ -24,9 +14,7 @@ export default async (req, res) => {
 				return (isEpmty = true)
 		}
 		if (Object.keys(data).length !== 9 || isEpmty)
-			return res
-				.status(400)
-				.json({ message: "Please fill all the fields", isSuccess: false })
+			return res.status(400).json({ message: "Please fill all the fields" })
 		if (
 			typeof name !== "string" ||
 			typeof brand !== "string" ||
@@ -38,22 +26,17 @@ export default async (req, res) => {
 			typeof description !== "string" ||
 			typeof tech_specs !== "string"
 		)
-			return res
-				.status(400)
-				.json({ message: "Invalid credentials", isSuccess: false })
+			return res.status(400).json({ message: "Invalid credentials" })
 		if (Number(year) > new Date().getFullYear() + 2)
-			return res.status(400).json({ message: "Invalid year", isSuccess: false })
+			return res.status(400).json({ message: "Invalid year" })
 		await db.query(
 			`INSERT INTO products (name, brand, category, type, price, year, image, description, tech_specs) VALUES
-			('${name}', '${brand}', '${category}', '${type}', '${price}', '${year}', '${image}', '${description
-				.split("'")
-				.join("''")}', '${tech_specs}')`
+			(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			[name, brand, category, type, price, year, image, description, tech_specs]
 		)
-		res
-			.status(201)
-			.json({ message: "Item successfully added!", isSuccess: true })
+		res.status(201).json({ message: "Item successfully added!" })
 	} catch (err) {
-		console.log(err)
-		res.status(500).json({ message: "Internal Server Error", isSuccess: false })
+		console.log("ADD PRODUCT", err)
+		res.status(500).json({ message: "Something went wrong" })
 	}
 }

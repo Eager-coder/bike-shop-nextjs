@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react"
 import styled from "styled-components"
+import { client } from "../../client"
 import Context from "../Context"
 import CartPopup from "./CartPopup"
 const Form = styled.div`
@@ -64,13 +65,11 @@ export default function SelectForm({ productData }) {
 	}
 
 	const addToCart = async () => {
-		if (userData.isLoggedIn) {
+		if (!userData.isLoading && userData.isLoggedIn) {
 			setIsPopup(true)
-			const res = await fetch("/api/user/cart", {
-				method: "POST",
-				body: JSON.stringify({ itemData: { userId: userData.id, ...newItem } }),
+			const res = await client("/api/user/cart", "POST", {
+				itemData: { userId: userData.id, ...newItem },
 			})
-			const json = await res.json()
 		}
 	}
 	return (

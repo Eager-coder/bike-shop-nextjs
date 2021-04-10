@@ -111,7 +111,7 @@ export default function Accessories({ data }) {
 		</Layout>
 	)
 }
-const db = require("../../db")
+const db = require("../../utils/db")
 export async function getStaticProps({ params }) {
 	const data = await db.query(`SELECT * FROM products WHERE type = '${params.uid}'`)
 	return {

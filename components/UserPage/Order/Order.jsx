@@ -1,16 +1,14 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import styled from "styled-components"
-import Context from "../../Context"
 import moment from "moment"
-import Popup from "../../Popup"
 import Loading from "../../Loading"
 import OrderItem from "./OrderItem"
-
+import { client } from "../../../client"
+import Modal from "../../Modal"
+import { BtnDanger, BtnPrimary, BtnSecondary } from "../../Buttons"
 export default function Order({ order, getOrders }) {
 	const [isPopupOpen, setPopupOpen] = useState(false)
 	const [isConfirmLoading, setIsConfirmLoading] = useState(false)
-	const { products } = useContext(Context)
-	console.log(products)
 	const {
 		address_line,
 		city,
@@ -25,14 +23,9 @@ export default function Order({ order, getOrders }) {
 	} = order
 	const completeOrder = async order_id => {
 		setIsConfirmLoading(true)
-		const res = await fetch(
-			`/api/user/order?order_id=${order_id}&isComplete=true`,
-			{
-				method: "PUT",
-			}
-		)
-		const json = await res.json()
-		if (json.isSuccess) {
+		const { ok } = await client(`/api/user/order?order_id=${order_id}&isComplete=true`, "PUT")
+
+		if (ok) {
 			setIsConfirmLoading(false)
 			setPopupOpen(false)
 			getOrders()
@@ -48,8 +41,7 @@ export default function Order({ order, getOrders }) {
 			<div className="details">
 				<div className="left">
 					<div className="addres">
-						<span>Address:</span> {address_line}, {city}, <br /> {state},{" "}
-						{country}, {zip_code}
+						<span>Address:</span> {address_line}, {city}, <br /> {state}, {country}, {zip_code}
 					</div>
 					<div className="time-created">
 						<span>Time ordered:</span> {moment(created_at).format("LLL")}
@@ -62,82 +54,41 @@ export default function Order({ order, getOrders }) {
 					</div>
 					{status !== "completed" ? (
 						<>
-							<button
-								className="btn-complete"
-								onClick={() => setPopupOpen(true)}>
+							<button className="btn-complete" onClick={() => setPopupOpen(true)}>
 								Confirm completion
 							</button>
 							{isPopupOpen ? (
-								<Popup>
-									{isConfirmLoading ? (
-										<Loading size="120" />
-									) : (
-										<Confirm>
-											<p>
-												You are going to comfirm your order with ID: {order_id}
-											</p>
-											<div className="btns">
-												<button
-													className="confirm"
-													onClick={() => completeOrder(order_id)}>
-													Confirm
-												</button>
-												<button
-													className="cancel"
-													onClick={() => setPopupOpen(false)}>
-													Cancel
-												</button>
-											</div>
-										</Confirm>
-									)}
-								</Popup>
+								<Modal isForm={true}>
+									<>
+										<h2>Comfirm your order </h2>
+										<p>Order ID: {order_id}</p>
+										<div className="buttons">
+											<BtnSecondary
+												label="Cancel"
+												disabled={isConfirmLoading}
+												onClick={() => setPopupOpen(false)}
+											/>
+											<BtnPrimary
+												label="Confirm"
+												disabled={isConfirmLoading}
+												onClick={() => completeOrder(order_id)}
+											/>
+										</div>
+									</>
+								</Modal>
 							) : null}
 						</>
 					) : null}
 				</div>
 			</div>
 
-			{items.map((item, index) => (
-				<OrderItem key={index} item={item} products={products} />
+			{items.map(item => (
+				<OrderItem key={item.id} item={item} />
 			))}
 		</OrderBox>
 	)
 }
 
-const Confirm = styled.div`
-	display: flex;
-	max-width: 350px;
-	flex-direction: column;
-	border-radius: 4px;
-	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
-	background: white;
-	padding: 20px;
-	p {
-		font-size: 1.2rem;
-		margin-bottom: 20px;
-	}
-	.btns {
-		margin: 10px 0;
-		display: flex;
-		justify-content: space-between;
-		.confirm {
-			font-size: 1.2rem;
-			cursor: pointer;
-			border: none;
-			border-radius: 5px;
-			background: black;
-			color: white;
-			padding: 2px 5px;
-		}
-		.cancel {
-			font-size: 1.2rem;
-			padding: 2px 5px;
-			cursor: pointer;
-			border: none;
-			border-radius: 5px;
-		}
-	}
-`
 const OrderBox = styled.div`
 	width: 100%;
 	border-radius: 4px;

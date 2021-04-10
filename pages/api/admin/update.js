@@ -1,23 +1,26 @@
-const db = require("../../../db")
+const db = require("../../../utils/db")
 
 export default async (req, res) => {
+	if (req.method !== "PUT") {
+		return res.status(405).json({ message: "We only support 'PUT'" })
+	}
 	try {
-		const data = JSON.parse(req.body)
-		const {
-			id,
-			name,
-			brand,
-			price,
-			category,
-			type,
-			year,
-			image,
-			description,
-			tech_specs,
-		} = data
-
-		if (Object.keys(data).length !== 10)
+		const data = req.body
+		const { id, name, brand, price, category, type, year, image, description, tech_specs } = data
+		let isEmpty = false
+		for (const prop in data) {
+			if (
+				!data[prop] ||
+				data[prop].length === 0 ||
+				typeof data[prop] === "undefined" ||
+				typeof data[prop] === "null"
+			)
+				isEpmty = true
+			break
+		}
+		if (Object.keys(data).length < 10 || isEmpty)
 			return res.status(400).json({ message: "Please fill all the fields" })
+
 		if (
 			typeof name !== "string" ||
 			typeof brand !== "string" ||
@@ -30,22 +33,16 @@ export default async (req, res) => {
 			typeof tech_specs !== "string"
 		)
 			return res.status(400).json({ message: "Invalid data" })
-		const update = await db.query(
-			`UPDATE products SET name = '${name}', brand = '${brand}', 
-			category = '${category}', type = '${type}', price = '${price}', 
-			year = '${year}', image = '${image}', description = '${description
-				.split("'")
-				.join("''")}', tech_specs = '${tech_specs
-				.split("'")
-				.join("''")}' WHERE id = ${id}`
+		await db.query(
+			`UPDATE products SET name = ?, brand = ?, 
+			category = ?, type = ?, price = ?, 
+			year = ?, image = ?, description =?,
+				tech_specs = ? WHERE id = ?`,
+			[name, brand, category, type, price, year, image, description, tech_specs, id]
 		)
-		console.log("update product", update)
-		if (update)
-			return res
-				.status(200)
-				.json({ message: "Item has been updated", isSuccess: true })
+		res.json({ message: "Item has been updated" })
 	} catch (err) {
-		console.log(err)
-		res.status(500).json({ message: err })
+		console.log("UPDATE PRODICT", err.message)
+		res.status(500).json({ message: "Something went wrong" })
 	}
 }

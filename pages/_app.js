@@ -1,28 +1,23 @@
 import { useState, useEffect } from "react"
 import App from "next/app"
 import Context from "../components/Context"
+import { client, requestAccessToken } from "../client"
+
 const ContextWrapper = ({ children }) => {
 	const [userData, setUserData] = useState({ isLoading: true })
-	const [products, setProducts] = useState({ isLoading: true })
-	useEffect(() => {
-		const checkLoggedIn = async () => {
-			const res = await fetch("/api/user/isTokenValid")
-			const json = await res.json()
-			setUserData({ ...json, isLoading: false })
+	// const [products, setProducts] = useState({ isLoading: true })
+	const getProfile = async () => {
+		const isAuthenticated = await requestAccessToken()
+		if (isAuthenticated) {
+			const { data: profile } = await client("/api/user/profile")
+			setUserData({ ...profile, isLoggedIn: true, isLoading: false })
+		} else {
+			setUserData({ isLoading: false, isLoggedIn: false })
 		}
-		const getProducts = async () => {
-			const res = await fetch("/api/getProducts")
-			const json = await res.json()
-			setProducts({ products: json, isLoading: false })
-		}
-		checkLoggedIn()
-		getProducts()
-	}, [])
-	return (
-		<Context.Provider value={{ userData, setUserData, products, setProducts }}>
-			{children}
-		</Context.Provider>
-	)
+	}
+
+	useEffect(() => getProfile(), [])
+	return <Context.Provider value={{ userData, setUserData }}>{children}</Context.Provider>
 }
 
 class MyApp extends App {

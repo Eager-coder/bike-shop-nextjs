@@ -108,9 +108,11 @@ export default function Clothing({ data }) {
 		</Layout>
 	)
 }
-const db = require("../../db")
+const db = require("../../utils/db")
 export async function getStaticProps({ params }) {
-	const data = await db.query(`SELECT * FROM products WHERE type = '${params.uid}'`)
+	const data = await db.query(`SELECT * FROM products WHERE type = ? AND is_deleted = 0`, [
+		params.uid,
+	])
 	return {
 		props: { data: JSON.stringify(data) },
 		revalidate: 1,

@@ -6,6 +6,9 @@ import { useRouter } from "next/router"
 import Message from "../components/Auth/Message"
 import Head from "next/head"
 import Loading from "../components/Loading"
+import { client } from "../client"
+import { useContext } from "react"
+import Context from "../components/Context"
 const FormContainer = styled.div`
 	width: max-content;
 	margin: 150px auto;
@@ -41,35 +44,35 @@ const FormContainer = styled.div`
 	}
 `
 export default function Signup() {
-	const [userData, setUserData] = useState({})
+	const [formData, setFormData] = useState({})
 	const [message, setMessage] = useState(null)
 	const [isLoading, setLoading] = useState(false)
+	const { setUserData } = useContext(Context)
 	const router = useRouter()
 	const handleChange = e => {
-		setUserData({ ...userData, [e.target.name]: e.target.value })
+		setFormData({ ...formData, [e.target.name]: e.target.value })
 	}
 	const handleSubmit = async e => {
 		setLoading(true)
 		e.preventDefault()
 		// Check if passwords match
-		if (userData.password !== userData.confirmPassword) {
+		if (formData.password !== formData.confirmPassword) {
 			setMessage("Passwords must match")
 			setLoading(false)
-		} else {
-			// Send auth credentials to the backend
-			const res = await fetch("/api/user/signup", {
-				method: "POST",
-				body: JSON.stringify(userData),
-			})
-			const json = await res.json()
-			if (!json.isSuccess) {
-				setLoading(false)
-			}
-			// Display a message come from the backend
-			setMessage(json.message)
-			// If success, redirect a user to the login page
-			if (json.isSuccess) return router.push("/login")
+			return
 		}
+		// Send auth credentials to the backend
+		const { ok, message, data: accessToken } = await client("api/auth/signup", "POST", formData)
+		if (ok) {
+			// Save access token and get profile
+			localStorage.setItem("accessToken", accessToken)
+			const { data: profile } = await client("/api/user/profile")
+			setUserData({ ...profile, isLoading: false, isLoggedIn: true })
+			router.push("/")
+			return
+		}
+		setMessage(message)
+		setLoading(false)
 	}
 	return (
 		<Layout>
@@ -94,13 +97,7 @@ export default function Signup() {
 							onChange={handleChange}
 							required
 						/>
-						<input
-							type="text"
-							name="email"
-							placeholder="Email"
-							onChange={handleChange}
-							required
-						/>
+						<input type="text" name="email" placeholder="Email" onChange={handleChange} required />
 						<input
 							type="password"
 							name="password"

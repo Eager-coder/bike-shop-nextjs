@@ -1,42 +1,28 @@
 import { useState } from "react"
 import Link from "next/link"
 import styled from "styled-components"
-export default function ItemContainer({ item, products, setProducts }) {
+import { client } from "../../client"
+export default function ItemContainer({ item, getCartItems }) {
 	const [isLoading, setIsLoading] = useState(false)
-	const [qty, setQty] = useState(item.quantity)
-	const [price, setPrice] = useState(item.quantity * item.price)
+	const price = item.quantity * item.price
+
 	const changeQty = async type => {
-		const newQty = type === "-" ? qty - 1 : qty + 1
+		const newQty = type === "-" ? item.quantity - 1 : item.quantity + 1
 		if (newQty <= 0 || newQty > 20) return
 		setIsLoading(true)
-		const res = await fetch("/api/user/cart", {
-			method: "PUT",
-			body: JSON.stringify({ itemId: item.id, qty: newQty }),
-		})
-		const json = await res.json()
-		if (json.isSuccess) {
-			setQty(json.qty)
-			setPrice(json.qty * item.price)
-			const newProd = products.map(product => {
-				if (product.id === item.id) {
-					product.quantity = newQty
-					return product
-				} else {
-					return product
-				}
-			})
-			setProducts(newProd)
+		const { ok } = await client("/api/user/cart", "PUT", { itemId: item.id, qty: newQty })
+		if (ok) {
+			await getCartItems()
 			setIsLoading(false)
 		}
 	}
 	const removeItem = async id => {
 		setIsLoading(true)
-		const res = await fetch(`/api/user/cart?itemId=${id}`, { method: "DELETE" })
-		const json = await res.json()
-		if (json.isSuccess) {
+		const { ok, message } = await client(`/api/user/cart?itemId=${id}`, "DELETE")
+		console.log(message)
+		if (ok) {
+			await getCartItems()
 			setIsLoading(false)
-			const updatedItems = products.filter(elem => elem.id !== id)
-			setProducts(updatedItems)
 		}
 	}
 	return (
@@ -58,7 +44,7 @@ export default function ItemContainer({ item, products, setProducts }) {
 						Quantity:
 						<div className="qty">
 							<button onClick={() => changeQty("-")}>-</button>
-							<div className="qty-number">{qty}</div>
+							<div className="qty-number">{item.quantity}</div>
 							<button onClick={() => changeQty("+")}>+</button>
 						</div>
 					</div>
